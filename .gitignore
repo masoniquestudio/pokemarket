@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+web/.next/
+web/out/
+
+# Environment files (real secrets)
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/
