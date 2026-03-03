@@ -22,8 +22,8 @@
   /* ── Tier badge colors ── */
   --tier-vintage-bg:    rgba(255, 61, 0, 0.08);
   --tier-vintage-color: #FF3D00;
-  --tier-iconic-bg:     #0D0D0D;
-  --tier-iconic-color:  #FFFFFF;
+  --tier-iconic-bg:     rgba(139, 92, 246, 0.1);
+  --tier-iconic-color:  #7C3AED;
   --tier-modern-bg:     rgba(0, 168, 107, 0.1);
   --tier-modern-color:  #00A86B;
 

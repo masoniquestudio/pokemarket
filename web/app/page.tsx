@@ -223,7 +223,7 @@ const TIER_COLORS: Record<string, { bg: string; color: string }> = {
 function AllCardsTable({ cards }: { cards: CardRow[] }) {
   const priced = cards
     .filter((c) => c.currentPrice > 0)
-    .sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0))
+    .sort((a, b) => b.currentPrice - a.currentPrice)
     .slice(0, 10);
 
   return (

@@ -39,7 +39,7 @@ const INDEX_LABELS: Record<string, string> = {
 
 const INDEX_COLORS: Record<string, { bg: string; color: string }> = {
   pmi:       { bg: 'var(--tier-vintage-bg)',  color: 'var(--tier-vintage-color)' },
-  charizard: { bg: 'var(--tier-iconic-bg)',   color: 'var(--tier-iconic-color)' },
+  charizard: { bg: 'rgba(59, 130, 246, 0.1)',  color: '#3B82F6' },
   vintage:   { bg: 'rgba(124,58,237,0.1)',    color: 'var(--accent)' },
   modern:    { bg: 'var(--tier-modern-bg)',   color: 'var(--tier-modern-color)' },
 };
