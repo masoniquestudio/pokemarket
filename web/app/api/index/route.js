@@ -1,4 +1,4 @@
-import { CARDS, INDEX_CONFIGS } from '../../../lib/cards';
+import { INDEX_CONFIGS } from '../../../lib/cards';
 import { getLatestPrices, getBaselinePrice, insertIndexSnapshot, getLatestIndex } from '../../../lib/db';
 import { computePMI, computeChangePct } from '../../../lib/index';
 
