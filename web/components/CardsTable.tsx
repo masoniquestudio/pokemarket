@@ -25,9 +25,9 @@ const TIER_LABELS: Record<string, string> = {
 };
 
 const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  vintage: { bg: '#fff8e1', color: '#b8860b' },
-  iconic: { bg: '#fce4ec', color: '#c62828' },
-  'modern-chase': { bg: '#e8f5e9', color: '#2e7d32' },
+  vintage: { bg: 'rgba(255,203,5,0.15)', color: '#FFCB05' },
+  iconic: { bg: 'rgba(255,100,100,0.15)', color: '#ff8080' },
+  'modern-chase': { bg: 'rgba(0,200,83,0.15)', color: '#00c853' },
 };
 
 const INDEX_LABELS: Record<string, string> = {
@@ -38,15 +38,15 @@ const INDEX_LABELS: Record<string, string> = {
 };
 
 const INDEX_COLORS: Record<string, { bg: string; color: string }> = {
-  pmi: { bg: '#fff8e1', color: '#b8860b' },
-  charizard: { bg: '#fce4ec', color: '#c62828' },
-  vintage: { bg: '#e8eaf6', color: '#3949ab' },
-  modern: { bg: '#e8f5e9', color: '#2e7d32' },
+  pmi: { bg: 'rgba(255,203,5,0.15)', color: '#FFCB05' },
+  charizard: { bg: 'rgba(255,100,100,0.15)', color: '#ff8080' },
+  vintage: { bg: 'rgba(52,102,175,0.25)', color: '#a0b8d8' },
+  modern: { bg: 'rgba(0,200,83,0.15)', color: '#00c853' },
 };
 
 function SortIcon({ col, sortKey, sortDir }: { col: SortKey; sortKey: SortKey; sortDir: SortDir }) {
-  if (sortKey !== col) return <span style={{ color: '#ddd', marginLeft: 4 }}>↕</span>;
-  return <span style={{ color: '#1a1a1a', marginLeft: 4 }}>{sortDir === 'asc' ? '↑' : '↓'}</span>;
+  if (sortKey !== col) return <span style={{ color: 'rgba(255,255,255,0.3)', marginLeft: 4 }}>↕</span>;
+  return <span style={{ color: '#ffffff', marginLeft: 4 }}>{sortDir === 'asc' ? '↑' : '↓'}</span>;
 }
 
 export default function CardsTable({ cards }: { cards: CardRow[] }) {
@@ -108,9 +108,9 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
     textAlign: align,
     fontSize: 11,
     fontWeight: 600,
-    color: sortKey === col ? '#1a1a1a' : '#bbb',
+    color: sortKey === col ? '#ffffff' : 'rgba(255,255,255,0.3)',
     paddingBottom: 10,
-    borderBottom: '1px solid #f0f0f0',
+    borderBottom: '1px solid rgba(52,102,175,0.3)',
     paddingRight: 16,
     cursor: 'pointer',
     userSelect: 'none',
@@ -120,10 +120,10 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
   return (
     <div
       style={{
-        background: '#fff',
+        background: '#21386E',
         borderRadius: 16,
         padding: '20px 24px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
       }}
     >
       {/* Filters */}
@@ -145,11 +145,12 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
           style={{
             padding: '8px 12px',
             borderRadius: 8,
-            border: '1.5px solid #e0e0e0',
+            border: '1.5px solid rgba(52,102,175,0.5)',
             fontSize: 13,
             outline: 'none',
             width: 220,
-            color: '#1a1a1a',
+            color: '#ffffff',
+            background: '#1D2C5E',
           }}
         />
 
@@ -166,8 +167,8 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
                 cursor: 'pointer',
                 fontSize: 12,
                 fontWeight: 600,
-                background: tierFilter === t ? '#1a1a1a' : '#f5f5f5',
-                color: tierFilter === t ? '#fff' : '#909090',
+                background: tierFilter === t ? '#3466AF' : 'rgba(52,102,175,0.3)',
+                color: tierFilter === t ? '#ffffff' : 'rgba(255,255,255,0.5)',
                 transition: 'all 0.15s',
               }}
             >
@@ -189,8 +190,8 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
                 cursor: 'pointer',
                 fontSize: 12,
                 fontWeight: 600,
-                background: indexFilter === idx ? '#1a1a1a' : '#f5f5f5',
-                color: indexFilter === idx ? '#fff' : '#909090',
+                background: indexFilter === idx ? '#3466AF' : 'rgba(52,102,175,0.3)',
+                color: indexFilter === idx ? '#ffffff' : 'rgba(255,255,255,0.5)',
                 transition: 'all 0.15s',
               }}
             >
@@ -199,7 +200,7 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
           ))}
         </div>
 
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: '#bbb' }}>
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
           {filtered.length} of {cards.length} cards
         </span>
       </div>
@@ -217,7 +218,7 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
             <th style={{ ...thStyle('tier'), paddingRight: 16 }} onClick={() => toggleSort('tier')}>
               Tier <SortIcon col="tier" sortKey={sortKey} sortDir={sortDir} />
             </th>
-            <th style={{ fontSize: 11, fontWeight: 600, color: '#bbb', paddingBottom: 10, borderBottom: '1px solid #f0f0f0', paddingRight: 16 }}>
+            <th style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.3)', paddingBottom: 10, borderBottom: '1px solid rgba(52,102,175,0.3)', paddingRight: 16 }}>
               Indices
             </th>
             <th style={{ ...thStyle('currentPrice', 'right') }} onClick={() => toggleSort('currentPrice')}>
@@ -233,21 +234,21 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
         </thead>
         <tbody>
           {filtered.map((card, i) => {
-            const tierStyle = TIER_COLORS[card.tier] ?? { bg: '#f5f5f5', color: '#555' };
+            const tierStyle = TIER_COLORS[card.tier] ?? { bg: 'rgba(52,102,175,0.25)', color: '#a0b8d8' };
             return (
               <tr
                 key={card.id}
-                style={{ borderBottom: i < filtered.length - 1 ? '1px solid #f9f9f9' : 'none' }}
+                style={{ borderBottom: i < filtered.length - 1 ? '1px solid rgba(52,102,175,0.15)' : 'none' }}
               >
                 <td style={{ padding: '10px 16px 10px 0' }}>
                   <a
                     href={`/cards/${card.id}`}
-                    style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a', textDecoration: 'none' }}
+                    style={{ fontSize: 14, fontWeight: 600, color: '#ffffff', textDecoration: 'none' }}
                   >
                     {card.name}
                   </a>
                 </td>
-                <td style={{ fontSize: 13, color: '#909090', padding: '10px 16px 10px 0' }}>
+                <td style={{ fontSize: 13, color: '#a0b8d8', padding: '10px 16px 10px 0' }}>
                   {card.set}
                 </td>
                 <td style={{ padding: '10px 16px 10px 0' }}>
@@ -267,7 +268,7 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
                 <td style={{ padding: '10px 16px 10px 0' }}>
                   <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                     {card.indices.map((idx) => {
-                      const cs = INDEX_COLORS[idx] ?? { bg: '#f5f5f5', color: '#555' };
+                      const cs = INDEX_COLORS[idx] ?? { bg: 'rgba(52,102,175,0.25)', color: '#a0b8d8' };
                       return (
                         <span
                           key={idx}
@@ -287,7 +288,7 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
                     })}
                   </div>
                 </td>
-                <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>
+                <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 14, fontWeight: 600, color: '#ffffff' }}>
                   {card.currentPrice != null ? `$${card.currentPrice.toFixed(2)}` : '—'}
                 </td>
                 <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0' }}>
@@ -296,14 +297,14 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
                       fontSize: 13,
                       fontWeight: 700,
                       color:
-                        card.changePct === null ? '#ccc' :
+                        card.changePct === null ? 'rgba(255,255,255,0.3)' :
                         card.changePct >= 0 ? '#00c853' : '#ff3d00',
                     }}
                   >
                     {card.changePct === null ? '—' : `${card.changePct >= 0 ? '+' : ''}${card.changePct.toFixed(2)}%`}
                   </span>
                 </td>
-                <td className="num" style={{ textAlign: 'right', padding: '10px 0', fontSize: 13, color: '#909090' }}>
+                <td className="num" style={{ textAlign: 'right', padding: '10px 0', fontSize: 13, color: '#a0b8d8' }}>
                   {card.volume ?? '—'}
                 </td>
               </tr>
@@ -313,7 +314,7 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
       </table>
 
       {filtered.length === 0 && (
-        <p style={{ textAlign: 'center', color: '#bbb', fontSize: 14, padding: '32px 0' }}>
+        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: 14, padding: '32px 0' }}>
           No cards match your filters
         </p>
       )}

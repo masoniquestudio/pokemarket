@@ -9,8 +9,8 @@ export default function Nav() {
   return (
     <nav
       style={{
-        background: '#ffffff',
-        borderBottom: '1px solid #ebebeb',
+        background: '#1D2C5E',
+        borderBottom: '1px solid rgba(52,102,175,0.4)',
         position: 'sticky',
         top: 0,
         zIndex: 50,
@@ -31,8 +31,8 @@ export default function Nav() {
         <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
           <span
             style={{
-              background: '#f7d02c',
-              color: '#1a1a1a',
+              background: '#FFCB05',
+              color: '#1D2C5E',
               fontWeight: 700,
               fontSize: 13,
               letterSpacing: '0.06em',
@@ -47,7 +47,7 @@ export default function Nav() {
               fontWeight: 700,
               fontSize: 16,
               letterSpacing: '0.04em',
-              color: '#1a1a1a',
+              color: '#ffffff',
             }}
           >
             POKÉMARKET
@@ -85,8 +85,8 @@ function NavLink({
         borderRadius: 8,
         fontSize: 14,
         fontWeight: 500,
-        color: active ? '#1a1a1a' : '#909090',
-        background: active ? '#f5f5f5' : 'transparent',
+        color: active ? '#ffffff' : 'rgba(255,255,255,0.5)',
+        background: active ? '#3466AF' : 'transparent',
         textDecoration: 'none',
         transition: 'all 0.15s',
       }}

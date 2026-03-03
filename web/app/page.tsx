@@ -153,7 +153,7 @@ export default async function HomePage() {
   const pmiChange = latestIndex ? parseFloat(String(latestIndex.change_pct)) : 0;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+    <div style={{ minHeight: '100vh', background: '#1D2C5E' }}>
       <Nav />
 
       <main
@@ -172,13 +172,13 @@ export default async function HomePage() {
             style={{
               fontSize: 22,
               fontWeight: 700,
-              color: '#1a1a1a',
+              color: '#ffffff',
               marginBottom: 4,
             }}
           >
             Market Dashboard
           </h1>
-          <p style={{ fontSize: 13, color: '#909090' }}>
+          <p style={{ fontSize: 13, color: '#a0b8d8' }}>
             Pokémon TCG price tracking · refreshes every 6 hours
           </p>
         </div>
@@ -218,10 +218,10 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
   return (
     <div
       style={{
-        background: '#fff',
+        background: '#21386E',
         borderRadius: 16,
         padding: '20px 24px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
       }}
     >
       <h3
@@ -230,7 +230,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
           fontWeight: 600,
           letterSpacing: '0.06em',
           textTransform: 'uppercase',
-          color: '#1a1a1a',
+          color: '#ffffff',
           marginBottom: 16,
         }}
       >
@@ -247,9 +247,9 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
                   textAlign: i >= 3 ? 'right' : 'left',
                   fontSize: 11,
                   fontWeight: 500,
-                  color: '#bbb',
+                  color: 'rgba(255,255,255,0.3)',
                   paddingBottom: 10,
-                  borderBottom: '1px solid #f0f0f0',
+                  borderBottom: '1px solid rgba(52,102,175,0.3)',
                   paddingRight: i < 5 ? 16 : 0,
                 }}
               >
@@ -263,7 +263,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
             <tr
               key={card.id}
               style={{
-                borderBottom: i < cards.length - 1 ? '1px solid #f9f9f9' : 'none',
+                borderBottom: i < cards.length - 1 ? '1px solid rgba(52,102,175,0.15)' : 'none',
               }}
             >
               <td style={{ padding: '11px 16px 11px 0' }}>
@@ -272,7 +272,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
                   style={{
                     fontSize: 14,
                     fontWeight: 600,
-                    color: '#1a1a1a',
+                    color: '#ffffff',
                     textDecoration: 'none',
                   }}
                 >
@@ -282,7 +282,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
               <td
                 style={{
                   fontSize: 13,
-                  color: '#909090',
+                  color: '#a0b8d8',
                   padding: '11px 16px 11px 0',
                 }}
               >
@@ -297,16 +297,16 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
                     borderRadius: 6,
                     background:
                       card.tier === 'vintage'
-                        ? '#fff8e1'
+                        ? 'rgba(255,203,5,0.15)'
                         : card.tier === 'iconic'
-                        ? '#fce4ec'
-                        : '#e8f5e9',
+                        ? 'rgba(255,100,100,0.15)'
+                        : 'rgba(0,200,83,0.15)',
                     color:
                       card.tier === 'vintage'
-                        ? '#b8860b'
+                        ? '#FFCB05'
                         : card.tier === 'iconic'
-                        ? '#c62828'
-                        : '#2e7d32',
+                        ? '#ff8080'
+                        : '#00c853',
                   }}
                 >
                   {TIER_LABELS[card.tier] ?? card.tier}
@@ -315,7 +315,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
               <td style={{ textAlign: 'right', padding: '11px 16px 11px 0' }}>
                 <span
                   className="num"
-                  style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}
+                  style={{ fontSize: 14, fontWeight: 600, color: '#ffffff' }}
                 >
                   {card.currentPrice > 0
                     ? `$${card.currentPrice.toFixed(2)}`
@@ -330,7 +330,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
                     fontWeight: 700,
                     color:
                       card.changePct === null
-                        ? '#ccc'
+                        ? 'rgba(255,255,255,0.3)'
                         : card.changePct >= 0
                         ? '#00c853'
                         : '#ff3d00',
@@ -344,7 +344,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
               <td style={{ textAlign: 'right', padding: '11px 0' }}>
                 <span
                   className="num"
-                  style={{ fontSize: 13, color: '#909090' }}
+                  style={{ fontSize: 13, color: '#a0b8d8' }}
                 >
                   {card.volume ?? '—'}
                 </span>

@@ -29,11 +29,11 @@ export default function SectorTiles({ sectors }: Props) {
           <div
             key={sector.tier}
             style={{
-              background: '#fff',
+              background: '#21386E',
               borderRadius: 16,
               padding: '20px 24px',
               boxShadow:
-                '0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04)',
+                '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
             }}
           >
             <div
@@ -51,13 +51,13 @@ export default function SectorTiles({ sectors }: Props) {
                     fontWeight: 600,
                     letterSpacing: '0.1em',
                     textTransform: 'uppercase',
-                    color: '#909090',
+                    color: '#a0b8d8',
                     marginBottom: 4,
                   }}
                 >
                   {sector.label}
                 </p>
-                <p style={{ fontSize: 13, color: '#bbb', fontWeight: 400 }}>
+                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>
                   {sector.cardCount} card{sector.cardCount !== 1 ? 's' : ''}
                 </p>
               </div>
@@ -78,12 +78,12 @@ export default function SectorTiles({ sectors }: Props) {
                 ) : (
                   <span
                     className="num"
-                    style={{ fontSize: 18, fontWeight: 700, color: '#ccc' }}
+                    style={{ fontSize: 18, fontWeight: 700, color: 'rgba(255,255,255,0.3)' }}
                   >
                     —
                   </span>
                 )}
-                <p style={{ fontSize: 11, color: '#bbb', marginTop: 2 }}>
+                <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>
                   7d avg
                 </p>
               </div>
@@ -93,7 +93,7 @@ export default function SectorTiles({ sectors }: Props) {
               data={sector.history}
               color={
                 !hasChange
-                  ? '#e0e0e0'
+                  ? 'rgba(255,255,255,0.3)'
                   : isUp
                   ? '#00c853'
                   : '#ff3d00'

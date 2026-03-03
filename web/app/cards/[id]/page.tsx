@@ -13,9 +13,9 @@ const TIER_LABELS: Record<string, string> = {
 };
 
 const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  vintage: { bg: '#fff8e1', color: '#b8860b' },
-  iconic: { bg: '#fce4ec', color: '#c62828' },
-  'modern-chase': { bg: '#e8f5e9', color: '#2e7d32' },
+  vintage: { bg: 'rgba(255,203,5,0.15)', color: '#FFCB05' },
+  iconic: { bg: 'rgba(255,100,100,0.15)', color: '#ff8080' },
+  'modern-chase': { bg: 'rgba(0,200,83,0.15)', color: '#00c853' },
 };
 
 type Props = { params: Promise<{ id: string }> };
@@ -68,10 +68,10 @@ export default async function CardDetailPage({ params }: Props) {
   // Snapshot table — most recent first, cap at 30
   const tableRows = [...history].reverse().slice(0, 30);
 
-  const tierStyle = TIER_COLORS[card.tier] ?? { bg: '#f5f5f5', color: '#555' };
+  const tierStyle = TIER_COLORS[card.tier] ?? { bg: 'rgba(52,102,175,0.25)', color: '#a0b8d8' };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+    <div style={{ minHeight: '100vh', background: '#1D2C5E' }}>
       <Nav />
 
       <main
@@ -89,7 +89,7 @@ export default async function CardDetailPage({ params }: Props) {
           href="/"
           style={{
             fontSize: 13,
-            color: '#909090',
+            color: '#a0b8d8',
             textDecoration: 'none',
             display: 'inline-flex',
             alignItems: 'center',
@@ -102,18 +102,18 @@ export default async function CardDetailPage({ params }: Props) {
         {/* Card header */}
         <div
           style={{
-            background: '#fff',
+            background: '#21386E',
             borderRadius: 16,
             padding: '24px 28px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04)',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
             <div>
-              <h1 style={{ fontSize: 26, fontWeight: 700, color: '#1a1a1a', marginBottom: 6 }}>
+              <h1 style={{ fontSize: 26, fontWeight: 700, color: '#ffffff', marginBottom: 6 }}>
                 {card.name}
               </h1>
-              <p style={{ fontSize: 14, color: '#909090' }}>
+              <p style={{ fontSize: 14, color: '#a0b8d8' }}>
                 {card.set} · #{card.number} · {card.era}
               </p>
             </div>
@@ -135,16 +135,16 @@ export default async function CardDetailPage({ params }: Props) {
           {/* Stats row */}
           <div style={{ display: 'flex', gap: 32, marginTop: 24, flexWrap: 'wrap' }}>
             <div>
-              <p style={{ fontSize: 11, color: '#bbb', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
+              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
                 Current Avg
               </p>
-              <span className="num" style={{ fontSize: 32, fontWeight: 700, color: '#1a1a1a', letterSpacing: '-0.01em' }}>
+              <span className="num" style={{ fontSize: 32, fontWeight: 700, color: '#ffffff', letterSpacing: '-0.01em' }}>
                 {latest != null ? `$${latest.toFixed(2)}` : '—'}
               </span>
             </div>
             {[{ label: '7d Change', val: change7d }, { label: '30d Change', val: change30d }].map(({ label, val }) => (
               <div key={label}>
-                <p style={{ fontSize: 11, color: '#bbb', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
+                <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
                   {label}
                 </p>
                 <span
@@ -152,7 +152,7 @@ export default async function CardDetailPage({ params }: Props) {
                   style={{
                     fontSize: 22,
                     fontWeight: 700,
-                    color: val === null ? '#ccc' : val >= 0 ? '#00c853' : '#ff3d00',
+                    color: val === null ? 'rgba(255,255,255,0.3)' : val >= 0 ? '#00c853' : '#ff3d00',
                   }}
                 >
                   {val === null ? '—' : `${val >= 0 ? '+' : ''}${val.toFixed(2)}%`}
@@ -168,14 +168,14 @@ export default async function CardDetailPage({ params }: Props) {
         {/* Snapshot history table */}
         <div
           style={{
-            background: '#fff',
+            background: '#21386E',
             borderRadius: 16,
             padding: '20px 24px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04)',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#1a1a1a' }}>
+            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#ffffff' }}>
               Price History
             </h3>
             <a
@@ -185,11 +185,11 @@ export default async function CardDetailPage({ params }: Props) {
               style={{
                 fontSize: 13,
                 fontWeight: 600,
-                color: '#1a1a1a',
+                color: '#ffffff',
                 textDecoration: 'none',
                 padding: '6px 14px',
                 borderRadius: 8,
-                border: '1.5px solid #e0e0e0',
+                border: '1.5px solid rgba(52,102,175,0.5)',
               }}
             >
               View on eBay →
@@ -207,9 +207,9 @@ export default async function CardDetailPage({ params }: Props) {
                         textAlign: i === 0 ? 'left' : 'right',
                         fontSize: 11,
                         fontWeight: 500,
-                        color: '#bbb',
+                        color: 'rgba(255,255,255,0.3)',
                         paddingBottom: 10,
-                        borderBottom: '1px solid #f0f0f0',
+                        borderBottom: '1px solid rgba(52,102,175,0.3)',
                         paddingRight: i < 4 ? 16 : 0,
                       }}
                     >
@@ -224,20 +224,20 @@ export default async function CardDetailPage({ params }: Props) {
                   const low = row.price_low ? parseFloat(String(row.price_low)) : null;
                   const high = row.price_high ? parseFloat(String(row.price_high)) : null;
                   return (
-                    <tr key={new Date(row.recorded_at).toISOString()} style={{ borderBottom: i < tableRows.length - 1 ? '1px solid #f9f9f9' : 'none' }}>
-                      <td style={{ padding: '10px 16px 10px 0', fontSize: 13, color: '#555' }}>
+                    <tr key={new Date(row.recorded_at).toISOString()} style={{ borderBottom: i < tableRows.length - 1 ? '1px solid rgba(52,102,175,0.15)' : 'none' }}>
+                      <td style={{ padding: '10px 16px 10px 0', fontSize: 13, color: '#a0b8d8' }}>
                         {new Date(row.recorded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>
+                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 14, fontWeight: 600, color: '#ffffff' }}>
                         ${avg.toFixed(2)}
                       </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: '#909090' }}>
+                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: '#a0b8d8' }}>
                         {low != null ? `$${low.toFixed(2)}` : '—'}
                       </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: '#909090' }}>
+                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: '#a0b8d8' }}>
                         {high != null ? `$${high.toFixed(2)}` : '—'}
                       </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 0', fontSize: 13, color: '#909090' }}>
+                      <td className="num" style={{ textAlign: 'right', padding: '10px 0', fontSize: 13, color: '#a0b8d8' }}>
                         {row.volume ?? '—'}
                       </td>
                     </tr>
@@ -246,7 +246,7 @@ export default async function CardDetailPage({ params }: Props) {
               </tbody>
             </table>
           ) : (
-            <p style={{ fontSize: 14, color: '#bbb', textAlign: 'center', padding: '32px 0' }}>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '32px 0' }}>
               No price data yet — run /api/prices to seed data
             </p>
           )}
@@ -256,18 +256,18 @@ export default async function CardDetailPage({ params }: Props) {
         {related.length > 0 && (
           <div
             style={{
-              background: '#fff',
+              background: '#21386E',
               borderRadius: 16,
               padding: '20px 24px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
             }}
           >
-            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#1a1a1a', marginBottom: 16 }}>
+            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#ffffff', marginBottom: 16 }}>
               Related Cards
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
               {related.map((c) => {
-                const cs = TIER_COLORS[c.tier] ?? { bg: '#f5f5f5', color: '#555' };
+                const cs = TIER_COLORS[c.tier] ?? { bg: 'rgba(52,102,175,0.25)', color: '#a0b8d8' };
                 return (
                   <a
                     key={c.id}
@@ -276,14 +276,14 @@ export default async function CardDetailPage({ params }: Props) {
                       display: 'block',
                       padding: '14px 16px',
                       borderRadius: 12,
-                      border: '1.5px solid #f0f0f0',
+                      border: '1.5px solid rgba(52,102,175,0.3)',
                       textDecoration: 'none',
                     }}
                   >
-                    <p style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a', marginBottom: 4 }}>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: '#ffffff', marginBottom: 4 }}>
                       {c.name}
                     </p>
-                    <p style={{ fontSize: 12, color: '#909090', marginBottom: 8 }}>{c.set}</p>
+                    <p style={{ fontSize: 12, color: '#a0b8d8', marginBottom: 8 }}>{c.set}</p>
                     <span
                       style={{
                         fontSize: 11,

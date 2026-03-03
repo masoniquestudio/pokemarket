@@ -39,10 +39,10 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
   return (
     <div
       style={{
-        background: '#fff',
+        background: '#21386E',
         borderRadius: 16,
         padding: '28px 32px 20px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
       }}
     >
       {/* Header row */}
@@ -63,7 +63,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: '#909090',
+              color: '#a0b8d8',
               marginBottom: 6,
             }}
           >
@@ -75,7 +75,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
               style={{
                 fontSize: 42,
                 fontWeight: 700,
-                color: '#1a1a1a',
+                color: '#ffffff',
                 letterSpacing: '-0.02em',
                 lineHeight: 1,
               }}
@@ -107,7 +107,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
           style={{
             display: 'flex',
             gap: 4,
-            background: '#f5f5f5',
+            background: '#3466AF',
             borderRadius: 10,
             padding: 4,
             alignSelf: 'flex-start',
@@ -124,8 +124,8 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
                 cursor: 'pointer',
                 fontSize: 13,
                 fontWeight: 600,
-                background: range === r.days ? '#fff' : 'transparent',
-                color: range === r.days ? '#1a1a1a' : '#909090',
+                background: range === r.days ? '#1D2C5E' : 'transparent',
+                color: range === r.days ? '#ffffff' : 'rgba(255,255,255,0.5)',
                 boxShadow:
                   range === r.days ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
                 transition: 'all 0.15s',
@@ -146,18 +146,18 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
           >
             <defs>
               <linearGradient id="pmiGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f7d02c" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#f7d02c" stopOpacity={0} />
+                <stop offset="5%" stopColor="#FFCB05" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#FFCB05" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="#f0f0f0"
+              stroke="rgba(52,102,175,0.3)"
               vertical={false}
             />
             <XAxis
               dataKey="time"
-              tick={{ fontSize: 11, fill: '#aaa', fontFamily: 'inherit' }}
+              tick={{ fontSize: 11, fill: '#a0b8d8', fontFamily: 'inherit' }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v) => {
@@ -167,7 +167,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
               minTickGap={40}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: '#aaa', fontFamily: 'inherit' }}
+              tick={{ fontSize: 11, fill: '#a0b8d8', fontFamily: 'inherit' }}
               tickLine={false}
               axisLine={false}
               domain={['auto', 'auto']}
@@ -176,8 +176,8 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             />
             <Tooltip
               contentStyle={{
-                background: '#fff',
-                border: '1px solid #ebebeb',
+                background: '#21386E',
+                border: '1px solid rgba(52,102,175,0.5)',
                 borderRadius: 10,
                 fontSize: 13,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
@@ -196,14 +196,14 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             <Area
               type="monotone"
               dataKey="value"
-              stroke="#f7d02c"
+              stroke="#FFCB05"
               strokeWidth={2.5}
               fill="url(#pmiGradient)"
               dot={false}
               activeDot={{
                 r: 5,
-                fill: '#f7d02c',
-                stroke: '#fff',
+                fill: '#FFCB05',
+                stroke: '#1D2C5E',
                 strokeWidth: 2,
               }}
             />
@@ -217,7 +217,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#bbb',
+            color: 'rgba(255,255,255,0.3)',
             gap: 8,
           }}
         >

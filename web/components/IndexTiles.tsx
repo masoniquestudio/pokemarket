@@ -35,10 +35,10 @@ function IndexTile({ index }: { index: IndexData }) {
   return (
     <div
       style={{
-        background: '#fff',
+        background: '#21386E',
         borderRadius: 16,
         padding: '18px 20px 14px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -49,21 +49,21 @@ function IndexTile({ index }: { index: IndexData }) {
                 fontSize: 10,
                 fontWeight: 700,
                 letterSpacing: '0.08em',
-                background: '#f7d02c',
-                color: '#1a1a1a',
+                background: '#FFCB05',
+                color: '#1D2C5E',
                 padding: '2px 6px',
                 borderRadius: 4,
               }}
             >
               {index.shortName}
             </span>
-            <span style={{ fontSize: 12, color: '#909090', fontWeight: 500 }}>{index.name}</span>
+            <span style={{ fontSize: 12, color: '#a0b8d8', fontWeight: 500 }}>{index.name}</span>
           </div>
-          <p style={{ fontSize: 11, color: '#bbb', marginBottom: 8 }}>{index.description}</p>
+          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginBottom: 8 }}>{index.description}</p>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
             <span
               className="num"
-              style={{ fontSize: 24, fontWeight: 700, color: '#1a1a1a', letterSpacing: '-0.01em' }}
+              style={{ fontSize: 24, fontWeight: 700, color: '#ffffff', letterSpacing: '-0.01em' }}
             >
               {hasData
                 ? index.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -104,7 +104,7 @@ function IndexTile({ index }: { index: IndexData }) {
         </ResponsiveContainer>
       ) : (
         <div style={{ height: 48, display: 'flex', alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ccc' }}>Building history...</span>
+          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>Building history...</span>
         </div>
       )}
     </div>
