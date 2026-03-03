@@ -39,7 +39,7 @@ function Table({ title, rows, type }: { title: string; rows: CardRow[]; type: 'u
         background: 'var(--surface)',
         borderRadius: 16,
         padding: '20px 24px',
-        boxShadow: 'var(--shadow)',
+
         border: '1px solid var(--border)',
       }}
     >

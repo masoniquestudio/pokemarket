@@ -21,7 +21,7 @@ export default function Nav() {
           maxWidth: 1280,
           margin: '0 auto',
           padding: '0 24px',
-          height: 56,
+          height: 60,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -31,25 +31,23 @@ export default function Nav() {
         <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
           <span
             style={{
-              background: 'var(--gradient)',
-              color: '#fff',
-              fontWeight: 800,
-              fontSize: 13,
-              letterSpacing: '0.06em',
-              padding: '3px 10px',
-              borderRadius: 999,
+              background: 'var(--surface-dark)',
+              color: 'var(--text-inverse)',
+              fontWeight: 900,
+              fontSize: 12,
+              letterSpacing: '0.08em',
+              padding: '4px 10px',
+              borderRadius: 6,
             }}
           >
             PMI
           </span>
           <span
             style={{
-              fontWeight: 800,
+              fontWeight: 900,
               fontSize: 16,
-              letterSpacing: '0.04em',
-              background: 'var(--gradient)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              letterSpacing: '-0.03em',
+              color: 'var(--text)',
             }}
           >
             POKÉMARKET
@@ -71,12 +69,12 @@ function NavLink({ href, active, children }: { href: string; active: boolean; ch
     <Link
       href={href}
       style={{
-        padding: '6px 16px',
+        padding: '7px 18px',
         borderRadius: 999,
         fontSize: 14,
         fontWeight: 600,
-        color: active ? '#fff' : 'var(--text-muted)',
-        background: active ? 'var(--gradient)' : 'transparent',
+        color: active ? 'var(--text-inverse)' : 'var(--text-muted)',
+        background: active ? 'var(--surface-dark)' : 'transparent',
         textDecoration: 'none',
         transition: 'all 0.15s',
       }}

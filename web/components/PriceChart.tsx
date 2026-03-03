@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 
 // Chart color — matches --accent in globals.css
-const CHART_COLOR = '#3B82F6';
+const CHART_COLOR = '#FF3D00';
 
 type DataPoint = {
   time: string;
@@ -44,9 +44,8 @@ export default function PriceChart({ data }: Props) {
     <div
       style={{
         background: 'var(--surface)',
-        borderRadius: 16,
+        borderRadius: 12,
         padding: '20px 24px 16px',
-        boxShadow: 'var(--shadow)',
         border: '1px solid var(--border)',
       }}
     >
@@ -56,9 +55,10 @@ export default function PriceChart({ data }: Props) {
           style={{
             display: 'flex',
             gap: 4,
-            background: 'var(--surface-2)',
-            borderRadius: 12,
+            background: 'var(--bg)',
+            borderRadius: 8,
             padding: 4,
+            border: '1px solid var(--border)',
           }}
         >
           {RANGES.map((r) => (
@@ -67,14 +67,13 @@ export default function PriceChart({ data }: Props) {
               onClick={() => setRange(r.days)}
               style={{
                 padding: '6px 14px',
-                borderRadius: 8,
+                borderRadius: 6,
                 border: 'none',
                 cursor: 'pointer',
                 fontSize: 13,
                 fontWeight: 600,
-                background: range === r.days ? 'var(--gradient)' : 'transparent',
-                color: range === r.days ? '#fff' : 'var(--text-muted)',
-                boxShadow: range === r.days ? '0 1px 3px rgba(124,58,237,0.3)' : 'none',
+                background: range === r.days ? 'var(--surface-dark)' : 'transparent',
+                color: range === r.days ? 'var(--text-inverse)' : 'var(--text-muted)',
                 transition: 'all 0.15s',
               }}
             >
@@ -89,14 +88,14 @@ export default function PriceChart({ data }: Props) {
           <AreaChart data={filtered} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.15} />
+                <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.1} />
                 <stop offset="95%" stopColor={CHART_COLOR} stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
             <XAxis
               dataKey="time"
-              tick={{ fontSize: 11, fill: '#6B7280', fontFamily: 'inherit' }}
+              tick={{ fontSize: 11, fill: '#888884', fontFamily: 'inherit' }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v) => {
@@ -106,7 +105,7 @@ export default function PriceChart({ data }: Props) {
               minTickGap={40}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: '#6B7280', fontFamily: 'inherit' }}
+              tick={{ fontSize: 11, fill: '#888884', fontFamily: 'inherit' }}
               tickLine={false}
               axisLine={false}
               domain={['auto', 'auto']}
@@ -115,12 +114,13 @@ export default function PriceChart({ data }: Props) {
             />
             <Tooltip
               contentStyle={{
-                background: 'var(--surface-2)',
-                border: '1px solid var(--border)',
-                borderRadius: 12,
+                background: 'var(--surface-dark)',
+                border: 'none',
+                borderRadius: 8,
                 fontSize: 13,
-                boxShadow: 'var(--shadow)',
+                color: '#fff',
               }}
+              labelStyle={{ color: '#888884', marginBottom: 4 }}
               labelFormatter={(label) =>
                 new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
               }
@@ -130,7 +130,7 @@ export default function PriceChart({ data }: Props) {
               type="monotone"
               dataKey="value"
               stroke={CHART_COLOR}
-              strokeWidth={2.5}
+              strokeWidth={2}
               fill={`url(#${gradientId})`}
               dot={false}
               activeDot={{ r: 5, fill: CHART_COLOR, stroke: '#fff', strokeWidth: 2 }}

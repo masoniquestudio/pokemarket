@@ -110,8 +110,8 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
     cursor: 'pointer',
     fontSize: 12,
     fontWeight: 600,
-    background: active ? 'var(--gradient)' : 'var(--surface)',
-    color: active ? '#fff' : 'var(--text-muted)',
+    background: active ? 'var(--surface-dark)' : 'var(--surface)',
+    color: active ? 'var(--text-inverse)' : 'var(--text-muted)',
     transition: 'all 0.15s',
   });
 
@@ -121,7 +121,7 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
         background: 'var(--surface)',
         borderRadius: 16,
         padding: '20px 24px',
-        boxShadow: 'var(--shadow)',
+
         border: '1px solid var(--border)',
       }}
     >

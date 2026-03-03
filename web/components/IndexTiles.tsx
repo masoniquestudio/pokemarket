@@ -3,8 +3,8 @@
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts';
 
 // Sparkline colors — match --up / --down in globals.css
-const UP_COLOR = '#22C55E';
-const DOWN_COLOR = '#EF4444';
+const UP_COLOR = '#00A86B';
+const DOWN_COLOR = '#FF3D00';
 
 type IndexData = {
   id: string;
@@ -41,9 +41,8 @@ function IndexTile({ index }: { index: IndexData }) {
     <div
       style={{
         background: 'var(--surface)',
-        borderRadius: 16,
-        padding: '18px 20px 14px',
-        boxShadow: 'var(--shadow)',
+        borderRadius: 12,
+        padding: '20px 22px 16px',
         border: '1px solid var(--border)',
       }}
     >
@@ -55,10 +54,10 @@ function IndexTile({ index }: { index: IndexData }) {
                 fontSize: 10,
                 fontWeight: 700,
                 letterSpacing: '0.08em',
-                background: 'var(--gradient)',
-                color: '#fff',
+                background: 'var(--surface-dark)',
+                color: 'var(--text-inverse)',
                 padding: '2px 8px',
-                borderRadius: 999,
+                borderRadius: 4,
               }}
             >
               {index.shortName}
@@ -69,7 +68,7 @@ function IndexTile({ index }: { index: IndexData }) {
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
             <span
               className="num"
-              style={{ fontSize: 24, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.01em' }}
+              style={{ fontSize: 28, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.02em' }}
             >
               {hasData
                 ? index.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -78,7 +77,7 @@ function IndexTile({ index }: { index: IndexData }) {
             {hasData && index.changePct !== 0 && (
               <span
                 className="num"
-                style={{ fontSize: 13, fontWeight: 600, color: isUp ? 'var(--up)' : 'var(--down)' }}
+                style={{ fontSize: 13, fontWeight: 700, color: isUp ? 'var(--up)' : 'var(--down)' }}
               >
                 {isUp ? '▲' : '▼'} {Math.abs(index.changePct).toFixed(2)}%
               </span>
@@ -93,7 +92,7 @@ function IndexTile({ index }: { index: IndexData }) {
           <AreaChart data={index.history} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id={`grad-${index.id}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={sparkColor} stopOpacity={0.2} />
+                <stop offset="5%" stopColor={sparkColor} stopOpacity={0.15} />
                 <stop offset="95%" stopColor={sparkColor} stopOpacity={0} />
               </linearGradient>
             </defs>

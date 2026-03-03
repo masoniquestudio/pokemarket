@@ -105,7 +105,7 @@ export default async function CardDetailPage({ params }: Props) {
             background: 'var(--surface)',
             borderRadius: 16,
             padding: '24px 28px',
-            boxShadow: 'var(--shadow)',
+
             border: '1px solid var(--border)',
           }}
         >
@@ -172,7 +172,7 @@ export default async function CardDetailPage({ params }: Props) {
             background: 'var(--surface)',
             borderRadius: 16,
             padding: '20px 24px',
-            boxShadow: 'var(--shadow)',
+
             border: '1px solid var(--border)',
           }}
         >
@@ -261,7 +261,7 @@ export default async function CardDetailPage({ params }: Props) {
               background: 'var(--surface)',
               borderRadius: 16,
               padding: '20px 24px',
-              boxShadow: 'var(--shadow)',
+  
               border: '1px solid var(--border)',
             }}
           >

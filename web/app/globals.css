@@ -7,28 +7,25 @@
 
 :root {
   /* ── Palette — edit here to retheme the whole site ── */
-  --bg:          #0A0E1A;
-  --surface:     #0F1629;
-  --surface-2:   #162040;
-  --border:      #1E2D50;
-  --accent:      #3B82F6;
-  --accent-2:    #06B6D4;
-  --up:          #22C55E;
-  --down:        #EF4444;
-  --text:        #E8EDF5;
-  --text-muted:  #5A7099;
-  --shadow:      0 4px 24px rgba(0, 0, 0, 0.4);
-
-  /* ── Gradient — used on PMI value, nav logo, active buttons ── */
-  --gradient:    linear-gradient(135deg, #3B82F6, #06B6D4);
+  --bg:            #EFEFED;
+  --surface:       #FFFFFF;
+  --surface-dark:  #0D0D0D;
+  --border:        #E0E0DC;
+  --accent:        #FF3D00;
+  --up:            #00A86B;
+  --down:          #FF3D00;
+  --text:          #0D0D0D;
+  --text-muted:    #888884;
+  --text-inverse:  #FFFFFF;
+  --shadow:        none;
 
   /* ── Tier badge colors ── */
-  --tier-vintage-bg:    rgba(59, 130, 246, 0.15);
-  --tier-vintage-color: #3B82F6;
-  --tier-iconic-bg:     rgba(6, 182, 212, 0.15);
-  --tier-iconic-color:  #06B6D4;
-  --tier-modern-bg:     rgba(34, 197, 94, 0.15);
-  --tier-modern-color:  #22C55E;
+  --tier-vintage-bg:    rgba(255, 61, 0, 0.08);
+  --tier-vintage-color: #FF3D00;
+  --tier-iconic-bg:     #0D0D0D;
+  --tier-iconic-color:  #FFFFFF;
+  --tier-modern-bg:     rgba(0, 168, 107, 0.1);
+  --tier-modern-color:  #00A86B;
 
   /* ── Chart colors (also update in chart components if you change these) ── */
   /* --accent  → chart stroke / active dot                                  */

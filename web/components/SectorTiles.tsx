@@ -26,7 +26,7 @@ export default function SectorTiles({ sectors }: Props) {
               background: 'var(--surface)',
               borderRadius: 16,
               padding: '20px 24px',
-              boxShadow: 'var(--shadow)',
+
               border: '1px solid var(--border)',
             }}
           >
@@ -54,7 +54,7 @@ export default function SectorTiles({ sectors }: Props) {
 
             <Sparkline
               data={sector.history}
-              color={!hasChange ? '#E8E4FF' : isUp ? '#10B981' : '#EF4444'}
+              color={!hasChange ? '#E0E0DC' : isUp ? '#00A86B' : '#FF3D00'}
               height={48}
             />
           </div>

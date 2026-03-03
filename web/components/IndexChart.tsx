@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 
 // Chart stroke color — matches --accent in globals.css
-const CHART_COLOR = '#3B82F6';
+const CHART_COLOR = '#FF3D00';
 
 type DataPoint = { time: string; value: number };
 
@@ -43,9 +43,8 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
     <div
       style={{
         background: 'var(--surface)',
-        borderRadius: 16,
-        padding: '28px 32px 20px',
-        boxShadow: 'var(--shadow)',
+        borderRadius: 12,
+        padding: '36px 40px 28px',
         border: '1px solid var(--border)',
       }}
     >
@@ -55,7 +54,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
-          marginBottom: 24,
+          marginBottom: 28,
           flexWrap: 'wrap',
           gap: 16,
         }}
@@ -64,26 +63,23 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
           <p
             style={{
               fontSize: 11,
-              fontWeight: 600,
+              fontWeight: 700,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
               color: 'var(--text-muted)',
-              marginBottom: 6,
+              marginBottom: 8,
             }}
           >
             PokéMarket Index
           </p>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
             <span
               className="num"
               style={{
-                fontSize: 42,
-                fontWeight: 800,
-                background: hasData ? 'var(--gradient)' : 'none',
-                WebkitBackgroundClip: hasData ? 'text' : 'unset',
-                WebkitTextFillColor: hasData ? 'transparent' : 'var(--text)',
-                color: hasData ? undefined : 'var(--text)',
-                letterSpacing: '-0.02em',
+                fontSize: 96,
+                fontWeight: 700,
+                color: hasData ? 'var(--text)' : 'var(--text-muted)',
+                letterSpacing: '-0.04em',
                 lineHeight: 1,
               }}
             >
@@ -94,7 +90,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             {hasData && changePct !== 0 && (
               <span
                 className="num"
-                style={{ fontSize: 16, fontWeight: 600, color: isUp ? 'var(--up)' : 'var(--down)' }}
+                style={{ fontSize: 20, fontWeight: 700, color: isUp ? 'var(--up)' : 'var(--down)' }}
               >
                 {isUp ? '▲' : '▼'} {Math.abs(changePct).toFixed(2)}%
               </span>
@@ -107,10 +103,11 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
           style={{
             display: 'flex',
             gap: 4,
-            background: 'var(--surface-2)',
-            borderRadius: 12,
+            background: 'var(--bg)',
+            borderRadius: 8,
             padding: 4,
             alignSelf: 'flex-start',
+            border: '1px solid var(--border)',
           }}
         >
           {RANGES.map((r) => (
@@ -119,14 +116,13 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
               onClick={() => setRange(r.days)}
               style={{
                 padding: '6px 16px',
-                borderRadius: 8,
+                borderRadius: 6,
                 border: 'none',
                 cursor: 'pointer',
                 fontSize: 13,
                 fontWeight: 600,
-                background: range === r.days ? 'var(--gradient)' : 'transparent',
-                color: range === r.days ? '#fff' : 'var(--text-muted)',
-                boxShadow: range === r.days ? '0 1px 3px rgba(124,58,237,0.3)' : 'none',
+                background: range === r.days ? 'var(--surface-dark)' : 'transparent',
+                color: range === r.days ? 'var(--text-inverse)' : 'var(--text-muted)',
                 transition: 'all 0.15s',
               }}
             >
@@ -142,14 +138,14 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
           <AreaChart data={filtered} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id="pmiGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.15} />
+                <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.1} />
                 <stop offset="95%" stopColor={CHART_COLOR} stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
             <XAxis
               dataKey="time"
-              tick={{ fontSize: 11, fill: '#6B7280', fontFamily: 'inherit' }}
+              tick={{ fontSize: 11, fill: '#888884', fontFamily: 'inherit' }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v) => {
@@ -159,7 +155,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
               minTickGap={40}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: '#6B7280', fontFamily: 'inherit' }}
+              tick={{ fontSize: 11, fill: '#888884', fontFamily: 'inherit' }}
               tickLine={false}
               axisLine={false}
               domain={['auto', 'auto']}
@@ -168,12 +164,13 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             />
             <Tooltip
               contentStyle={{
-                background: 'var(--surface-2)',
-                border: '1px solid var(--border)',
-                borderRadius: 12,
+                background: 'var(--surface-dark)',
+                border: 'none',
+                borderRadius: 8,
                 fontSize: 13,
-                boxShadow: 'var(--shadow)',
+                color: '#fff',
               }}
+              labelStyle={{ color: '#888884', marginBottom: 4 }}
               labelFormatter={(label) =>
                 new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
               }
@@ -186,7 +183,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
               type="monotone"
               dataKey="value"
               stroke={CHART_COLOR}
-              strokeWidth={2.5}
+              strokeWidth={2}
               fill="url(#pmiGradient)"
               dot={false}
               activeDot={{ r: 5, fill: CHART_COLOR, stroke: '#fff', strokeWidth: 2 }}
@@ -205,7 +202,6 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             gap: 8,
           }}
         >
-          <span style={{ fontSize: 32 }}>📈</span>
           <p style={{ fontSize: 14, fontWeight: 500 }}>No chart data yet</p>
           <p style={{ fontSize: 12 }}>Run <code>/api/prices</code> then <code>/api/index</code> to seed data</p>
         </div>
