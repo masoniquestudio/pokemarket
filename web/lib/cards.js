@@ -11,7 +11,7 @@ export const CARDS = [
     number: '4/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Charizard Holo 4/102 PSA BGS CGC graded sold',
+    ebayQuery: 'Pokemon Base Set Charizard Holo 4/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-blastoise',
@@ -20,7 +20,7 @@ export const CARDS = [
     number: '2/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Blastoise Holo 2/102 sold',
+    ebayQuery: 'Pokemon Base Set Blastoise Holo 2/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-venusaur',
@@ -29,7 +29,7 @@ export const CARDS = [
     number: '15/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Venusaur Holo 15/102 sold',
+    ebayQuery: 'Pokemon Base Set Venusaur Holo 15/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-pikachu',
@@ -38,7 +38,7 @@ export const CARDS = [
     number: '58/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Pikachu 58/102 yellow cheeks sold',
+    ebayQuery: 'Pokemon Base Set Pikachu 58/102 yellow cheeks -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-mewtwo',
@@ -47,7 +47,7 @@ export const CARDS = [
     number: '10/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Mewtwo Holo 10/102 sold',
+    ebayQuery: 'Pokemon Base Set Mewtwo Holo 10/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-raichu',
@@ -56,7 +56,7 @@ export const CARDS = [
     number: '14/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Raichu Holo 14/102 sold',
+    ebayQuery: 'Pokemon Base Set Raichu Holo 14/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-gyarados',
@@ -65,7 +65,7 @@ export const CARDS = [
     number: '6/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Gyarados Holo 6/102 sold',
+    ebayQuery: 'Pokemon Base Set Gyarados Holo 6/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-alakazam',
@@ -74,7 +74,7 @@ export const CARDS = [
     number: '1/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Alakazam Holo 1/102 sold',
+    ebayQuery: 'Pokemon Base Set Alakazam Holo 1/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-chansey',
@@ -83,7 +83,7 @@ export const CARDS = [
     number: '3/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Chansey Holo 3/102 sold',
+    ebayQuery: 'Pokemon Base Set Chansey Holo 3/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-ninetales',
@@ -92,7 +92,7 @@ export const CARDS = [
     number: '12/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Ninetales Holo 12/102 sold',
+    ebayQuery: 'Pokemon Base Set Ninetales Holo 12/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-magneton',
@@ -101,7 +101,7 @@ export const CARDS = [
     number: '9/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Magneton Holo 9/102 sold',
+    ebayQuery: 'Pokemon Base Set Magneton Holo 9/102 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'base-clefairy',
@@ -110,7 +110,7 @@ export const CARDS = [
     number: '5/102',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Base Set Clefairy Holo 5/102 sold',
+    ebayQuery: 'Pokemon Base Set Clefairy Holo 5/102 -PSA -BGS -CGC -SGC sold',
   },
 
   // ─── VINTAGE — Jungle ──────────────────────────────────────────────────────
@@ -121,7 +121,7 @@ export const CARDS = [
     number: '10/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Jungle Scyther Holo 10/64 sold',
+    ebayQuery: 'Pokemon Jungle Scyther Holo 10/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'jungle-snorlax',
@@ -130,7 +130,7 @@ export const CARDS = [
     number: '11/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Jungle Snorlax Holo 11/64 sold',
+    ebayQuery: 'Pokemon Jungle Snorlax Holo 11/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'jungle-clefable',
@@ -139,7 +139,7 @@ export const CARDS = [
     number: '1/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Jungle Clefable Holo 1/64 sold',
+    ebayQuery: 'Pokemon Jungle Clefable Holo 1/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'jungle-jolteon',
@@ -148,7 +148,7 @@ export const CARDS = [
     number: '4/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Jungle Jolteon Holo 4/64 sold',
+    ebayQuery: 'Pokemon Jungle Jolteon Holo 4/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'jungle-vaporeon',
@@ -157,7 +157,7 @@ export const CARDS = [
     number: '12/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Jungle Vaporeon Holo 12/64 sold',
+    ebayQuery: 'Pokemon Jungle Vaporeon Holo 12/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'jungle-flareon',
@@ -166,7 +166,7 @@ export const CARDS = [
     number: '19/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Jungle Flareon Holo 19/64 sold',
+    ebayQuery: 'Pokemon Jungle Flareon Holo 19/64 -PSA -BGS -CGC -SGC sold',
   },
 
   // ─── VINTAGE — Fossil ──────────────────────────────────────────────────────
@@ -177,7 +177,7 @@ export const CARDS = [
     number: '5/62',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Fossil Gengar Holo 5/62 sold',
+    ebayQuery: 'Pokemon Fossil Gengar Holo 5/62 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'fossil-lapras',
@@ -186,7 +186,7 @@ export const CARDS = [
     number: '10/62',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Fossil Lapras Holo 10/62 sold',
+    ebayQuery: 'Pokemon Fossil Lapras Holo 10/62 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'fossil-moltres',
@@ -195,7 +195,7 @@ export const CARDS = [
     number: '12/62',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Fossil Moltres Holo 12/62 sold',
+    ebayQuery: 'Pokemon Fossil Moltres Holo 12/62 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'fossil-zapdos',
@@ -204,7 +204,7 @@ export const CARDS = [
     number: '15/62',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Fossil Zapdos Holo 15/62 sold',
+    ebayQuery: 'Pokemon Fossil Zapdos Holo 15/62 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'fossil-articuno',
@@ -213,7 +213,7 @@ export const CARDS = [
     number: '2/62',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Fossil Articuno Holo 2/62 sold',
+    ebayQuery: 'Pokemon Fossil Articuno Holo 2/62 -PSA -BGS -CGC -SGC sold',
   },
 
   // ─── VINTAGE — Gym Heroes / Challenge ──────────────────────────────────────
@@ -224,7 +224,7 @@ export const CARDS = [
     number: '2/132',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: "Pokemon Blaine's Charizard Holo Gym Challenge 2/132 sold",
+    ebayQuery: "Pokemon Blaine's Charizard Holo Gym Challenge 2/132 -PSA -BGS -CGC -SGC sold",
   },
   {
     id: 'gym-lt-surge-raichu',
@@ -233,7 +233,7 @@ export const CARDS = [
     number: '10/132',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: "Pokemon Lt Surge's Raichu Holo Gym Heroes 10/132 sold",
+    ebayQuery: "Pokemon Lt Surge's Raichu Holo Gym Heroes 10/132 -PSA -BGS -CGC -SGC sold",
   },
 
   // ─── VINTAGE — Neo Genesis / Revelation / Destiny ──────────────────────────
@@ -244,7 +244,7 @@ export const CARDS = [
     number: '9/111',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Lugia Holo Neo Genesis 9/111 sold',
+    ebayQuery: 'Pokemon Lugia Holo Neo Genesis 9/111 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'neo-ho-oh',
@@ -253,7 +253,7 @@ export const CARDS = [
     number: '16/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Ho-Oh Holo Neo Revelation 16/64 sold',
+    ebayQuery: 'Pokemon Ho-Oh Holo Neo Revelation 16/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'neo-entei',
@@ -262,7 +262,7 @@ export const CARDS = [
     number: '6/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Entei Holo Neo Revelation 6/64 sold',
+    ebayQuery: 'Pokemon Entei Holo Neo Revelation 6/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'neo-raikou',
@@ -271,7 +271,7 @@ export const CARDS = [
     number: '24/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Raikou Holo Neo Revelation 24/64 sold',
+    ebayQuery: 'Pokemon Raikou Holo Neo Revelation 24/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'neo-suicune',
@@ -280,7 +280,7 @@ export const CARDS = [
     number: '27/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Suicune Holo Neo Revelation 27/64 sold',
+    ebayQuery: 'Pokemon Suicune Holo Neo Revelation 27/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'shining-charizard',
@@ -289,7 +289,7 @@ export const CARDS = [
     number: '107/105',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Shining Charizard Neo Destiny 107/105 sold',
+    ebayQuery: 'Pokemon Shining Charizard Neo Destiny 107/105 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'shining-gyarados',
@@ -298,7 +298,7 @@ export const CARDS = [
     number: '65/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Shining Gyarados Neo Destiny 65/64 sold',
+    ebayQuery: 'Pokemon Shining Gyarados Neo Destiny 65/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'shining-magikarp',
@@ -307,7 +307,7 @@ export const CARDS = [
     number: '66/64',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Shining Magikarp Neo Destiny 66/64 sold',
+    ebayQuery: 'Pokemon Shining Magikarp Neo Destiny 66/64 -PSA -BGS -CGC -SGC sold',
   },
   {
     id: 'shining-raichu',
@@ -316,7 +316,7 @@ export const CARDS = [
     number: '111/105',
     era: 'vintage',
     tier: 'vintage',
-    ebayQuery: 'Pokemon Shining Raichu Neo Destiny 111/105 sold',
+    ebayQuery: 'Pokemon Shining Raichu Neo Destiny 111/105 -PSA -BGS -CGC -SGC sold',
   },
 
   // ─── ICONIC — Crystal Types (Skyridge) ─────────────────────────────────────
@@ -327,7 +327,7 @@ export const CARDS = [
     number: 'H3/H32',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Crystal Charizard Skyridge H3 sold',
+    ebayQuery: 'Pokemon Crystal Charizard Skyridge H3 graded sold',
   },
   {
     id: 'crystal-lugia',
@@ -336,7 +336,7 @@ export const CARDS = [
     number: 'H16/H32',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Crystal Lugia Skyridge H16 sold',
+    ebayQuery: 'Pokemon Crystal Lugia Skyridge H16 graded sold',
   },
   {
     id: 'crystal-nidoking',
@@ -345,7 +345,7 @@ export const CARDS = [
     number: 'H14/H32',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Crystal Nidoking Skyridge H14 sold',
+    ebayQuery: 'Pokemon Crystal Nidoking Skyridge H14 graded sold',
   },
 
   // ─── ICONIC — Gold Stars ───────────────────────────────────────────────────
@@ -356,7 +356,7 @@ export const CARDS = [
     number: '100/109',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Charizard Gold Star EX Team Rocket Returns 100/109 sold',
+    ebayQuery: 'Pokemon Charizard Gold Star EX Team Rocket Returns 100/109 graded sold',
   },
   {
     id: 'gold-star-rayquaza',
@@ -365,7 +365,7 @@ export const CARDS = [
     number: '107/107',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Rayquaza Gold Star EX Deoxys 107/107 sold',
+    ebayQuery: 'Pokemon Rayquaza Gold Star EX Deoxys 107/107 graded sold',
   },
   {
     id: 'umbreon-gold-star',
@@ -374,7 +374,7 @@ export const CARDS = [
     number: '17/17',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Umbreon Gold Star POP Series 5 17/17 sold',
+    ebayQuery: 'Pokemon Umbreon Gold Star POP Series 5 17/17 graded sold',
   },
   {
     id: 'espeon-gold-star',
@@ -383,7 +383,7 @@ export const CARDS = [
     number: '16/17',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Espeon Gold Star POP Series 5 16/17 sold',
+    ebayQuery: 'Pokemon Espeon Gold Star POP Series 5 16/17 graded sold',
   },
   {
     id: 'mew-gold-star',
@@ -392,7 +392,7 @@ export const CARDS = [
     number: '101/110',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Mew Gold Star EX Holon Phantoms 101/110 sold',
+    ebayQuery: 'Pokemon Mew Gold Star EX Holon Phantoms 101/110 graded sold',
   },
   {
     id: 'pikachu-gold-star',
@@ -401,7 +401,7 @@ export const CARDS = [
     number: '104/108',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Pikachu Gold Star EX Power Keepers 104/108 sold',
+    ebayQuery: 'Pokemon Pikachu Gold Star EX Power Keepers 104/108 graded sold',
   },
   {
     id: 'flareon-gold-star',
@@ -410,7 +410,7 @@ export const CARDS = [
     number: '10/17',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Flareon Gold Star POP Series 5 10/17 sold',
+    ebayQuery: 'Pokemon Flareon Gold Star POP Series 5 10/17 graded sold',
   },
   {
     id: 'vaporeon-gold-star',
@@ -419,7 +419,7 @@ export const CARDS = [
     number: '12/17',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Vaporeon Gold Star POP Series 5 12/17 sold',
+    ebayQuery: 'Pokemon Vaporeon Gold Star POP Series 5 12/17 graded sold',
   },
   {
     id: 'jolteon-gold-star',
@@ -428,7 +428,7 @@ export const CARDS = [
     number: '11/17',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Jolteon Gold Star POP Series 5 11/17 sold',
+    ebayQuery: 'Pokemon Jolteon Gold Star POP Series 5 11/17 graded sold',
   },
 
   // ─── ICONIC — Promo / Trophy ───────────────────────────────────────────────
@@ -439,7 +439,7 @@ export const CARDS = [
     number: 'Promo',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Pikachu Illustrator promo card sold',
+    ebayQuery: 'Pokemon Pikachu Illustrator promo card graded sold',
   },
   {
     id: 'no1-trainer',
@@ -448,7 +448,7 @@ export const CARDS = [
     number: 'Promo',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon No 1 Trainer Japanese promo trophy card sold',
+    ebayQuery: 'Pokemon No 1 Trainer Japanese promo trophy card graded sold',
   },
   {
     id: 'tropical-wind',
@@ -457,7 +457,7 @@ export const CARDS = [
     number: 'Promo',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Tropical Wind promo Tropical Mega Battle sold',
+    ebayQuery: 'Pokemon Tropical Wind promo Tropical Mega Battle graded sold',
   },
   {
     id: 'masters-key',
@@ -466,7 +466,7 @@ export const CARDS = [
     number: 'Promo',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: "Pokemon Master's Key World Championship promo 2010 sold",
+    ebayQuery: "Pokemon Master's Key World Championship promo 2010 graded sold",
   },
 
   // ─── ICONIC — EX Era key cards ─────────────────────────────────────────────
@@ -477,7 +477,7 @@ export const CARDS = [
     number: '105/112',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Charizard ex EX FireRed LeafGreen 105/112 sold',
+    ebayQuery: 'Pokemon Charizard ex EX FireRed LeafGreen 105/112 graded sold',
   },
   {
     id: 'delta-charizard',
@@ -486,7 +486,7 @@ export const CARDS = [
     number: '3/101',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Charizard delta EX Dragon Frontiers 3/101 sold',
+    ebayQuery: 'Pokemon Charizard delta EX Dragon Frontiers 3/101 graded sold',
   },
   {
     id: 'legend-lugia',
@@ -495,7 +495,7 @@ export const CARDS = [
     number: '114/123',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Lugia LEGEND HeartGold SoulSilver 114/123 sold',
+    ebayQuery: 'Pokemon Lugia LEGEND HeartGold SoulSilver 114/123 graded sold',
   },
   {
     id: 'legend-ho-oh',
@@ -504,7 +504,7 @@ export const CARDS = [
     number: '111/123',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Ho-Oh LEGEND HeartGold SoulSilver 111/123 sold',
+    ebayQuery: 'Pokemon Ho-Oh LEGEND HeartGold SoulSilver 111/123 graded sold',
   },
 
   // ─── MODERN CHASE — Sword & Shield Alt Arts ────────────────────────────────
