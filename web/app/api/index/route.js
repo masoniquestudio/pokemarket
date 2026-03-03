@@ -1,4 +1,4 @@
-import { CARDS } from '../../../lib/cards';
+import { CARDS, INDEX_CONFIGS } from '../../../lib/cards';
 import { getLatestPrices, getBaselinePrice, insertIndexSnapshot, getLatestIndex } from '../../../lib/db';
 import { computePMI, computeChangePct } from '../../../lib/index';
 
@@ -6,49 +6,50 @@ export const revalidate = 21600;
 
 export async function GET() {
   try {
-    // Fetch latest price snapshot for every card
     const latestPrices = await getLatestPrices();
     const priceMap = Object.fromEntries(latestPrices.map((r) => [r.card_id, r]));
 
-    // Build inputs for PMI — only cards that have both a current and baseline price
-    const inputs = [];
-    for (const card of CARDS) {
-      const current = priceMap[card.id];
-      if (!current) continue;
+    const results = {};
 
-      const baseline = await getBaselinePrice(card.id);
-      if (!baseline) continue;
+    for (const [indexId, config] of Object.entries(INDEX_CONFIGS)) {
+      const inputs = [];
 
-      inputs.push({
-        cardId: card.id,
-        currentPrice: parseFloat(current.price_avg),
-        baselinePrice: parseFloat(baseline.price_avg),
-        weight: card.weight,
-      });
+      for (const { id, weight } of config.cards) {
+        const current = priceMap[id];
+        if (!current) continue;
+
+        const baseline = await getBaselinePrice(id);
+        if (!baseline) continue;
+
+        inputs.push({
+          cardId: id,
+          currentPrice: parseFloat(current.price_avg),
+          baselinePrice: parseFloat(baseline.price_avg),
+          weight,
+        });
+      }
+
+      if (!inputs.length) {
+        results[indexId] = { skipped: true, reason: 'no price data' };
+        continue;
+      }
+
+      const value = computePMI(inputs);
+      const previous = await getLatestIndex(indexId);
+      const changePct = previous ? computeChangePct(value, parseFloat(previous.value)) : 0;
+
+      await insertIndexSnapshot({ indexId, value, changePct });
+
+      results[indexId] = {
+        name: config.name,
+        value,
+        changePct,
+        cardsIncluded: inputs.length,
+        cardsTotal: config.cards.length,
+      };
     }
 
-    if (!inputs.length) {
-      return Response.json(
-        { ok: false, error: 'No price data available yet. Run /api/prices first.' },
-        { status: 422 }
-      );
-    }
-
-    const value = computePMI(inputs);
-
-    // Get yesterday's index value to compute change %
-    const previous = await getLatestIndex();
-    const changePct = previous ? computeChangePct(value, parseFloat(previous.value)) : 0;
-
-    await insertIndexSnapshot({ value, changePct });
-
-    return Response.json({
-      ok: true,
-      value,
-      changePct,
-      cardsIncluded: inputs.length,
-      cardsTotal: CARDS.length,
-    });
+    return Response.json({ ok: true, results });
   } catch (err) {
     console.error('Index computation error:', err.message);
     return Response.json({ ok: false, error: err.message }, { status: 500 });
