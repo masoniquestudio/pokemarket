@@ -30,164 +30,57 @@ export default function MoversTable({ gainers, losers }: Props) {
   );
 }
 
-function Table({
-  title,
-  rows,
-  type,
-}: {
-  title: string;
-  rows: CardRow[];
-  type: 'up' | 'down';
-}) {
-  const accentColor = type === 'up' ? '#00c853' : '#ff3d00';
+function Table({ title, rows, type }: { title: string; rows: CardRow[]; type: 'up' | 'down' }) {
+  const accentColor = type === 'up' ? 'var(--up)' : 'var(--down)';
 
   return (
     <div
       style={{
-        background: '#21386E',
+        background: 'var(--surface)',
         borderRadius: 16,
         padding: '20px 24px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
+        boxShadow: 'var(--shadow)',
+        border: '1px solid var(--border)',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          marginBottom: 16,
-        }}
-      >
-        <span
-          style={{
-            display: 'inline-block',
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            background: accentColor,
-          }}
-        />
-        <h3
-          style={{
-            fontSize: 13,
-            fontWeight: 600,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            color: '#ffffff',
-          }}
-        >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+        <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: accentColor }} />
+        <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text)' }}>
           {title}
         </h3>
-        <span
-          style={{
-            fontSize: 11,
-            color: 'rgba(255,255,255,0.3)',
-            marginLeft: 'auto',
-          }}
-        >
-          7d
-        </span>
+        <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 'auto' }}>7d</span>
       </div>
 
       {rows.length === 0 ? (
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '24px 0' }}>
-          No data yet
-        </p>
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', textAlign: 'center', padding: '24px 0' }}>No data yet</p>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              <th
-                style={{
-                  textAlign: 'left',
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: 'rgba(255,255,255,0.3)',
-                  paddingBottom: 8,
-                  borderBottom: '1px solid rgba(52,102,175,0.3)',
-                }}
-              >
-                Card
-              </th>
-              <th
-                style={{
-                  textAlign: 'right',
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: 'rgba(255,255,255,0.3)',
-                  paddingBottom: 8,
-                  borderBottom: '1px solid rgba(52,102,175,0.3)',
-                }}
-              >
-                Price
-              </th>
-              <th
-                style={{
-                  textAlign: 'right',
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: 'rgba(255,255,255,0.3)',
-                  paddingBottom: 8,
-                  borderBottom: '1px solid rgba(52,102,175,0.3)',
-                }}
-              >
-                7d %
-              </th>
+              {['Card', 'Price', '7d %'].map((h, i) => (
+                <th key={h} style={{ textAlign: i === 0 ? 'left' : 'right', fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', paddingBottom: 8, borderBottom: '1px solid var(--border)' }}>
+                  {h}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr
-                key={row.id}
-                style={{
-                  borderBottom: i < rows.length - 1 ? '1px solid rgba(52,102,175,0.15)' : 'none',
-                }}
-              >
+              <tr key={row.id} style={{ borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none' }}>
                 <td style={{ padding: '10px 0' }}>
-                  <Link
-                    href={`/cards/${row.id}`}
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <p
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: '#ffffff',
-                        marginBottom: 2,
-                      }}
-                    >
-                      {row.name}
-                    </p>
-                    <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>
-                      {TIER_LABELS[row.tier] ?? row.tier} · {row.set}
-                    </p>
+                  <Link href={`/cards/${row.id}`} style={{ textDecoration: 'none' }}>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>{row.name}</p>
+                    <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{TIER_LABELS[row.tier] ?? row.tier} · {row.set}</p>
                   </Link>
                 </td>
                 <td style={{ textAlign: 'right', padding: '10px 0' }}>
-                  <span
-                    className="num"
-                    style={{ fontSize: 14, fontWeight: 600, color: '#ffffff' }}
-                  >
+                  <span className="num" style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>
                     ${row.currentPrice.toFixed(2)}
                   </span>
                 </td>
                 <td style={{ textAlign: 'right', padding: '10px 0' }}>
-                  <span
-                    className="num"
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color:
-                        row.changePct === null
-                          ? 'rgba(255,255,255,0.3)'
-                          : row.changePct >= 0
-                          ? '#00c853'
-                          : '#ff3d00',
-                    }}
-                  >
-                    {row.changePct === null
-                      ? '—'
-                      : `${row.changePct >= 0 ? '+' : ''}${row.changePct.toFixed(2)}%`}
+                  <span className="num" style={{ fontSize: 13, fontWeight: 700, color: row.changePct === null ? 'var(--text-muted)' : row.changePct >= 0 ? 'var(--up)' : 'var(--down)' }}>
+                    {row.changePct === null ? '—' : `${row.changePct >= 0 ? '+' : ''}${row.changePct.toFixed(2)}%`}
                   </span>
                 </td>
               </tr>

@@ -14,13 +14,7 @@ type Props = {
 
 export default function SectorTiles({ sectors }: Props) {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: 16,
-      }}
-    >
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
       {sectors.map((sector) => {
         const isUp = (sector.avgChangePct ?? 0) >= 0;
         const hasChange = sector.avgChangePct !== null;
@@ -29,75 +23,38 @@ export default function SectorTiles({ sectors }: Props) {
           <div
             key={sector.tier}
             style={{
-              background: '#21386E',
+              background: 'var(--surface)',
               borderRadius: 16,
               padding: '20px 24px',
-              boxShadow:
-                '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
+              boxShadow: 'var(--shadow)',
+              border: '1px solid var(--border)',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                marginBottom: 12,
-              }}
-            >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
               <div>
-                <p
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: '#a0b8d8',
-                    marginBottom: 4,
-                  }}
-                >
+                <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 4 }}>
                   {sector.label}
                 </p>
-                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>
+                <p style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 400 }}>
                   {sector.cardCount} card{sector.cardCount !== 1 ? 's' : ''}
                 </p>
               </div>
 
               <div style={{ textAlign: 'right' }}>
                 {hasChange ? (
-                  <span
-                    className="num"
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 700,
-                      color: isUp ? '#00c853' : '#ff3d00',
-                    }}
-                  >
-                    {isUp ? '+' : ''}
-                    {sector.avgChangePct!.toFixed(2)}%
+                  <span className="num" style={{ fontSize: 18, fontWeight: 700, color: isUp ? 'var(--up)' : 'var(--down)' }}>
+                    {isUp ? '+' : ''}{sector.avgChangePct!.toFixed(2)}%
                   </span>
                 ) : (
-                  <span
-                    className="num"
-                    style={{ fontSize: 18, fontWeight: 700, color: 'rgba(255,255,255,0.3)' }}
-                  >
-                    —
-                  </span>
+                  <span className="num" style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-muted)' }}>—</span>
                 )}
-                <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>
-                  7d avg
-                </p>
+                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>7d avg</p>
               </div>
             </div>
 
             <Sparkline
               data={sector.history}
-              color={
-                !hasChange
-                  ? 'rgba(255,255,255,0.3)'
-                  : isUp
-                  ? '#00c853'
-                  : '#ff3d00'
-              }
+              color={!hasChange ? '#E8E4FF' : isUp ? '#10B981' : '#EF4444'}
               height={48}
             />
           </div>

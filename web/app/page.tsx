@@ -153,7 +153,7 @@ export default async function HomePage() {
   const pmiChange = latestIndex ? parseFloat(String(latestIndex.change_pct)) : 0;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1D2C5E' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <Nav />
 
       <main
@@ -172,13 +172,13 @@ export default async function HomePage() {
             style={{
               fontSize: 22,
               fontWeight: 700,
-              color: '#ffffff',
+              color: 'var(--text)',
               marginBottom: 4,
             }}
           >
             Market Dashboard
           </h1>
-          <p style={{ fontSize: 13, color: '#a0b8d8' }}>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
             Pokémon TCG price tracking · refreshes every 6 hours
           </p>
         </div>
@@ -214,14 +214,21 @@ const TIER_LABELS: Record<string, string> = {
   'modern-chase': 'Modern Chase',
 };
 
+const TIER_COLORS: Record<string, { bg: string; color: string }> = {
+  vintage:        { bg: 'var(--tier-vintage-bg)',  color: 'var(--tier-vintage-color)' },
+  iconic:         { bg: 'var(--tier-iconic-bg)',   color: 'var(--tier-iconic-color)' },
+  'modern-chase': { bg: 'var(--tier-modern-bg)',   color: 'var(--tier-modern-color)' },
+};
+
 function AllCardsTable({ cards }: { cards: CardRow[] }) {
   return (
     <div
       style={{
-        background: '#21386E',
+        background: 'var(--surface)',
         borderRadius: 16,
         padding: '20px 24px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
+        boxShadow: 'var(--shadow)',
+        border: '1px solid var(--border)',
       }}
     >
       <h3
@@ -230,7 +237,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
           fontWeight: 600,
           letterSpacing: '0.06em',
           textTransform: 'uppercase',
-          color: '#ffffff',
+          color: 'var(--text)',
           marginBottom: 16,
         }}
       >
@@ -247,9 +254,9 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
                   textAlign: i >= 3 ? 'right' : 'left',
                   fontSize: 11,
                   fontWeight: 500,
-                  color: 'rgba(255,255,255,0.3)',
+                  color: 'var(--text-muted)',
                   paddingBottom: 10,
-                  borderBottom: '1px solid rgba(52,102,175,0.3)',
+                  borderBottom: '1px solid var(--border)',
                   paddingRight: i < 5 ? 16 : 0,
                 }}
               >
@@ -259,98 +266,91 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
           </tr>
         </thead>
         <tbody>
-          {cards.map((card, i) => (
-            <tr
-              key={card.id}
-              style={{
-                borderBottom: i < cards.length - 1 ? '1px solid rgba(52,102,175,0.15)' : 'none',
-              }}
-            >
-              <td style={{ padding: '11px 16px 11px 0' }}>
-                <a
-                  href={`/cards/${card.id}`}
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: '#ffffff',
-                    textDecoration: 'none',
-                  }}
-                >
-                  {card.name}
-                </a>
-              </td>
-              <td
+          {cards.map((card, i) => {
+            const tierStyle = TIER_COLORS[card.tier] ?? { bg: 'rgba(124,58,237,0.1)', color: 'var(--accent)' };
+            return (
+              <tr
+                key={card.id}
                 style={{
-                  fontSize: 13,
-                  color: '#a0b8d8',
-                  padding: '11px 16px 11px 0',
+                  borderBottom: i < cards.length - 1 ? '1px solid var(--border)' : 'none',
                 }}
               >
-                {card.set}
-              </td>
-              <td style={{ padding: '11px 16px 11px 0' }}>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    padding: '3px 8px',
-                    borderRadius: 6,
-                    background:
-                      card.tier === 'vintage'
-                        ? 'rgba(255,203,5,0.15)'
-                        : card.tier === 'iconic'
-                        ? 'rgba(255,100,100,0.15)'
-                        : 'rgba(0,200,83,0.15)',
-                    color:
-                      card.tier === 'vintage'
-                        ? '#FFCB05'
-                        : card.tier === 'iconic'
-                        ? '#ff8080'
-                        : '#00c853',
-                  }}
-                >
-                  {TIER_LABELS[card.tier] ?? card.tier}
-                </span>
-              </td>
-              <td style={{ textAlign: 'right', padding: '11px 16px 11px 0' }}>
-                <span
-                  className="num"
-                  style={{ fontSize: 14, fontWeight: 600, color: '#ffffff' }}
-                >
-                  {card.currentPrice > 0
-                    ? `$${card.currentPrice.toFixed(2)}`
-                    : '—'}
-                </span>
-              </td>
-              <td style={{ textAlign: 'right', padding: '11px 16px 11px 0' }}>
-                <span
-                  className="num"
+                <td style={{ padding: '11px 16px 11px 0' }}>
+                  <a
+                    href={`/cards/${card.id}`}
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: 'var(--text)',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    {card.name}
+                  </a>
+                </td>
+                <td
                   style={{
                     fontSize: 13,
-                    fontWeight: 700,
-                    color:
-                      card.changePct === null
-                        ? 'rgba(255,255,255,0.3)'
-                        : card.changePct >= 0
-                        ? '#00c853'
-                        : '#ff3d00',
+                    color: 'var(--text-muted)',
+                    padding: '11px 16px 11px 0',
                   }}
                 >
-                  {card.changePct === null
-                    ? '—'
-                    : `${card.changePct >= 0 ? '+' : ''}${card.changePct.toFixed(2)}%`}
-                </span>
-              </td>
-              <td style={{ textAlign: 'right', padding: '11px 0' }}>
-                <span
-                  className="num"
-                  style={{ fontSize: 13, color: '#a0b8d8' }}
-                >
-                  {card.volume ?? '—'}
-                </span>
-              </td>
-            </tr>
-          ))}
+                  {card.set}
+                </td>
+                <td style={{ padding: '11px 16px 11px 0' }}>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      padding: '3px 8px',
+                      borderRadius: 12,
+                      background: tierStyle.bg,
+                      color: tierStyle.color,
+                    }}
+                  >
+                    {TIER_LABELS[card.tier] ?? card.tier}
+                  </span>
+                </td>
+                <td style={{ textAlign: 'right', padding: '11px 16px 11px 0' }}>
+                  <span
+                    className="num"
+                    style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}
+                  >
+                    {card.currentPrice > 0
+                      ? `$${card.currentPrice.toFixed(2)}`
+                      : '—'}
+                  </span>
+                </td>
+                <td style={{ textAlign: 'right', padding: '11px 16px 11px 0' }}>
+                  <span
+                    className="num"
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color:
+                        card.changePct === null
+                          ? 'var(--text-muted)'
+                          : card.changePct >= 0
+                          ? 'var(--up)'
+                          : 'var(--down)',
+                    }}
+                  >
+                    {card.changePct === null
+                      ? '—'
+                      : `${card.changePct >= 0 ? '+' : ''}${card.changePct.toFixed(2)}%`}
+                  </span>
+                </td>
+                <td style={{ textAlign: 'right', padding: '11px 0' }}>
+                  <span
+                    className="num"
+                    style={{ fontSize: 13, color: 'var(--text-muted)' }}
+                  >
+                    {card.volume ?? '—'}
+                  </span>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

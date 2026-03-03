@@ -13,9 +13,9 @@ const TIER_LABELS: Record<string, string> = {
 };
 
 const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  vintage: { bg: 'rgba(255,203,5,0.15)', color: '#FFCB05' },
-  iconic: { bg: 'rgba(255,100,100,0.15)', color: '#ff8080' },
-  'modern-chase': { bg: 'rgba(0,200,83,0.15)', color: '#00c853' },
+  vintage:        { bg: 'var(--tier-vintage-bg)',  color: 'var(--tier-vintage-color)' },
+  iconic:         { bg: 'var(--tier-iconic-bg)',   color: 'var(--tier-iconic-color)' },
+  'modern-chase': { bg: 'var(--tier-modern-bg)',   color: 'var(--tier-modern-color)' },
 };
 
 type Props = { params: Promise<{ id: string }> };
@@ -71,7 +71,7 @@ export default async function CardDetailPage({ params }: Props) {
   const tierStyle = TIER_COLORS[card.tier] ?? { bg: 'rgba(52,102,175,0.25)', color: '#a0b8d8' };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1D2C5E' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <Nav />
 
       <main
@@ -89,7 +89,7 @@ export default async function CardDetailPage({ params }: Props) {
           href="/"
           style={{
             fontSize: 13,
-            color: '#a0b8d8',
+            color: 'var(--text-muted)',
             textDecoration: 'none',
             display: 'inline-flex',
             alignItems: 'center',
@@ -102,18 +102,19 @@ export default async function CardDetailPage({ params }: Props) {
         {/* Card header */}
         <div
           style={{
-            background: '#21386E',
+            background: 'var(--surface)',
             borderRadius: 16,
             padding: '24px 28px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
+            boxShadow: 'var(--shadow)',
+            border: '1px solid var(--border)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
             <div>
-              <h1 style={{ fontSize: 26, fontWeight: 700, color: '#ffffff', marginBottom: 6 }}>
+              <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
                 {card.name}
               </h1>
-              <p style={{ fontSize: 14, color: '#a0b8d8' }}>
+              <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>
                 {card.set} · #{card.number} · {card.era}
               </p>
             </div>
@@ -122,7 +123,7 @@ export default async function CardDetailPage({ params }: Props) {
                 fontSize: 12,
                 fontWeight: 600,
                 padding: '4px 12px',
-                borderRadius: 8,
+                borderRadius: 999,
                 background: tierStyle.bg,
                 color: tierStyle.color,
                 alignSelf: 'flex-start',
@@ -135,16 +136,16 @@ export default async function CardDetailPage({ params }: Props) {
           {/* Stats row */}
           <div style={{ display: 'flex', gap: 32, marginTop: 24, flexWrap: 'wrap' }}>
             <div>
-              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
+              <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
                 Current Avg
               </p>
-              <span className="num" style={{ fontSize: 32, fontWeight: 700, color: '#ffffff', letterSpacing: '-0.01em' }}>
+              <span className="num" style={{ fontSize: 32, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.01em' }}>
                 {latest != null ? `$${latest.toFixed(2)}` : '—'}
               </span>
             </div>
             {[{ label: '7d Change', val: change7d }, { label: '30d Change', val: change30d }].map(({ label, val }) => (
               <div key={label}>
-                <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
+                <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
                   {label}
                 </p>
                 <span
@@ -152,7 +153,7 @@ export default async function CardDetailPage({ params }: Props) {
                   style={{
                     fontSize: 22,
                     fontWeight: 700,
-                    color: val === null ? 'rgba(255,255,255,0.3)' : val >= 0 ? '#00c853' : '#ff3d00',
+                    color: val === null ? 'var(--text-muted)' : val >= 0 ? 'var(--up)' : 'var(--down)',
                   }}
                 >
                   {val === null ? '—' : `${val >= 0 ? '+' : ''}${val.toFixed(2)}%`}
@@ -168,14 +169,15 @@ export default async function CardDetailPage({ params }: Props) {
         {/* Snapshot history table */}
         <div
           style={{
-            background: '#21386E',
+            background: 'var(--surface)',
             borderRadius: 16,
             padding: '20px 24px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
+            boxShadow: 'var(--shadow)',
+            border: '1px solid var(--border)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#ffffff' }}>
+            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text)' }}>
               Price History
             </h3>
             <a
@@ -185,11 +187,11 @@ export default async function CardDetailPage({ params }: Props) {
               style={{
                 fontSize: 13,
                 fontWeight: 600,
-                color: '#ffffff',
+                color: 'var(--accent)',
                 textDecoration: 'none',
                 padding: '6px 14px',
-                borderRadius: 8,
-                border: '1.5px solid rgba(52,102,175,0.5)',
+                borderRadius: 999,
+                border: '1.5px solid var(--border)',
               }}
             >
               View on eBay →
@@ -207,9 +209,9 @@ export default async function CardDetailPage({ params }: Props) {
                         textAlign: i === 0 ? 'left' : 'right',
                         fontSize: 11,
                         fontWeight: 500,
-                        color: 'rgba(255,255,255,0.3)',
+                        color: 'var(--text-muted)',
                         paddingBottom: 10,
-                        borderBottom: '1px solid rgba(52,102,175,0.3)',
+                        borderBottom: '1px solid var(--border)',
                         paddingRight: i < 4 ? 16 : 0,
                       }}
                     >
@@ -224,20 +226,20 @@ export default async function CardDetailPage({ params }: Props) {
                   const low = row.price_low ? parseFloat(String(row.price_low)) : null;
                   const high = row.price_high ? parseFloat(String(row.price_high)) : null;
                   return (
-                    <tr key={new Date(row.recorded_at).toISOString()} style={{ borderBottom: i < tableRows.length - 1 ? '1px solid rgba(52,102,175,0.15)' : 'none' }}>
-                      <td style={{ padding: '10px 16px 10px 0', fontSize: 13, color: '#a0b8d8' }}>
+                    <tr key={new Date(row.recorded_at).toISOString()} style={{ borderBottom: i < tableRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                      <td style={{ padding: '10px 16px 10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
                         {new Date(row.recorded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 14, fontWeight: 600, color: '#ffffff' }}>
+                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>
                         ${avg.toFixed(2)}
                       </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: '#a0b8d8' }}>
+                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
                         {low != null ? `$${low.toFixed(2)}` : '—'}
                       </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: '#a0b8d8' }}>
+                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
                         {high != null ? `$${high.toFixed(2)}` : '—'}
                       </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 0', fontSize: 13, color: '#a0b8d8' }}>
+                      <td className="num" style={{ textAlign: 'right', padding: '10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
                         {row.volume ?? '—'}
                       </td>
                     </tr>
@@ -246,7 +248,7 @@ export default async function CardDetailPage({ params }: Props) {
               </tbody>
             </table>
           ) : (
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '32px 0' }}>
+            <p style={{ fontSize: 14, color: 'var(--text-muted)', textAlign: 'center', padding: '32px 0' }}>
               No price data yet — run /api/prices to seed data
             </p>
           )}
@@ -256,18 +258,19 @@ export default async function CardDetailPage({ params }: Props) {
         {related.length > 0 && (
           <div
             style={{
-              background: '#21386E',
+              background: 'var(--surface)',
               borderRadius: 16,
               padding: '20px 24px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2)',
+              boxShadow: 'var(--shadow)',
+              border: '1px solid var(--border)',
             }}
           >
-            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#ffffff', marginBottom: 16 }}>
+            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text)', marginBottom: 16 }}>
               Related Cards
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
               {related.map((c) => {
-                const cs = TIER_COLORS[c.tier] ?? { bg: 'rgba(52,102,175,0.25)', color: '#a0b8d8' };
+                const cs = TIER_COLORS[c.tier] ?? { bg: 'rgba(124,58,237,0.1)', color: 'var(--accent)' };
                 return (
                   <a
                     key={c.id}
@@ -276,20 +279,20 @@ export default async function CardDetailPage({ params }: Props) {
                       display: 'block',
                       padding: '14px 16px',
                       borderRadius: 12,
-                      border: '1.5px solid rgba(52,102,175,0.3)',
+                      border: '1.5px solid var(--border)',
                       textDecoration: 'none',
                     }}
                   >
-                    <p style={{ fontSize: 14, fontWeight: 600, color: '#ffffff', marginBottom: 4 }}>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 4 }}>
                       {c.name}
                     </p>
-                    <p style={{ fontSize: 12, color: '#a0b8d8', marginBottom: 8 }}>{c.set}</p>
+                    <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>{c.set}</p>
                     <span
                       style={{
                         fontSize: 11,
                         fontWeight: 600,
                         padding: '2px 8px',
-                        borderRadius: 5,
+                        borderRadius: 999,
                         background: cs.bg,
                         color: cs.color,
                       }}

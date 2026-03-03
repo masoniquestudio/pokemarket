@@ -9,8 +9,8 @@ export default function Nav() {
   return (
     <nav
       style={{
-        background: '#1D2C5E',
-        borderBottom: '1px solid rgba(52,102,175,0.4)',
+        background: 'var(--surface)',
+        borderBottom: '1px solid var(--border)',
         position: 'sticky',
         top: 0,
         zIndex: 50,
@@ -28,26 +28,28 @@ export default function Nav() {
         }}
       >
         {/* Logo */}
-        <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
           <span
             style={{
-              background: '#FFCB05',
-              color: '#1D2C5E',
-              fontWeight: 700,
+              background: 'var(--gradient)',
+              color: '#fff',
+              fontWeight: 800,
               fontSize: 13,
               letterSpacing: '0.06em',
-              padding: '3px 8px',
-              borderRadius: 6,
+              padding: '3px 10px',
+              borderRadius: 999,
             }}
           >
             PMI
           </span>
           <span
             style={{
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: 16,
               letterSpacing: '0.04em',
-              color: '#ffffff',
+              background: 'var(--gradient)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
             }}
           >
             POKÉMARKET
@@ -56,37 +58,25 @@ export default function Nav() {
 
         {/* Nav links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <NavLink href="/" active={pathname === '/'}>
-            Dashboard
-          </NavLink>
-          <NavLink href="/cards" active={pathname.startsWith('/cards')}>
-            Cards
-          </NavLink>
+          <NavLink href="/" active={pathname === '/'}>Dashboard</NavLink>
+          <NavLink href="/cards" active={pathname.startsWith('/cards')}>Cards</NavLink>
         </div>
       </div>
     </nav>
   );
 }
 
-function NavLink({
-  href,
-  active,
-  children,
-}: {
-  href: string;
-  active: boolean;
-  children: React.ReactNode;
-}) {
+function NavLink({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
   return (
     <Link
       href={href}
       style={{
-        padding: '6px 14px',
-        borderRadius: 8,
+        padding: '6px 16px',
+        borderRadius: 999,
         fontSize: 14,
-        fontWeight: 500,
-        color: active ? '#ffffff' : 'rgba(255,255,255,0.5)',
-        background: active ? '#3466AF' : 'transparent',
+        fontWeight: 600,
+        color: active ? '#fff' : 'var(--text-muted)',
+        background: active ? 'var(--gradient)' : 'transparent',
         textDecoration: 'none',
         transition: 'all 0.15s',
       }}
