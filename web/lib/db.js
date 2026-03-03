@@ -35,6 +35,17 @@ export async function initDb() {
     CREATE INDEX IF NOT EXISTS idx_index_snapshots_recorded_at
       ON index_snapshots (recorded_at DESC);
   `;
+
+  // Add index_id column to index_snapshots if it doesn't exist (migration)
+  await sql`
+    ALTER TABLE index_snapshots
+    ADD COLUMN IF NOT EXISTS index_id TEXT NOT NULL DEFAULT 'pmi'
+  `;
+
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_index_snapshots_index_id
+      ON index_snapshots (index_id, recorded_at DESC)
+  `;
 }
 
 /**
@@ -90,39 +101,77 @@ export async function getBaselinePrice(cardId) {
 }
 
 /**
- * Insert a computed PMI index snapshot.
+ * Insert a computed index snapshot for a named index.
  */
-export async function insertIndexSnapshot({ value, changePct }) {
+export async function insertIndexSnapshot({ indexId = 'pmi', value, changePct }) {
   await sql`
-    INSERT INTO index_snapshots (value, change_pct)
-    VALUES (${value}, ${changePct})
+    INSERT INTO index_snapshots (index_id, value, change_pct)
+    VALUES (${indexId}, ${value}, ${changePct})
   `;
 }
 
 /**
- * Get index history for the last N days.
+ * Get index history for a specific named index over the last N days.
  */
-export async function getIndexHistory(days = 30) {
+export async function getIndexHistory(days = 30, indexId = 'pmi') {
   const { rows } = await sql`
     SELECT value, change_pct, recorded_at
     FROM index_snapshots
-    WHERE recorded_at >= NOW() - (${days} || ' days')::INTERVAL
+    WHERE index_id = ${indexId}
+      AND recorded_at >= NOW() - (${days} || ' days')::INTERVAL
     ORDER BY recorded_at ASC
   `;
   return rows;
 }
 
 /**
- * Get the latest index snapshot.
+ * Get the latest snapshot for a specific named index.
  */
-export async function getLatestIndex() {
+export async function getLatestIndex(indexId = 'pmi') {
   const { rows } = await sql`
     SELECT value, change_pct, recorded_at
     FROM index_snapshots
+    WHERE index_id = ${indexId}
     ORDER BY recorded_at DESC
     LIMIT 1
   `;
   return rows[0] ?? null;
+}
+
+/**
+ * Get the latest snapshot for ALL named indices in one query.
+ * Returns an object keyed by index_id.
+ */
+export async function getAllLatestIndices() {
+  const { rows } = await sql`
+    SELECT DISTINCT ON (index_id)
+      index_id, value, change_pct, recorded_at
+    FROM index_snapshots
+    ORDER BY index_id, recorded_at DESC
+  `;
+  return Object.fromEntries(rows.map((r) => [r.index_id, r]));
+}
+
+/**
+ * Get history for all indices over the last N days.
+ * Returns an object keyed by index_id, each value is an array of {time, value}.
+ */
+export async function getAllIndexHistories(days = 30) {
+  const { rows } = await sql`
+    SELECT index_id, value, recorded_at
+    FROM index_snapshots
+    WHERE recorded_at >= NOW() - (${days} || ' days')::INTERVAL
+    ORDER BY index_id, recorded_at ASC
+  `;
+  const result = {};
+  for (const row of rows) {
+    if (!result[row.index_id]) result[row.index_id] = [];
+    result[row.index_id].push({
+      time: new Date(row.recorded_at).toISOString(),
+      value: parseFloat(String(row.value)),
+    });
+  }
+  return result;
 }
 
 /**
