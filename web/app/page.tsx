@@ -17,21 +17,21 @@ function buildSectorHistory(
 ): { value: number }[] {
   const idSet = new Set(cardIds);
 
-  // Bucket by calendar day
-  const byDay: Record<string, number[]> = {};
+  // Bucket by exact scrape timestamp (works even with multiple runs on same day)
+  const byTime: Record<string, number[]> = {};
   for (const row of allHistory) {
     if (!idSet.has(row.card_id)) continue;
-    const day = new Date(row.recorded_at).toISOString().slice(0, 10);
-    if (!byDay[day]) byDay[day] = [];
-    byDay[day].push(parseFloat(String(row.price_avg)));
+    const t = new Date(row.recorded_at).toISOString();
+    if (!byTime[t]) byTime[t] = [];
+    byTime[t].push(parseFloat(String(row.price_avg)));
   }
 
-  const days = Object.keys(byDay).sort();
-  if (days.length < 2) return [];
+  const times = Object.keys(byTime).sort();
+  if (times.length < 2) return [];
 
-  // Normalise to % change from first day so sparklines are comparable
-  const series = days.map((day) => {
-    const prices = byDay[day];
+  // Normalise to % change from first snapshot so sparklines are comparable
+  const series = times.map((t) => {
+    const prices = byTime[t];
     return prices.reduce((s, p) => s + p, 0) / prices.length;
   });
 
@@ -259,7 +259,7 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            {['Card', 'Set', 'Tier', 'Avg Price', '7d %', 'Volume'].map((h, i) => (
+            {['Card', 'Set', 'Tier', 'Avg Price', 'Chg %', 'Volume'].map((h, i) => (
               <th
                 key={h}
                 style={{

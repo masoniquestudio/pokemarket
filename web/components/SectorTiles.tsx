@@ -48,7 +48,7 @@ export default function SectorTiles({ sectors }: Props) {
                 ) : (
                   <span className="num" style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-muted)' }}>—</span>
                 )}
-                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>7d avg</p>
+                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>avg chg</p>
               </div>
             </div>
 

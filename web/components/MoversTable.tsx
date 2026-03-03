@@ -48,7 +48,7 @@ function Table({ title, rows, type }: { title: string; rows: CardRow[]; type: 'u
         <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text)' }}>
           {title}
         </h3>
-        <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 'auto' }}>7d</span>
+        <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 'auto' }}>vs prev</span>
       </div>
 
       {rows.length === 0 ? (
@@ -57,7 +57,7 @@ function Table({ title, rows, type }: { title: string; rows: CardRow[]; type: 'u
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              {['Card', 'Price', '7d %'].map((h, i) => (
+              {['Card', 'Price', 'Chg %'].map((h, i) => (
                 <th key={h} style={{ textAlign: i === 0 ? 'left' : 'right', fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', paddingBottom: 8, borderBottom: '1px solid var(--border)' }}>
                   {h}
                 </th>

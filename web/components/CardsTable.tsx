@@ -174,7 +174,7 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
             <th style={{ ...thStyle('tier'), paddingRight: 16 }} onClick={() => toggleSort('tier')}>Tier <SortIcon col="tier" sortKey={sortKey} sortDir={sortDir} /></th>
             <th style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', paddingBottom: 10, borderBottom: '1px solid var(--border)', paddingRight: 16 }}>Indices</th>
             <th style={thStyle('currentPrice', 'right')} onClick={() => toggleSort('currentPrice')}>Avg Price <SortIcon col="currentPrice" sortKey={sortKey} sortDir={sortDir} /></th>
-            <th style={thStyle('changePct', 'right')} onClick={() => toggleSort('changePct')}>7d % <SortIcon col="changePct" sortKey={sortKey} sortDir={sortDir} /></th>
+            <th style={thStyle('changePct', 'right')} onClick={() => toggleSort('changePct')}>Chg % <SortIcon col="changePct" sortKey={sortKey} sortDir={sortDir} /></th>
             <th style={{ ...thStyle('volume', 'right'), paddingRight: 0 }} onClick={() => toggleSort('volume')}>Vol <SortIcon col="volume" sortKey={sortKey} sortDir={sortDir} /></th>
           </tr>
         </thead>
