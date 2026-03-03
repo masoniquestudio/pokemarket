@@ -44,6 +44,11 @@ const INDEX_COLORS: Record<string, { bg: string; color: string }> = {
   modern: { bg: '#e8f5e9', color: '#2e7d32' },
 };
 
+function SortIcon({ col, sortKey, sortDir }: { col: SortKey; sortKey: SortKey; sortDir: SortDir }) {
+  if (sortKey !== col) return <span style={{ color: '#ddd', marginLeft: 4 }}>↕</span>;
+  return <span style={{ color: '#1a1a1a', marginLeft: 4 }}>{sortDir === 'asc' ? '↑' : '↓'}</span>;
+}
+
 export default function CardsTable({ cards }: { cards: CardRow[] }) {
   const [search, setSearch] = useState('');
   const [tierFilter, setTierFilter] = useState<string>('all');
@@ -97,11 +102,6 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
       setSortKey(key);
       setSortDir(key === 'name' || key === 'set' ? 'asc' : 'desc');
     }
-  }
-
-  function SortIcon({ col }: { col: SortKey }) {
-    if (sortKey !== col) return <span style={{ color: '#ddd', marginLeft: 4 }}>↕</span>;
-    return <span style={{ color: '#1a1a1a', marginLeft: 4 }}>{sortDir === 'asc' ? '↑' : '↓'}</span>;
   }
 
   const thStyle = (col: SortKey, align: 'left' | 'right' = 'left'): React.CSSProperties => ({
@@ -209,25 +209,25 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
         <thead>
           <tr>
             <th style={thStyle('name')} onClick={() => toggleSort('name')}>
-              Card <SortIcon col="name" />
+              Card <SortIcon col="name" sortKey={sortKey} sortDir={sortDir} />
             </th>
             <th style={thStyle('set')} onClick={() => toggleSort('set')}>
-              Set <SortIcon col="set" />
+              Set <SortIcon col="set" sortKey={sortKey} sortDir={sortDir} />
             </th>
             <th style={{ ...thStyle('tier'), paddingRight: 16 }} onClick={() => toggleSort('tier')}>
-              Tier <SortIcon col="tier" />
+              Tier <SortIcon col="tier" sortKey={sortKey} sortDir={sortDir} />
             </th>
             <th style={{ fontSize: 11, fontWeight: 600, color: '#bbb', paddingBottom: 10, borderBottom: '1px solid #f0f0f0', paddingRight: 16 }}>
               Indices
             </th>
             <th style={{ ...thStyle('currentPrice', 'right') }} onClick={() => toggleSort('currentPrice')}>
-              Price <SortIcon col="currentPrice" />
+              Price <SortIcon col="currentPrice" sortKey={sortKey} sortDir={sortDir} />
             </th>
             <th style={{ ...thStyle('changePct', 'right') }} onClick={() => toggleSort('changePct')}>
-              7d % <SortIcon col="changePct" />
+              7d % <SortIcon col="changePct" sortKey={sortKey} sortDir={sortDir} />
             </th>
             <th style={{ ...thStyle('volume', 'right'), paddingRight: 0 }} onClick={() => toggleSort('volume')}>
-              Vol <SortIcon col="volume" />
+              Vol <SortIcon col="volume" sortKey={sortKey} sortDir={sortDir} />
             </th>
           </tr>
         </thead>

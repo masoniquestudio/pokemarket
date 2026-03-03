@@ -11,8 +11,8 @@ export default async function CardsPage() {
   let priceChanges: any[] = [];
   try {
     priceChanges = await getCardPriceChanges();
-  } catch {
-    // DB not ready
+  } catch (err) {
+    console.error('[CardsPage] getCardPriceChanges failed:', err);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
