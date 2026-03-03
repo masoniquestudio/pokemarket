@@ -3,7 +3,7 @@
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts';
 
 // Sparkline colors — match --up / --down in globals.css
-const UP_COLOR = '#10B981';
+const UP_COLOR = '#22C55E';
 const DOWN_COLOR = '#EF4444';
 
 type IndexData = {

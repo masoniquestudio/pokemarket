@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 
 // Chart stroke color — matches --accent in globals.css
-const CHART_COLOR = '#7C3AED';
+const CHART_COLOR = '#3B82F6';
 
 type DataPoint = { time: string; value: number };
 
@@ -168,7 +168,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             />
             <Tooltip
               contentStyle={{
-                background: '#fff',
+                background: 'var(--surface-2)',
                 border: '1px solid var(--border)',
                 borderRadius: 12,
                 fontSize: 13,
