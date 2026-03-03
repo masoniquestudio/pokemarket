@@ -23,7 +23,7 @@ type Props = { params: Promise<{ id: string }> };
 export default async function CardDetailPage({ params }: Props) {
   const { id } = await params;
   const card = getCard(id);
-  if (!card) notFound();
+  if (!card) return notFound();
 
   type PriceRow = { price_avg: string; price_low: string | null; price_high: string | null; volume: number | null; recorded_at: Date };
   // Fetch 90 days of snapshots
@@ -45,7 +45,7 @@ export default async function CardDetailPage({ params }: Props) {
 
   function priceAtDaysAgo(days: number): number | null {
     const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
-    const old = history.find((r) => new Date(r.recorded_at).getTime() <= cutoff);
+    const old = [...history].reverse().find((r) => new Date(r.recorded_at).getTime() <= cutoff);
     return old ? parseFloat(String(old.price_avg)) : null;
   }
 
@@ -224,7 +224,7 @@ export default async function CardDetailPage({ params }: Props) {
                   const low = row.price_low ? parseFloat(String(row.price_low)) : null;
                   const high = row.price_high ? parseFloat(String(row.price_high)) : null;
                   return (
-                    <tr key={i} style={{ borderBottom: i < tableRows.length - 1 ? '1px solid #f9f9f9' : 'none' }}>
+                    <tr key={new Date(row.recorded_at).toISOString()} style={{ borderBottom: i < tableRows.length - 1 ? '1px solid #f9f9f9' : 'none' }}>
                       <td style={{ padding: '10px 16px 10px 0', fontSize: 13, color: '#555' }}>
                         {new Date(row.recorded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </td>
