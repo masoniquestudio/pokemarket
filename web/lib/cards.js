@@ -410,7 +410,7 @@ export const CARDS = [
     number: '10/17',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Flareon Gold Star POP Series 5 sold',
+    ebayQuery: 'Pokemon Flareon Gold Star POP Series 5 10/17 sold',
   },
   {
     id: 'vaporeon-gold-star',
@@ -419,7 +419,7 @@ export const CARDS = [
     number: '12/17',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Vaporeon Gold Star POP Series 5 sold',
+    ebayQuery: 'Pokemon Vaporeon Gold Star POP Series 5 12/17 sold',
   },
   {
     id: 'jolteon-gold-star',
@@ -428,7 +428,7 @@ export const CARDS = [
     number: '11/17',
     era: 'vintage',
     tier: 'iconic',
-    ebayQuery: 'Pokemon Jolteon Gold Star POP Series 5 sold',
+    ebayQuery: 'Pokemon Jolteon Gold Star POP Series 5 11/17 sold',
   },
 
   // ─── ICONIC — Promo / Trophy ───────────────────────────────────────────────
@@ -864,7 +864,7 @@ export const CARDS = [
   {
     id: 'eevee-ex-alt',
     name: 'Eevee ex Alt Art',
-    set: 'Scarlet & Violet 151',
+    set: 'Pokémon 151',
     number: '206/165',
     era: 'modern',
     tier: 'modern-chase',
