@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useId } from 'react';
 import {
   AreaChart,
   Area,
@@ -14,8 +14,6 @@ import {
 type DataPoint = {
   time: string;
   value: number;
-  low?: number;
-  high?: number;
 };
 
 type Props = {
@@ -30,6 +28,7 @@ const RANGES = [
 ];
 
 export default function PriceChart({ data }: Props) {
+  const gradientId = useId();
   const [range, setRange] = useState(30);
 
   const filtered = useMemo(() => {
@@ -85,7 +84,7 @@ export default function PriceChart({ data }: Props) {
         <ResponsiveContainer width="100%" height={220}>
           <AreaChart data={filtered} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
             <defs>
-              <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#f7d02c" stopOpacity={0.2} />
                 <stop offset="95%" stopColor="#f7d02c" stopOpacity={0} />
               </linearGradient>
@@ -121,14 +120,14 @@ export default function PriceChart({ data }: Props) {
               labelFormatter={(label) =>
                 new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
               }
-              formatter={(value: number | undefined) => [`$${(value ?? 0).toFixed(2)}`, 'Avg Price']}
+              formatter={(value: number | undefined) => [`$${(value as number).toFixed(2)}`, 'Avg Price']}
             />
             <Area
               type="monotone"
               dataKey="value"
               stroke="#f7d02c"
               strokeWidth={2.5}
-              fill="url(#priceGradient)"
+              fill={`url(#${gradientId})`}
               dot={false}
               activeDot={{ r: 5, fill: '#f7d02c', stroke: '#fff', strokeWidth: 2 }}
             />
