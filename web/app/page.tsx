@@ -1,7 +1,8 @@
-import { getLatestIndex, getIndexHistory, getCardPriceChanges, getAllPriceHistory } from '../lib/db';
-import { CARDS } from '../lib/cards';
+import { getLatestIndex, getIndexHistory, getCardPriceChanges, getAllPriceHistory, getAllLatestIndices, getAllIndexHistories } from '../lib/db';
+import { CARDS, INDEX_CONFIGS } from '../lib/cards';
 import Nav from '../components/Nav';
 import IndexChart from '../components/IndexChart';
+import IndexTiles from '../components/IndexTiles';
 import SectorTiles, { type SectorData } from '../components/SectorTiles';
 import MoversTable, { type CardRow } from '../components/MoversTable';
 
@@ -48,19 +49,25 @@ export default async function HomePage() {
   let priceChanges: any[] = [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let allHistory: any[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let allLatestIndices: Record<string, any> = {};
+  let allIndexHistories: Record<string, { time: string; value: number }[]> = {};
 
   try {
-    [latestIndex, indexHistory, priceChanges, allHistory] = await Promise.all([
-      getLatestIndex(),
-      getIndexHistory(90).then((rows) =>
-        rows.map((r) => ({
-          time: new Date(r.recorded_at).toISOString(),
-          value: parseFloat(String(r.value)),
-        }))
-      ),
-      getCardPriceChanges(),
-      getAllPriceHistory(30),
-    ]);
+    [latestIndex, indexHistory, priceChanges, allHistory, allLatestIndices, allIndexHistories] =
+      await Promise.all([
+        getLatestIndex('pmi'),
+        getIndexHistory(90, 'pmi').then((rows) =>
+          rows.map((r) => ({
+            time: new Date(r.recorded_at).toISOString(),
+            value: parseFloat(String(r.value)),
+          }))
+        ),
+        getCardPriceChanges(),
+        getAllPriceHistory(30),
+        getAllLatestIndices(),
+        getAllIndexHistories(30) as Promise<Record<string, { time: string; value: number }[]>>,
+      ]);
   } catch {
     // DB not configured yet — show empty state
   }
@@ -128,6 +135,20 @@ export default async function HomePage() {
     };
   });
 
+  // Build data for all 4 index tiles
+  const indexTilesData = Object.entries(INDEX_CONFIGS).map(([id, config]) => {
+    const latest = allLatestIndices[id];
+    return {
+      id,
+      name: config.name,
+      shortName: config.shortName,
+      description: config.description,
+      value: latest ? parseFloat(String(latest.value)) : 0,
+      changePct: latest ? parseFloat(String(latest.change_pct)) : 0,
+      history: allIndexHistories[id] ?? [],
+    };
+  });
+
   const pmiValue = latestIndex ? parseFloat(String(latestIndex.value)) : 0;
   const pmiChange = latestIndex ? parseFloat(String(latestIndex.change_pct)) : 0;
 
@@ -168,6 +189,9 @@ export default async function HomePage() {
           currentValue={pmiValue}
           changePct={pmiChange}
         />
+
+        {/* All 4 Index Tiles */}
+        <IndexTiles indices={indexTilesData} />
 
         {/* Sector tiles */}
         <SectorTiles sectors={sectors} />
