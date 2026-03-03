@@ -199,7 +199,7 @@ export default async function HomePage() {
         {/* Gainers / Losers */}
         <MoversTable gainers={gainers} losers={losers} />
 
-        {/* All cards table */}
+        {/* Top cards summary */}
         <AllCardsTable cards={cardsWithPrices} />
       </main>
     </div>
@@ -221,6 +221,11 @@ const TIER_COLORS: Record<string, { bg: string; color: string }> = {
 };
 
 function AllCardsTable({ cards }: { cards: CardRow[] }) {
+  const priced = cards
+    .filter((c) => c.currentPrice > 0)
+    .sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0))
+    .slice(0, 10);
+
   return (
     <div
       style={{
@@ -231,23 +236,30 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
         border: '1px solid var(--border)',
       }}
     >
-      <h3
-        style={{
-          fontSize: 13,
-          fontWeight: 600,
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase',
-          color: 'var(--text)',
-          marginBottom: 16,
-        }}
-      >
-        All Cards
-      </h3>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <h3
+          style={{
+            fontSize: 13,
+            fontWeight: 600,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color: 'var(--text)',
+          }}
+        >
+          Top Cards
+        </h3>
+        <a
+          href="/cards"
+          style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)', textDecoration: 'none' }}
+        >
+          View all {cards.filter((c) => c.currentPrice > 0).length} cards →
+        </a>
+      </div>
 
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            {['Card', 'Set', 'Tier', 'Price', '7d %', 'Volume'].map((h, i) => (
+            {['Card', 'Set', 'Tier', 'Avg Price', '7d %', 'Volume'].map((h, i) => (
               <th
                 key={h}
                 style={{
@@ -266,13 +278,13 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
           </tr>
         </thead>
         <tbody>
-          {cards.map((card, i) => {
+          {priced.map((card, i) => {
             const tierStyle = TIER_COLORS[card.tier] ?? { bg: 'rgba(124,58,237,0.1)', color: 'var(--accent)' };
             return (
               <tr
                 key={card.id}
                 style={{
-                  borderBottom: i < cards.length - 1 ? '1px solid var(--border)' : 'none',
+                  borderBottom: i < priced.length - 1 ? '1px solid var(--border)' : 'none',
                 }}
               >
                 <td style={{ padding: '11px 16px 11px 0' }}>

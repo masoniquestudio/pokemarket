@@ -59,6 +59,9 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
   const filtered = useMemo(() => {
     let result = cards;
 
+    // Hide cards with no price data
+    result = result.filter((c) => c.currentPrice != null && c.currentPrice > 0);
+
     if (search.trim()) {
       const q = search.toLowerCase();
       result = result.filter((c) => c.name.toLowerCase().includes(q) || c.set.toLowerCase().includes(q));
@@ -170,7 +173,7 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
             <th style={thStyle('set')} onClick={() => toggleSort('set')}>Set <SortIcon col="set" sortKey={sortKey} sortDir={sortDir} /></th>
             <th style={{ ...thStyle('tier'), paddingRight: 16 }} onClick={() => toggleSort('tier')}>Tier <SortIcon col="tier" sortKey={sortKey} sortDir={sortDir} /></th>
             <th style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', paddingBottom: 10, borderBottom: '1px solid var(--border)', paddingRight: 16 }}>Indices</th>
-            <th style={thStyle('currentPrice', 'right')} onClick={() => toggleSort('currentPrice')}>Price <SortIcon col="currentPrice" sortKey={sortKey} sortDir={sortDir} /></th>
+            <th style={thStyle('currentPrice', 'right')} onClick={() => toggleSort('currentPrice')}>Avg Price <SortIcon col="currentPrice" sortKey={sortKey} sortDir={sortDir} /></th>
             <th style={thStyle('changePct', 'right')} onClick={() => toggleSort('changePct')}>7d % <SortIcon col="changePct" sortKey={sortKey} sortDir={sortDir} /></th>
             <th style={{ ...thStyle('volume', 'right'), paddingRight: 0 }} onClick={() => toggleSort('volume')}>Vol <SortIcon col="volume" sortKey={sortKey} sortDir={sortDir} /></th>
           </tr>
