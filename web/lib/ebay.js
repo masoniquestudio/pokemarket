@@ -53,7 +53,7 @@ export async function getEbayToken() {
  * @param {string} query  - the ebayQuery string from cards.js
  * @param {number} limit  - max results to fetch (default 40)
  */
-export async function fetchSoldPrices(query, limit = 40) {
+export async function fetchSoldPrices(query, limit = 100) {
   const token = await getEbayToken();
 
   const params = new URLSearchParams({
@@ -106,7 +106,7 @@ export function summarisePrices(prices) {
       ? (sorted[mid - 1] + sorted[mid]) / 2
       : sorted[mid];
 
-  const filtered = sorted.filter((p) => p >= median * 0.3 && p <= median * 3);
+  const filtered = sorted.filter((p) => p >= median * 0.5 && p <= median * 2);
   if (!filtered.length) return null;
 
   const avg = filtered.reduce((s, p) => s + p, 0) / filtered.length;
