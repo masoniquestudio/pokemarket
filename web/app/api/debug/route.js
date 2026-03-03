@@ -1,22 +1,24 @@
 import { sql } from '@vercel/postgres';
+import { CARDS } from '../../../lib/cards';
 
 export async function GET() {
   try {
-    const count = await sql`SELECT COUNT(*) FROM price_snapshots`;
-    const distinct = await sql`SELECT DISTINCT card_id FROM price_snapshots`;
-    const sample = await sql`SELECT card_id, price_avg, recorded_at FROM price_snapshots ORDER BY recorded_at DESC LIMIT 5`;
-    const latest = await sql`
-      SELECT DISTINCT ON (card_id) card_id, price_avg, recorded_at
-      FROM price_snapshots
-      ORDER BY card_id, recorded_at DESC
-    `;
+    const baselines = [];
+    for (const card of CARDS) {
+      const { rows } = await sql`
+        SELECT price_avg, recorded_at
+        FROM price_snapshots
+        WHERE card_id = ${card.id}
+        ORDER BY recorded_at ASC
+        LIMIT 1
+      `;
+      baselines.push({ cardId: card.id, baseline: rows[0] ?? null });
+    }
 
-    return Response.json({
-      totalRows: count.rows[0].count,
-      distinctCards: distinct.rows.map(r => r.card_id),
-      recentRows: sample.rows,
-      latestPerCard: latest.rows.length,
-    });
+    const missing = baselines.filter(b => !b.baseline).map(b => b.cardId);
+    const found = baselines.filter(b => b.baseline).length;
+
+    return Response.json({ found, missing, baselines });
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
   }
