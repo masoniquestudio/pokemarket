@@ -2,9 +2,8 @@
 
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts';
 
-// Sparkline colors — match --up / --down in globals.css
-const UP_COLOR = '#00A86B';
-const DOWN_COLOR = '#FF3D00';
+// Sparkline colors — keep hex for Recharts props
+const CHART_COLORS = { up: '#00A86B', down: '#FF3D00' };
 
 type IndexData = {
   id: string;
@@ -18,13 +17,7 @@ type IndexData = {
 
 export default function IndexTiles({ indices }: { indices: IndexData[] }) {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-        gap: 12,
-      }}
-    >
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       {indices.map((idx) => (
         <IndexTile key={idx.id} index={idx} />
       ))}
@@ -35,50 +28,27 @@ export default function IndexTiles({ indices }: { indices: IndexData[] }) {
 function IndexTile({ index }: { index: IndexData }) {
   const isUp = index.changePct >= 0;
   const hasData = index.value > 0;
-  const sparkColor = isUp ? UP_COLOR : DOWN_COLOR;
+  const sparkColor = isUp ? CHART_COLORS.up : CHART_COLORS.down;
 
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        borderRadius: 12,
-        padding: '20px 22px 16px',
-        border: '1px solid var(--border)',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
+    <div className="bg-surface rounded-xl px-5 pt-5 pb-4 border border-border">
+      <div className="flex items-start justify-between mb-3">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                background: 'var(--surface-dark)',
-                color: 'var(--text-inverse)',
-                padding: '2px 8px',
-                borderRadius: 4,
-              }}
-            >
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-bold tracking-wide bg-surface-dark text-text-inverse px-2 py-0.5 rounded">
               {index.shortName}
             </span>
-            <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 500 }}>{index.name}</span>
+            <span className="text-xs text-text-muted font-medium">{index.name}</span>
           </div>
-          <p style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 8 }}>{index.description}</p>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-            <span
-              className="num"
-              style={{ fontSize: 28, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.02em' }}
-            >
+          <p className="text-[11px] text-text-muted mb-2">{index.description}</p>
+          <div className="flex items-baseline gap-2">
+            <span className="num text-[28px] font-bold text-text tracking-tight">
               {hasData
                 ? index.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                 : '—'}
             </span>
             {hasData && index.changePct !== 0 && (
-              <span
-                className="num"
-                style={{ fontSize: 13, fontWeight: 700, color: isUp ? 'var(--up)' : 'var(--down)' }}
-              >
+              <span className={`num text-[13px] font-bold ${isUp ? 'text-up' : 'text-down'}`}>
                 {isUp ? '▲' : '▼'} {Math.abs(index.changePct).toFixed(2)}%
               </span>
             )}
@@ -108,8 +78,8 @@ function IndexTile({ index }: { index: IndexData }) {
           </AreaChart>
         </ResponsiveContainer>
       ) : (
-        <div style={{ height: 48, display: 'flex', alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Building history...</span>
+        <div className="h-12 flex items-center">
+          <span className="text-[11px] text-text-muted">Building history...</span>
         </div>
       )}
     </div>

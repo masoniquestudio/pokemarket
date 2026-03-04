@@ -23,7 +23,7 @@ const TIER_LABELS: Record<string, string> = {
 
 export default function MoversTable({ gainers, losers }: Props) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <Table title="Top Gainers" rows={gainers} type="up" />
       <Table title="Top Losers" rows={losers} type="down" />
     </div>
@@ -31,34 +31,29 @@ export default function MoversTable({ gainers, losers }: Props) {
 }
 
 function Table({ title, rows, type }: { title: string; rows: CardRow[]; type: 'up' | 'down' }) {
-  const accentColor = type === 'up' ? 'var(--up)' : 'var(--down)';
-
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        borderRadius: 16,
-        padding: '20px 24px',
-
-        border: '1px solid var(--border)',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-        <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: accentColor }} />
-        <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text)' }}>
+    <div className="bg-surface rounded-2xl px-6 py-5 border border-border">
+      <div className="flex items-center gap-2 mb-4">
+        <span
+          className={`inline-block w-2 h-2 rounded-full ${type === 'up' ? 'bg-up' : 'bg-down'}`}
+        />
+        <h3 className="text-[13px] font-semibold tracking-wide uppercase text-text">
           {title}
         </h3>
-        <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 'auto' }}>vs prev</span>
+        <span className="text-[11px] text-text-muted ml-auto">vs prev</span>
       </div>
 
       {rows.length === 0 ? (
-        <p style={{ fontSize: 13, color: 'var(--text-muted)', textAlign: 'center', padding: '24px 0' }}>No data yet</p>
+        <p className="text-[13px] text-text-muted text-center py-6">No data yet</p>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table className="w-full border-collapse">
           <thead>
             <tr>
               {['Card', 'Price', 'Chg %'].map((h, i) => (
-                <th key={h} style={{ textAlign: i === 0 ? 'left' : 'right', fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', paddingBottom: 8, borderBottom: '1px solid var(--border)' }}>
+                <th
+                  key={h}
+                  className={`${i === 0 ? 'text-left' : 'text-right'} text-[11px] font-medium text-text-muted pb-2 border-b border-border`}
+                >
                   {h}
                 </th>
               ))}
@@ -66,20 +61,31 @@ function Table({ title, rows, type }: { title: string; rows: CardRow[]; type: 'u
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr key={row.id} style={{ borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                <td style={{ padding: '10px 0' }}>
-                  <Link href={`/cards/${row.id}`} style={{ textDecoration: 'none' }}>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>{row.name}</p>
-                    <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{TIER_LABELS[row.tier] ?? row.tier} · {row.set}</p>
+              <tr
+                key={row.id}
+                className={i < rows.length - 1 ? 'border-b border-border' : ''}
+              >
+                <td className="py-2.5">
+                  <Link href={`/cards/${row.id}`} className="no-underline">
+                    <p className="text-sm font-semibold text-text mb-0.5">{row.name}</p>
+                    <p className="text-[11px] text-text-muted">{TIER_LABELS[row.tier] ?? row.tier} · {row.set}</p>
                   </Link>
                 </td>
-                <td style={{ textAlign: 'right', padding: '10px 0' }}>
-                  <span className="num" style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>
+                <td className="text-right py-2.5">
+                  <span className="num text-sm font-semibold text-text">
                     ${row.currentPrice.toFixed(2)}
                   </span>
                 </td>
-                <td style={{ textAlign: 'right', padding: '10px 0' }}>
-                  <span className="num" style={{ fontSize: 13, fontWeight: 700, color: row.changePct === null ? 'var(--text-muted)' : row.changePct >= 0 ? 'var(--up)' : 'var(--down)' }}>
+                <td className="text-right py-2.5">
+                  <span
+                    className={`num text-[13px] font-bold ${
+                      row.changePct === null
+                        ? 'text-text-muted'
+                        : row.changePct >= 0
+                        ? 'text-up'
+                        : 'text-down'
+                    }`}
+                  >
                     {row.changePct === null ? '—' : `${row.changePct >= 0 ? '+' : ''}${row.changePct.toFixed(2)}%`}
                   </span>
                 </td>

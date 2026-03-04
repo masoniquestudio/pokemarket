@@ -11,8 +11,8 @@ import {
   CartesianGrid,
 } from 'recharts';
 
-// Chart stroke color — matches --accent in globals.css
-const CHART_COLOR = '#FF3D00';
+// Chart colors — keep hex for Recharts props
+const CHART_COLORS = { accent: '#FF3D00', textMuted: '#888884', border: '#E0E0DC' };
 
 type DataPoint = { time: string; value: number };
 
@@ -40,58 +40,25 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
   const hasData = currentValue > 0;
 
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        borderRadius: 12,
-        padding: '36px 40px 28px',
-        border: '1px solid var(--border)',
-      }}
-    >
+    <div className="bg-surface rounded-xl px-6 py-7 sm:px-10 sm:py-9 border border-border">
       {/* Header row */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          marginBottom: 28,
-          flexWrap: 'wrap',
-          gap: 16,
-        }}
-      >
+      <div className="flex items-start justify-between mb-7 flex-wrap gap-4">
         <div>
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: 'var(--text-muted)',
-              marginBottom: 8,
-            }}
-          >
+          <p className="text-[11px] font-bold tracking-widest uppercase text-text-muted mb-2">
             PokéMarket Index
           </p>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
+          <div className="flex items-baseline gap-4">
             <span
-              className="num"
-              style={{
-                fontSize: 96,
-                fontWeight: 700,
-                color: hasData ? 'var(--text)' : 'var(--text-muted)',
-                letterSpacing: '-0.04em',
-                lineHeight: 1,
-              }}
+              className={`num text-5xl sm:text-6xl md:text-7xl lg:text-[96px] font-bold tracking-tighter leading-none ${
+                hasData ? 'text-text' : 'text-text-muted'
+              }`}
             >
               {hasData
                 ? currentValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                 : '—'}
             </span>
             {hasData && changePct !== 0 && (
-              <span
-                className="num"
-                style={{ fontSize: 20, fontWeight: 700, color: isUp ? 'var(--up)' : 'var(--down)' }}
-              >
+              <span className={`num text-xl font-bold ${isUp ? 'text-up' : 'text-down'}`}>
                 {isUp ? '▲' : '▼'} {Math.abs(changePct).toFixed(2)}%
               </span>
             )}
@@ -99,32 +66,16 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
         </div>
 
         {/* Range toggle */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 4,
-            background: 'var(--bg)',
-            borderRadius: 8,
-            padding: 4,
-            alignSelf: 'flex-start',
-            border: '1px solid var(--border)',
-          }}
-        >
+        <div className="flex gap-1 bg-bg rounded-lg p-1 self-start border border-border">
           {RANGES.map((r) => (
             <button
               key={r.label}
               onClick={() => setRange(r.days)}
-              style={{
-                padding: '6px 16px',
-                borderRadius: 6,
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 13,
-                fontWeight: 600,
-                background: range === r.days ? 'var(--surface-dark)' : 'transparent',
-                color: range === r.days ? 'var(--text-inverse)' : 'var(--text-muted)',
-                transition: 'all 0.15s',
-              }}
+              className={`px-4 py-1.5 rounded-md border-none cursor-pointer text-[13px] font-semibold transition-all duration-150 ${
+                range === r.days
+                  ? 'bg-surface-dark text-text-inverse'
+                  : 'bg-transparent text-text-muted'
+              }`}
             >
               {r.label}
             </button>
@@ -138,14 +89,14 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
           <AreaChart data={filtered} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id="pmiGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.1} />
-                <stop offset="95%" stopColor={CHART_COLOR} stopOpacity={0} />
+                <stop offset="5%" stopColor={CHART_COLORS.accent} stopOpacity={0.1} />
+                <stop offset="95%" stopColor={CHART_COLORS.accent} stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.border} vertical={false} />
             <XAxis
               dataKey="time"
-              tick={{ fontSize: 11, fill: '#888884', fontFamily: 'inherit' }}
+              tick={{ fontSize: 11, fill: CHART_COLORS.textMuted, fontFamily: 'inherit' }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v) => {
@@ -155,7 +106,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
               minTickGap={40}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: '#888884', fontFamily: 'inherit' }}
+              tick={{ fontSize: 11, fill: CHART_COLORS.textMuted, fontFamily: 'inherit' }}
               tickLine={false}
               axisLine={false}
               domain={['auto', 'auto']}
@@ -164,13 +115,13 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             />
             <Tooltip
               contentStyle={{
-                background: 'var(--surface-dark)',
+                background: '#0D0D0D',
                 border: 'none',
                 borderRadius: 8,
                 fontSize: 13,
                 color: '#fff',
               }}
-              labelStyle={{ color: '#888884', marginBottom: 4 }}
+              labelStyle={{ color: CHART_COLORS.textMuted, marginBottom: 4 }}
               labelFormatter={(label) =>
                 new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
               }
@@ -182,28 +133,18 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
             <Area
               type="monotone"
               dataKey="value"
-              stroke={CHART_COLOR}
+              stroke={CHART_COLORS.accent}
               strokeWidth={2}
               fill="url(#pmiGradient)"
               dot={false}
-              activeDot={{ r: 5, fill: CHART_COLOR, stroke: '#fff', strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: CHART_COLORS.accent, stroke: '#fff', strokeWidth: 2 }}
             />
           </AreaChart>
         </ResponsiveContainer>
       ) : (
-        <div
-          style={{
-            height: 240,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--text-muted)',
-            gap: 8,
-          }}
-        >
-          <p style={{ fontSize: 14, fontWeight: 500 }}>No chart data yet</p>
-          <p style={{ fontSize: 12 }}>Run <code>/api/prices</code> then <code>/api/index</code> to seed data</p>
+        <div className="h-60 flex flex-col items-center justify-center text-text-muted gap-2">
+          <p className="text-sm font-medium">No chart data yet</p>
+          <p className="text-xs">Run <code>/api/prices</code> then <code>/api/index</code> to seed data</p>
         </div>
       )}
     </div>

@@ -12,10 +12,10 @@ const TIER_LABELS: Record<string, string> = {
   'modern-chase': 'Modern Chase',
 };
 
-const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  vintage:        { bg: 'var(--tier-vintage-bg)',  color: 'var(--tier-vintage-color)' },
-  iconic:         { bg: 'var(--tier-iconic-bg)',   color: 'var(--tier-iconic-color)' },
-  'modern-chase': { bg: 'var(--tier-modern-bg)',   color: 'var(--tier-modern-color)' },
+const TIER_CLASSES: Record<string, string> = {
+  vintage: 'bg-tier-vintage-bg text-tier-vintage',
+  iconic: 'bg-tier-iconic-bg text-tier-iconic',
+  'modern-chase': 'bg-tier-modern-bg text-tier-modern',
 };
 
 type Props = { params: Promise<{ id: string }> };
@@ -68,93 +68,56 @@ export default async function CardDetailPage({ params }: Props) {
   // Snapshot table — most recent first, cap at 30
   const tableRows = [...history].reverse().slice(0, 30);
 
-  const tierStyle = TIER_COLORS[card.tier] ?? { bg: 'rgba(52,102,175,0.25)', color: '#a0b8d8' };
+  const tierClass = TIER_CLASSES[card.tier] ?? 'bg-violet-500/10 text-accent';
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
+    <div className="min-h-screen bg-bg">
       <Nav />
 
-      <main
-        style={{
-          maxWidth: 1024,
-          margin: '0 auto',
-          padding: '32px 24px 64px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 20,
-        }}
-      >
+      <main className="max-w-5xl mx-auto px-6 pt-8 pb-16 flex flex-col gap-5">
         {/* Breadcrumb */}
         <a
           href="/"
-          style={{
-            fontSize: 13,
-            color: 'var(--text-muted)',
-            textDecoration: 'none',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 4,
-          }}
+          className="text-[13px] text-text-muted no-underline inline-flex items-center gap-1"
         >
           ← All Cards
         </a>
 
         {/* Card header */}
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 16,
-            padding: '24px 28px',
-
-            border: '1px solid var(--border)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+        <div className="bg-surface rounded-2xl px-6 py-6 sm:px-7 border border-border">
+          <div className="flex items-start justify-between flex-wrap gap-4">
             <div>
-              <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
+              <h1 className="text-2xl font-bold text-text mb-1.5">
                 {card.name}
               </h1>
-              <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>
+              <p className="text-sm text-text-muted">
                 {card.set} · #{card.number} · {card.era}
               </p>
             </div>
-            <span
-              style={{
-                fontSize: 12,
-                fontWeight: 600,
-                padding: '4px 12px',
-                borderRadius: 999,
-                background: tierStyle.bg,
-                color: tierStyle.color,
-                alignSelf: 'flex-start',
-              }}
-            >
+            <span className={`text-xs font-semibold px-3 py-1 rounded-full self-start ${tierClass}`}>
               {TIER_LABELS[card.tier] ?? card.tier}
             </span>
           </div>
 
           {/* Stats row */}
-          <div style={{ display: 'flex', gap: 32, marginTop: 24, flexWrap: 'wrap' }}>
+          <div className="flex gap-8 mt-6 flex-wrap">
             <div>
-              <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
+              <p className="text-[11px] text-text-muted font-semibold tracking-wide uppercase mb-1">
                 Current Avg
               </p>
-              <span className="num" style={{ fontSize: 32, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.01em' }}>
+              <span className="num text-[32px] font-bold text-text tracking-tight">
                 {latest != null ? `$${latest.toFixed(2)}` : '—'}
               </span>
             </div>
             {[{ label: '7d Change', val: change7d }, { label: '30d Change', val: change30d }].map(({ label, val }) => (
               <div key={label}>
-                <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
+                <p className="text-[11px] text-text-muted font-semibold tracking-wide uppercase mb-1">
                   {label}
                 </p>
                 <span
-                  className="num"
-                  style={{
-                    fontSize: 22,
-                    fontWeight: 700,
-                    color: val === null ? 'var(--text-muted)' : val >= 0 ? 'var(--up)' : 'var(--down)',
-                  }}
+                  className={`num text-[22px] font-bold ${
+                    val === null ? 'text-text-muted' : val >= 0 ? 'text-up' : 'text-down'
+                  }`}
                 >
                   {val === null ? '—' : `${val >= 0 ? '+' : ''}${val.toFixed(2)}%`}
                 </span>
@@ -167,88 +130,68 @@ export default async function CardDetailPage({ params }: Props) {
         <PriceChart data={chartData} />
 
         {/* Snapshot history table */}
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 16,
-            padding: '20px 24px',
-
-            border: '1px solid var(--border)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text)' }}>
+        <div className="bg-surface rounded-2xl px-6 py-5 border border-border">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+            <h3 className="text-[13px] font-semibold tracking-wide uppercase text-text">
               Price History
             </h3>
             <a
               href={ebayUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: 'var(--accent)',
-                textDecoration: 'none',
-                padding: '6px 14px',
-                borderRadius: 999,
-                border: '1.5px solid var(--border)',
-              }}
+              className="text-[13px] font-semibold text-accent no-underline px-3.5 py-1.5 rounded-full border-[1.5px] border-border"
             >
               View on eBay →
             </a>
           </div>
 
           {tableRows.length > 0 ? (
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  {['Date', 'Avg Price', 'Low', 'High', 'Volume'].map((h, i) => (
-                    <th
-                      key={h}
-                      style={{
-                        textAlign: i === 0 ? 'left' : 'right',
-                        fontSize: 11,
-                        fontWeight: 500,
-                        color: 'var(--text-muted)',
-                        paddingBottom: 10,
-                        borderBottom: '1px solid var(--border)',
-                        paddingRight: i < 4 ? 16 : 0,
-                      }}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {tableRows.map((row, i) => {
-                  const avg = parseFloat(String(row.price_avg));
-                  const low = row.price_low ? parseFloat(String(row.price_low)) : null;
-                  const high = row.price_high ? parseFloat(String(row.price_high)) : null;
-                  return (
-                    <tr key={new Date(row.recorded_at).toISOString()} style={{ borderBottom: i < tableRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                      <td style={{ padding: '10px 16px 10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
-                        {new Date(row.recorded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                      </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>
-                        ${avg.toFixed(2)}
-                      </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
-                        {low != null ? `$${low.toFixed(2)}` : '—'}
-                      </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
-                        {high != null ? `$${high.toFixed(2)}` : '—'}
-                      </td>
-                      <td className="num" style={{ textAlign: 'right', padding: '10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
-                        {row.volume ?? '—'}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse min-w-[400px]">
+                <thead>
+                  <tr>
+                    {['Date', 'Avg Price', 'Low', 'High', 'Volume'].map((h, i) => (
+                      <th
+                        key={h}
+                        className={`${i === 0 ? 'text-left' : 'text-right'} text-[11px] font-medium text-text-muted pb-2.5 border-b border-border ${
+                          i < 4 ? 'pr-4' : ''
+                        } ${i >= 2 && i <= 4 ? 'hidden sm:table-cell' : ''}`}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableRows.map((row, i) => {
+                    const avg = parseFloat(String(row.price_avg));
+                    const low = row.price_low ? parseFloat(String(row.price_low)) : null;
+                    const high = row.price_high ? parseFloat(String(row.price_high)) : null;
+                    return (
+                      <tr key={new Date(row.recorded_at).toISOString()} className={i < tableRows.length - 1 ? 'border-b border-border' : ''}>
+                        <td className="py-2.5 pr-4 text-[13px] text-text-muted">
+                          {new Date(row.recorded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </td>
+                        <td className="num text-right py-2.5 pr-4 text-sm font-semibold text-text">
+                          ${avg.toFixed(2)}
+                        </td>
+                        <td className="num text-right py-2.5 pr-4 text-[13px] text-text-muted hidden sm:table-cell">
+                          {low != null ? `$${low.toFixed(2)}` : '—'}
+                        </td>
+                        <td className="num text-right py-2.5 pr-4 text-[13px] text-text-muted hidden sm:table-cell">
+                          {high != null ? `$${high.toFixed(2)}` : '—'}
+                        </td>
+                        <td className="num text-right py-2.5 text-[13px] text-text-muted hidden sm:table-cell">
+                          {row.volume ?? '—'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           ) : (
-            <p style={{ fontSize: 14, color: 'var(--text-muted)', textAlign: 'center', padding: '32px 0' }}>
+            <p className="text-sm text-text-muted text-center py-8">
               No price data yet — run /api/prices to seed data
             </p>
           )}
@@ -256,47 +199,24 @@ export default async function CardDetailPage({ params }: Props) {
 
         {/* Related cards */}
         {related.length > 0 && (
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 16,
-              padding: '20px 24px',
-  
-              border: '1px solid var(--border)',
-            }}
-          >
-            <h3 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text)', marginBottom: 16 }}>
+          <div className="bg-surface rounded-2xl px-6 py-5 border border-border">
+            <h3 className="text-[13px] font-semibold tracking-wide uppercase text-text mb-4">
               Related Cards
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {related.map((c) => {
-                const cs = TIER_COLORS[c.tier] ?? { bg: 'rgba(124,58,237,0.1)', color: 'var(--accent)' };
+                const relatedTierClass = TIER_CLASSES[c.tier] ?? 'bg-violet-500/10 text-accent';
                 return (
                   <a
                     key={c.id}
                     href={`/cards/${c.id}`}
-                    style={{
-                      display: 'block',
-                      padding: '14px 16px',
-                      borderRadius: 12,
-                      border: '1.5px solid var(--border)',
-                      textDecoration: 'none',
-                    }}
+                    className="block px-4 py-3.5 rounded-xl border-[1.5px] border-border no-underline hover:border-text-muted transition-colors"
                   >
-                    <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 4 }}>
+                    <p className="text-sm font-semibold text-text mb-1">
                       {c.name}
                     </p>
-                    <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>{c.set}</p>
-                    <span
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 600,
-                        padding: '2px 8px',
-                        borderRadius: 999,
-                        background: cs.bg,
-                        color: cs.color,
-                      }}
-                    >
+                    <p className="text-xs text-text-muted mb-2">{c.set}</p>
+                    <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${relatedTierClass}`}>
                       {TIER_LABELS[c.tier] ?? c.tier}
                     </span>
                   </a>

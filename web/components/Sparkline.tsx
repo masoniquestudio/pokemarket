@@ -15,21 +15,8 @@ export default function Sparkline({
 }: Props) {
   if (!data || data.length < 2) {
     return (
-      <div
-        style={{
-          height,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            width: '100%',
-            height: 1,
-            background: '#ebebeb',
-          }}
-        />
+      <div className="flex items-center justify-center" style={{ height }}>
+        <div className="w-full h-px bg-border" />
       </div>
     );
   }

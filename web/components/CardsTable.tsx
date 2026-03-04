@@ -24,10 +24,10 @@ const TIER_LABELS: Record<string, string> = {
   'modern-chase': 'Modern Chase',
 };
 
-const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  vintage:       { bg: 'var(--tier-vintage-bg)',  color: 'var(--tier-vintage-color)' },
-  iconic:        { bg: 'var(--tier-iconic-bg)',   color: 'var(--tier-iconic-color)' },
-  'modern-chase':{ bg: 'var(--tier-modern-bg)',   color: 'var(--tier-modern-color)' },
+const TIER_CLASSES: Record<string, string> = {
+  vintage: 'bg-tier-vintage-bg text-tier-vintage',
+  iconic: 'bg-tier-iconic-bg text-tier-iconic',
+  'modern-chase': 'bg-tier-modern-bg text-tier-modern',
 };
 
 const INDEX_LABELS: Record<string, string> = {
@@ -37,16 +37,16 @@ const INDEX_LABELS: Record<string, string> = {
   modern: 'MDRN',
 };
 
-const INDEX_COLORS: Record<string, { bg: string; color: string }> = {
-  pmi:       { bg: 'var(--tier-vintage-bg)',  color: 'var(--tier-vintage-color)' },
-  charizard: { bg: 'rgba(59, 130, 246, 0.1)',  color: '#3B82F6' },
-  vintage:   { bg: 'rgba(124,58,237,0.1)',    color: 'var(--accent)' },
-  modern:    { bg: 'var(--tier-modern-bg)',   color: 'var(--tier-modern-color)' },
+const INDEX_CLASSES: Record<string, string> = {
+  pmi: 'bg-tier-vintage-bg text-tier-vintage',
+  charizard: 'bg-blue-500/10 text-blue-500',
+  vintage: 'bg-violet-500/10 text-accent',
+  modern: 'bg-tier-modern-bg text-tier-modern',
 };
 
 function SortIcon({ col, sortKey, sortDir }: { col: SortKey; sortKey: SortKey; sortDir: SortDir }) {
-  if (sortKey !== col) return <span style={{ color: 'var(--text-muted)', marginLeft: 4 }}>↕</span>;
-  return <span style={{ color: 'var(--accent)', marginLeft: 4 }}>{sortDir === 'asc' ? '↑' : '↓'}</span>;
+  if (sortKey !== col) return <span className="text-text-muted ml-1">↕</span>;
+  return <span className="text-accent ml-1">{sortDir === 'asc' ? '↑' : '↓'}</span>;
 }
 
 export default function CardsTable({ cards }: { cards: CardRow[] }) {
@@ -90,141 +90,133 @@ export default function CardsTable({ cards }: { cards: CardRow[] }) {
     }
   }
 
-  const thStyle = (col: SortKey, align: 'left' | 'right' = 'left'): React.CSSProperties => ({
-    textAlign: align,
-    fontSize: 11,
-    fontWeight: 600,
-    color: sortKey === col ? 'var(--accent)' : 'var(--text-muted)',
-    paddingBottom: 10,
-    borderBottom: '1px solid var(--border)',
-    paddingRight: 16,
-    cursor: 'pointer',
-    userSelect: 'none',
-    whiteSpace: 'nowrap',
-  });
-
-  const filterBtn = (active: boolean): React.CSSProperties => ({
-    padding: '6px 14px',
-    borderRadius: 999,
-    border: active ? 'none' : '1px solid var(--border)',
-    cursor: 'pointer',
-    fontSize: 12,
-    fontWeight: 600,
-    background: active ? 'var(--surface-dark)' : 'var(--surface)',
-    color: active ? 'var(--text-inverse)' : 'var(--text-muted)',
-    transition: 'all 0.15s',
-  });
+  const thBase = 'text-[11px] font-semibold pb-2.5 border-b border-border pr-4 cursor-pointer select-none whitespace-nowrap';
 
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        borderRadius: 16,
-        padding: '20px 24px',
-
-        border: '1px solid var(--border)',
-      }}
-    >
+    <div className="bg-surface rounded-2xl px-6 py-5 border border-border">
       {/* Filters */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+      <div className="flex gap-2 mb-5 flex-wrap items-center">
         <input
           type="text"
           placeholder="Search cards or sets..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            padding: '8px 14px',
-            borderRadius: 999,
-            border: '1px solid var(--border)',
-            fontSize: 13,
-            outline: 'none',
-            width: 220,
-            color: 'var(--text)',
-            background: 'var(--bg)',
-          }}
+          className="px-3.5 py-2 rounded-full border border-border text-[13px] outline-none w-full sm:w-56 text-text bg-bg"
         />
 
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="flex gap-1 flex-wrap">
           {['all', 'vintage', 'iconic', 'modern-chase'].map((t) => (
-            <button key={t} onClick={() => setTierFilter(t)} style={filterBtn(tierFilter === t)}>
+            <button
+              key={t}
+              onClick={() => setTierFilter(t)}
+              className={`px-3.5 py-1.5 rounded-full cursor-pointer text-xs font-semibold transition-all duration-150 ${
+                tierFilter === t
+                  ? 'bg-surface-dark text-text-inverse border-none'
+                  : 'bg-surface text-text-muted border border-border'
+              }`}
+            >
               {t === 'all' ? 'All Tiers' : TIER_LABELS[t]}
             </button>
           ))}
         </div>
 
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="flex gap-1 flex-wrap">
           {['all', 'pmi', 'charizard', 'vintage', 'modern'].map((idx) => (
-            <button key={idx} onClick={() => setIndexFilter(idx)} style={filterBtn(indexFilter === idx)}>
+            <button
+              key={idx}
+              onClick={() => setIndexFilter(idx)}
+              className={`px-3.5 py-1.5 rounded-full cursor-pointer text-xs font-semibold transition-all duration-150 ${
+                indexFilter === idx
+                  ? 'bg-surface-dark text-text-inverse border-none'
+                  : 'bg-surface text-text-muted border border-border'
+              }`}
+            >
               {idx === 'all' ? 'All Indices' : INDEX_LABELS[idx]}
             </button>
           ))}
         </div>
 
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-muted)' }}>
+        <span className="ml-auto text-xs text-text-muted">
           {filtered.length} of {cards.length} cards
         </span>
       </div>
 
       {/* Table */}
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th style={thStyle('name')} onClick={() => toggleSort('name')}>Card <SortIcon col="name" sortKey={sortKey} sortDir={sortDir} /></th>
-            <th style={thStyle('set')} onClick={() => toggleSort('set')}>Set <SortIcon col="set" sortKey={sortKey} sortDir={sortDir} /></th>
-            <th style={{ ...thStyle('tier'), paddingRight: 16 }} onClick={() => toggleSort('tier')}>Tier <SortIcon col="tier" sortKey={sortKey} sortDir={sortDir} /></th>
-            <th style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', paddingBottom: 10, borderBottom: '1px solid var(--border)', paddingRight: 16 }}>Indices</th>
-            <th style={thStyle('currentPrice', 'right')} onClick={() => toggleSort('currentPrice')}>Avg Price <SortIcon col="currentPrice" sortKey={sortKey} sortDir={sortDir} /></th>
-            <th style={thStyle('changePct', 'right')} onClick={() => toggleSort('changePct')}>Chg % <SortIcon col="changePct" sortKey={sortKey} sortDir={sortDir} /></th>
-            <th style={{ ...thStyle('volume', 'right'), paddingRight: 0 }} onClick={() => toggleSort('volume')}>Vol <SortIcon col="volume" sortKey={sortKey} sortDir={sortDir} /></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map((card, i) => {
-            const tierStyle = TIER_COLORS[card.tier] ?? { bg: 'rgba(124,58,237,0.1)', color: 'var(--accent)' };
-            return (
-              <tr key={card.id} style={{ borderBottom: i < filtered.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                <td style={{ padding: '10px 16px 10px 0' }}>
-                  <a href={`/cards/${card.id}`} style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', textDecoration: 'none' }}>
-                    {card.name}
-                  </a>
-                </td>
-                <td style={{ fontSize: 13, color: 'var(--text-muted)', padding: '10px 16px 10px 0' }}>{card.set}</td>
-                <td style={{ padding: '10px 16px 10px 0' }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 12, background: tierStyle.bg, color: tierStyle.color }}>
-                    {TIER_LABELS[card.tier] ?? card.tier}
-                  </span>
-                </td>
-                <td style={{ padding: '10px 16px 10px 0' }}>
-                  <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                    {card.indices.map((idx) => {
-                      const cs = INDEX_COLORS[idx] ?? { bg: 'rgba(124,58,237,0.1)', color: 'var(--accent)' };
-                      return (
-                        <span key={idx} style={{ fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 999, background: cs.bg, color: cs.color, letterSpacing: '0.04em' }}>
-                          {INDEX_LABELS[idx]}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </td>
-                <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0', fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>
-                  {card.currentPrice != null ? `$${card.currentPrice.toFixed(2)}` : '—'}
-                </td>
-                <td className="num" style={{ textAlign: 'right', padding: '10px 16px 10px 0' }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: card.changePct === null ? 'var(--text-muted)' : card.changePct >= 0 ? 'var(--up)' : 'var(--down)' }}>
-                    {card.changePct === null ? '—' : `${card.changePct >= 0 ? '+' : ''}${card.changePct.toFixed(2)}%`}
-                  </span>
-                </td>
-                <td className="num" style={{ textAlign: 'right', padding: '10px 0', fontSize: 13, color: 'var(--text-muted)' }}>
-                  {card.volume ?? '—'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse min-w-[500px]">
+          <thead>
+            <tr>
+              <th className={`${thBase} text-left ${sortKey === 'name' ? 'text-accent' : 'text-text-muted'}`} onClick={() => toggleSort('name')}>
+                Card <SortIcon col="name" sortKey={sortKey} sortDir={sortDir} />
+              </th>
+              <th className={`${thBase} text-left hidden md:table-cell ${sortKey === 'set' ? 'text-accent' : 'text-text-muted'}`} onClick={() => toggleSort('set')}>
+                Set <SortIcon col="set" sortKey={sortKey} sortDir={sortDir} />
+              </th>
+              <th className={`${thBase} text-left hidden md:table-cell ${sortKey === 'tier' ? 'text-accent' : 'text-text-muted'}`} onClick={() => toggleSort('tier')}>
+                Tier <SortIcon col="tier" sortKey={sortKey} sortDir={sortDir} />
+              </th>
+              <th className={`${thBase} text-left hidden lg:table-cell text-text-muted`}>Indices</th>
+              <th className={`${thBase} text-right ${sortKey === 'currentPrice' ? 'text-accent' : 'text-text-muted'}`} onClick={() => toggleSort('currentPrice')}>
+                Price <SortIcon col="currentPrice" sortKey={sortKey} sortDir={sortDir} />
+              </th>
+              <th className={`${thBase} text-right ${sortKey === 'changePct' ? 'text-accent' : 'text-text-muted'}`} onClick={() => toggleSort('changePct')}>
+                Chg % <SortIcon col="changePct" sortKey={sortKey} sortDir={sortDir} />
+              </th>
+              <th className={`${thBase} text-right hidden lg:table-cell pr-0 ${sortKey === 'volume' ? 'text-accent' : 'text-text-muted'}`} onClick={() => toggleSort('volume')}>
+                Vol <SortIcon col="volume" sortKey={sortKey} sortDir={sortDir} />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((card, i) => {
+              const tierClass = TIER_CLASSES[card.tier] ?? 'bg-violet-500/10 text-accent';
+              return (
+                <tr key={card.id} className={i < filtered.length - 1 ? 'border-b border-border' : ''}>
+                  <td className="py-2.5 pr-4">
+                    <a href={`/cards/${card.id}`} className="text-sm font-semibold text-text no-underline">
+                      {card.name}
+                    </a>
+                  </td>
+                  <td className="text-[13px] text-text-muted py-2.5 pr-4 hidden md:table-cell">{card.set}</td>
+                  <td className="py-2.5 pr-4 hidden md:table-cell">
+                    <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-xl ${tierClass}`}>
+                      {TIER_LABELS[card.tier] ?? card.tier}
+                    </span>
+                  </td>
+                  <td className="py-2.5 pr-4 hidden lg:table-cell">
+                    <div className="flex gap-1 flex-wrap">
+                      {card.indices.map((idx) => {
+                        const idxClass = INDEX_CLASSES[idx] ?? 'bg-violet-500/10 text-accent';
+                        return (
+                          <span key={idx} className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full tracking-wide ${idxClass}`}>
+                            {INDEX_LABELS[idx]}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </td>
+                  <td className="num text-right py-2.5 pr-4 text-sm font-semibold text-text">
+                    {card.currentPrice != null ? `$${card.currentPrice.toFixed(2)}` : '—'}
+                  </td>
+                  <td className="num text-right py-2.5 pr-4">
+                    <span className={`text-[13px] font-bold ${
+                      card.changePct === null ? 'text-text-muted' : card.changePct >= 0 ? 'text-up' : 'text-down'
+                    }`}>
+                      {card.changePct === null ? '—' : `${card.changePct >= 0 ? '+' : ''}${card.changePct.toFixed(2)}%`}
+                    </span>
+                  </td>
+                  <td className="num text-right py-2.5 text-[13px] text-text-muted hidden lg:table-cell">
+                    {card.volume ?? '—'}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
       {filtered.length === 0 && (
-        <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 14, padding: '32px 0' }}>
+        <p className="text-center text-text-muted text-sm py-8">
           No cards match your filters
         </p>
       )}

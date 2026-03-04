@@ -48,14 +48,14 @@ export default async function CardsPage() {
   });
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
+    <div className="min-h-screen bg-bg">
       <Nav />
-      <main style={{ maxWidth: 1280, margin: '0 auto', padding: '32px 24px 64px' }}>
-        <div style={{ marginBottom: 20 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>
+      <main className="max-w-7xl mx-auto px-6 pt-8 pb-16">
+        <div className="mb-5">
+          <h1 className="text-[22px] font-bold text-text mb-1">
             All Cards
           </h1>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+          <p className="text-[13px] text-text-muted">
             {CARDS.length} cards tracked · prices refresh every 6 hours
           </p>
         </div>

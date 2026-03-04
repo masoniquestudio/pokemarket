@@ -153,32 +153,16 @@ export default async function HomePage() {
   const pmiChange = latestIndex ? parseFloat(String(latestIndex.change_pct)) : 0;
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
+    <div className="min-h-screen bg-bg">
       <Nav />
 
-      <main
-        style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '32px 24px 64px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 20,
-        }}
-      >
+      <main className="max-w-7xl mx-auto px-6 pt-8 pb-16 flex flex-col gap-5">
         {/* Page title */}
-        <div style={{ marginBottom: 4 }}>
-          <h1
-            style={{
-              fontSize: 22,
-              fontWeight: 700,
-              color: 'var(--text)',
-              marginBottom: 4,
-            }}
-          >
+        <div className="mb-1">
+          <h1 className="text-[22px] font-bold text-text mb-1">
             Market Dashboard
           </h1>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+          <p className="text-[13px] text-text-muted">
             Pokémon TCG price tracking · refreshes every 6 hours
           </p>
         </div>
@@ -214,10 +198,10 @@ const TIER_LABELS: Record<string, string> = {
   'modern-chase': 'Modern Chase',
 };
 
-const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  vintage:        { bg: 'var(--tier-vintage-bg)',  color: 'var(--tier-vintage-color)' },
-  iconic:         { bg: 'var(--tier-iconic-bg)',   color: 'var(--tier-iconic-color)' },
-  'modern-chase': { bg: 'var(--tier-modern-bg)',   color: 'var(--tier-modern-color)' },
+const TIER_CLASSES: Record<string, string> = {
+  vintage: 'bg-tier-vintage-bg text-tier-vintage',
+  iconic: 'bg-tier-iconic-bg text-tier-iconic',
+  'modern-chase': 'bg-tier-modern-bg text-tier-modern',
 };
 
 function AllCardsTable({ cards }: { cards: CardRow[] }) {
@@ -227,144 +211,90 @@ function AllCardsTable({ cards }: { cards: CardRow[] }) {
     .slice(0, 10);
 
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        borderRadius: 16,
-        padding: '20px 24px',
-
-        border: '1px solid var(--border)',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h3
-          style={{
-            fontSize: 13,
-            fontWeight: 600,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            color: 'var(--text)',
-          }}
-        >
+    <div className="bg-surface rounded-2xl px-6 py-5 border border-border">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-[13px] font-semibold tracking-wide uppercase text-text">
           Top Cards
         </h3>
         <a
           href="/cards"
-          style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)', textDecoration: 'none' }}
+          className="text-[13px] font-semibold text-accent no-underline"
         >
           View all {cards.filter((c) => c.currentPrice > 0).length} cards →
         </a>
       </div>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            {['Card', 'Set', 'Tier', 'Avg Price', 'Chg %', 'Volume'].map((h, i) => (
-              <th
-                key={h}
-                style={{
-                  textAlign: i >= 3 ? 'right' : 'left',
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: 'var(--text-muted)',
-                  paddingBottom: 10,
-                  borderBottom: '1px solid var(--border)',
-                  paddingRight: i < 5 ? 16 : 0,
-                }}
-              >
-                {h}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {priced.map((card, i) => {
-            const tierStyle = TIER_COLORS[card.tier] ?? { bg: 'rgba(124,58,237,0.1)', color: 'var(--accent)' };
-            return (
-              <tr
-                key={card.id}
-                style={{
-                  borderBottom: i < priced.length - 1 ? '1px solid var(--border)' : 'none',
-                }}
-              >
-                <td style={{ padding: '11px 16px 11px 0' }}>
-                  <a
-                    href={`/cards/${card.id}`}
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: 'var(--text)',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    {card.name}
-                  </a>
-                </td>
-                <td
-                  style={{
-                    fontSize: 13,
-                    color: 'var(--text-muted)',
-                    padding: '11px 16px 11px 0',
-                  }}
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse min-w-[500px]">
+          <thead>
+            <tr>
+              {['Card', 'Set', 'Tier', 'Avg Price', 'Chg %', 'Volume'].map((h, i) => (
+                <th
+                  key={h}
+                  className={`${i >= 3 ? 'text-right' : 'text-left'} text-[11px] font-medium text-text-muted pb-2.5 border-b border-border ${
+                    i < 5 ? 'pr-4' : ''
+                  } ${i === 1 || i === 2 ? 'hidden md:table-cell' : ''} ${i === 5 ? 'hidden lg:table-cell' : ''}`}
                 >
-                  {card.set}
-                </td>
-                <td style={{ padding: '11px 16px 11px 0' }}>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      padding: '3px 8px',
-                      borderRadius: 12,
-                      background: tierStyle.bg,
-                      color: tierStyle.color,
-                    }}
-                  >
-                    {TIER_LABELS[card.tier] ?? card.tier}
-                  </span>
-                </td>
-                <td style={{ textAlign: 'right', padding: '11px 16px 11px 0' }}>
-                  <span
-                    className="num"
-                    style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}
-                  >
-                    {card.currentPrice > 0
-                      ? `$${card.currentPrice.toFixed(2)}`
-                      : '—'}
-                  </span>
-                </td>
-                <td style={{ textAlign: 'right', padding: '11px 16px 11px 0' }}>
-                  <span
-                    className="num"
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color:
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {priced.map((card, i) => {
+              const tierClass = TIER_CLASSES[card.tier] ?? 'bg-violet-500/10 text-accent';
+              return (
+                <tr
+                  key={card.id}
+                  className={i < priced.length - 1 ? 'border-b border-border' : ''}
+                >
+                  <td className="py-2.5 pr-4">
+                    <a
+                      href={`/cards/${card.id}`}
+                      className="text-sm font-semibold text-text no-underline"
+                    >
+                      {card.name}
+                    </a>
+                  </td>
+                  <td className="text-[13px] text-text-muted py-2.5 pr-4 hidden md:table-cell">
+                    {card.set}
+                  </td>
+                  <td className="py-2.5 pr-4 hidden md:table-cell">
+                    <span className={`text-[11px] font-semibold py-0.5 px-2 rounded-xl ${tierClass}`}>
+                      {TIER_LABELS[card.tier] ?? card.tier}
+                    </span>
+                  </td>
+                  <td className="text-right py-2.5 pr-4">
+                    <span className="num text-sm font-semibold text-text">
+                      {card.currentPrice > 0 ? `$${card.currentPrice.toFixed(2)}` : '—'}
+                    </span>
+                  </td>
+                  <td className="text-right py-2.5 pr-4">
+                    <span
+                      className={`num text-[13px] font-bold ${
                         card.changePct === null
-                          ? 'var(--text-muted)'
+                          ? 'text-text-muted'
                           : card.changePct >= 0
-                          ? 'var(--up)'
-                          : 'var(--down)',
-                    }}
-                  >
-                    {card.changePct === null
-                      ? '—'
-                      : `${card.changePct >= 0 ? '+' : ''}${card.changePct.toFixed(2)}%`}
-                  </span>
-                </td>
-                <td style={{ textAlign: 'right', padding: '11px 0' }}>
-                  <span
-                    className="num"
-                    style={{ fontSize: 13, color: 'var(--text-muted)' }}
-                  >
-                    {card.volume ?? '—'}
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                          ? 'text-up'
+                          : 'text-down'
+                      }`}
+                    >
+                      {card.changePct === null
+                        ? '—'
+                        : `${card.changePct >= 0 ? '+' : ''}${card.changePct.toFixed(2)}%`}
+                    </span>
+                  </td>
+                  <td className="text-right py-2.5 hidden lg:table-cell">
+                    <span className="num text-[13px] text-text-muted">
+                      {card.volume ?? '—'}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

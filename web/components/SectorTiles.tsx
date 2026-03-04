@@ -1,5 +1,8 @@
 import Sparkline from './Sparkline';
 
+// Sparkline colors — keep hex for Recharts
+const CHART_COLORS = { up: '#00A86B', down: '#FF3D00', neutral: '#E0E0DC' };
+
 export type SectorData = {
   tier: string;
   label: string;
@@ -14,7 +17,7 @@ type Props = {
 
 export default function SectorTiles({ sectors }: Props) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {sectors.map((sector) => {
         const isUp = (sector.avgChangePct ?? 0) >= 0;
         const hasChange = sector.avgChangePct !== null;
@@ -22,39 +25,33 @@ export default function SectorTiles({ sectors }: Props) {
         return (
           <div
             key={sector.tier}
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 16,
-              padding: '20px 24px',
-
-              border: '1px solid var(--border)',
-            }}
+            className="bg-surface rounded-2xl px-6 py-5 border border-border"
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+            <div className="flex justify-between items-start mb-3">
               <div>
-                <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 4 }}>
+                <p className="text-[11px] font-semibold tracking-widest uppercase text-text-muted mb-1">
                   {sector.label}
                 </p>
-                <p style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 400 }}>
+                <p className="text-[13px] text-text-muted">
                   {sector.cardCount} card{sector.cardCount !== 1 ? 's' : ''}
                 </p>
               </div>
 
-              <div style={{ textAlign: 'right' }}>
+              <div className="text-right">
                 {hasChange ? (
-                  <span className="num" style={{ fontSize: 18, fontWeight: 700, color: isUp ? 'var(--up)' : 'var(--down)' }}>
+                  <span className={`num text-lg font-bold ${isUp ? 'text-up' : 'text-down'}`}>
                     {isUp ? '+' : ''}{sector.avgChangePct!.toFixed(2)}%
                   </span>
                 ) : (
-                  <span className="num" style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-muted)' }}>—</span>
+                  <span className="num text-lg font-bold text-text-muted">—</span>
                 )}
-                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>avg chg</p>
+                <p className="text-[11px] text-text-muted mt-0.5">avg chg</p>
               </div>
             </div>
 
             <Sparkline
               data={sector.history}
-              color={!hasChange ? '#E0E0DC' : isUp ? '#00A86B' : '#FF3D00'}
+              color={!hasChange ? CHART_COLORS.neutral : isUp ? CHART_COLORS.up : CHART_COLORS.down}
               height={48}
             />
           </div>

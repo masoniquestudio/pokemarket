@@ -3,33 +3,26 @@
 @theme {
   --font-sans: var(--font-outfit);
   --font-mono: var(--font-mono-var);
-}
 
-:root {
-  /* ── Palette — edit here to retheme the whole site ── */
-  --bg:            #EFEFED;
-  --surface:       #FFFFFF;
-  --surface-dark:  #0D0D0D;
-  --border:        #E0E0DC;
-  --accent:        #FF3D00;
-  --up:            #00A86B;
-  --down:          #FF3D00;
-  --text:          #0D0D0D;
-  --text-muted:    #888884;
-  --text-inverse:  #FFFFFF;
-  --shadow:        none;
+  /* ── Colors for Tailwind utilities (bg-*, text-*, border-*) ── */
+  --color-bg: #EFEFED;
+  --color-surface: #FFFFFF;
+  --color-surface-dark: #0D0D0D;
+  --color-border: #E0E0DC;
+  --color-accent: #FF3D00;
+  --color-up: #00A86B;
+  --color-down: #FF3D00;
+  --color-text: #0D0D0D;
+  --color-text-muted: #888884;
+  --color-text-inverse: #FFFFFF;
 
   /* ── Tier badge colors ── */
-  --tier-vintage-bg:    rgba(255, 61, 0, 0.08);
-  --tier-vintage-color: #FF3D00;
-  --tier-iconic-bg:     rgba(139, 92, 246, 0.1);
-  --tier-iconic-color:  #7C3AED;
-  --tier-modern-bg:     rgba(0, 168, 107, 0.1);
-  --tier-modern-color:  #00A86B;
-
-  /* ── Chart colors (also update in chart components if you change these) ── */
-  /* --accent  → chart stroke / active dot                                  */
-  /* --up/down → sparkline colors                                           */
+  --color-tier-vintage-bg: rgba(255, 61, 0, 0.08);
+  --color-tier-vintage: #FF3D00;
+  --color-tier-iconic-bg: rgba(139, 92, 246, 0.1);
+  --color-tier-iconic: #7C3AED;
+  --color-tier-modern-bg: rgba(0, 168, 107, 0.1);
+  --color-tier-modern: #00A86B;
 }
 
 *, *::before, *::after {
@@ -42,17 +35,10 @@ html {
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-outfit), 'Inter', system-ui, sans-serif;
-  margin: 0;
+  @apply bg-bg text-text font-sans m-0;
 }
 
 /* Monospace for all numeric data */
 .num {
-  font-family: var(--font-mono-var), 'JetBrains Mono', monospace;
-  font-variant-numeric: tabular-nums;
+  @apply font-mono tabular-nums;
 }
-
-.up   { color: var(--up); }
-.down { color: var(--down); }
