@@ -230,3 +230,138 @@ export async function getAllPriceHistory(days = 30) {
   `;
   return rows;
 }
+
+// ─── PREMIUM QUERIES ───────────────────────────────────────────────────────────
+
+/**
+ * Get prices from 1D, 7D, 30D, 90D ago for all cards in a single query.
+ * Used for multi-timeframe premium analytics.
+ */
+export async function getCardPriceChangesMultiPeriod() {
+  const { rows } = await sql`
+    WITH latest AS (
+      SELECT DISTINCT ON (card_id)
+        card_id, price_avg, price_low, price_high, volume, recorded_at
+      FROM price_snapshots
+      ORDER BY card_id, recorded_at DESC
+    ),
+    one_day_ago AS (
+      SELECT DISTINCT ON (card_id)
+        card_id, price_avg AS price_1d
+      FROM price_snapshots
+      WHERE recorded_at <= NOW() - INTERVAL '1 day'
+      ORDER BY card_id, recorded_at DESC
+    ),
+    seven_days_ago AS (
+      SELECT DISTINCT ON (card_id)
+        card_id, price_avg AS price_7d
+      FROM price_snapshots
+      WHERE recorded_at <= NOW() - INTERVAL '7 days'
+      ORDER BY card_id, recorded_at DESC
+    ),
+    thirty_days_ago AS (
+      SELECT DISTINCT ON (card_id)
+        card_id, price_avg AS price_30d
+      FROM price_snapshots
+      WHERE recorded_at <= NOW() - INTERVAL '30 days'
+      ORDER BY card_id, recorded_at DESC
+    ),
+    ninety_days_ago AS (
+      SELECT DISTINCT ON (card_id)
+        card_id, price_avg AS price_90d
+      FROM price_snapshots
+      WHERE recorded_at <= NOW() - INTERVAL '90 days'
+      ORDER BY card_id, recorded_at DESC
+    )
+    SELECT
+      l.card_id, l.price_avg, l.price_low, l.price_high, l.volume, l.recorded_at,
+      d1.price_1d, d7.price_7d, d30.price_30d, d90.price_90d
+    FROM latest l
+    LEFT JOIN one_day_ago d1 ON l.card_id = d1.card_id
+    LEFT JOIN seven_days_ago d7 ON l.card_id = d7.card_id
+    LEFT JOIN thirty_days_ago d30 ON l.card_id = d30.card_id
+    LEFT JOIN ninety_days_ago d90 ON l.card_id = d90.card_id
+  `;
+  return rows;
+}
+
+/**
+ * Get 7-day and 30-day moving averages + stddev for Buy Low signal calculation.
+ */
+export async function getCardMovingAverages() {
+  const { rows } = await sql`
+    WITH daily_prices AS (
+      SELECT DISTINCT ON (card_id, date_trunc('day', recorded_at))
+        card_id,
+        price_avg,
+        recorded_at
+      FROM price_snapshots
+      WHERE recorded_at >= NOW() - INTERVAL '30 days'
+      ORDER BY card_id, date_trunc('day', recorded_at), recorded_at DESC
+    ),
+    latest AS (
+      SELECT DISTINCT ON (card_id)
+        card_id, price_avg AS current_price, volume
+      FROM price_snapshots
+      ORDER BY card_id, recorded_at DESC
+    ),
+    ma_7d AS (
+      SELECT
+        card_id,
+        AVG(price_avg) AS sma_7d,
+        STDDEV(price_avg) AS stddev_7d
+      FROM daily_prices
+      WHERE recorded_at >= NOW() - INTERVAL '7 days'
+      GROUP BY card_id
+    ),
+    ma_30d AS (
+      SELECT
+        card_id,
+        AVG(price_avg) AS sma_30d,
+        STDDEV(price_avg) AS stddev_30d
+      FROM daily_prices
+      GROUP BY card_id
+    )
+    SELECT
+      l.card_id, l.current_price, l.volume,
+      m7.sma_7d, m7.stddev_7d,
+      m30.sma_30d, m30.stddev_30d
+    FROM latest l
+    LEFT JOIN ma_7d m7 ON l.card_id = m7.card_id
+    LEFT JOIN ma_30d m30 ON l.card_id = m30.card_id
+  `;
+  return rows;
+}
+
+/**
+ * Get index values from multiple time periods for a specific index.
+ */
+export async function getIndexChangesMultiPeriod(indexId = 'pmi') {
+  const { rows } = await sql`
+    WITH latest AS (
+      SELECT value, recorded_at
+      FROM index_snapshots
+      WHERE index_id = ${indexId}
+      ORDER BY recorded_at DESC
+      LIMIT 1
+    ),
+    periods AS (
+      SELECT
+        (SELECT value FROM index_snapshots
+         WHERE index_id = ${indexId} AND recorded_at <= NOW() - INTERVAL '1 day'
+         ORDER BY recorded_at DESC LIMIT 1) AS value_1d,
+        (SELECT value FROM index_snapshots
+         WHERE index_id = ${indexId} AND recorded_at <= NOW() - INTERVAL '7 days'
+         ORDER BY recorded_at DESC LIMIT 1) AS value_7d,
+        (SELECT value FROM index_snapshots
+         WHERE index_id = ${indexId} AND recorded_at <= NOW() - INTERVAL '30 days'
+         ORDER BY recorded_at DESC LIMIT 1) AS value_30d,
+        (SELECT value FROM index_snapshots
+         WHERE index_id = ${indexId} AND recorded_at <= NOW() - INTERVAL '90 days'
+         ORDER BY recorded_at DESC LIMIT 1) AS value_90d
+    )
+    SELECT l.value AS current_value, l.recorded_at, p.*
+    FROM latest l, periods p
+  `;
+  return rows[0] ?? null;
+}

@@ -10,9 +10,12 @@ export type CardRow = {
   volume: number | null;
 };
 
+type Period = '1d' | '7d' | '30d' | '90d';
+
 type Props = {
   gainers: CardRow[];
   losers: CardRow[];
+  period?: Period;
 };
 
 const TIER_LABELS: Record<string, string> = {
@@ -21,16 +24,25 @@ const TIER_LABELS: Record<string, string> = {
   'modern-chase': 'Modern',
 };
 
-export default function MoversTable({ gainers, losers }: Props) {
+const PERIOD_LABELS: Record<Period, string> = {
+  '1d': '24h',
+  '7d': '7d',
+  '30d': '30d',
+  '90d': '90d',
+};
+
+export default function MoversTable({ gainers, losers, period = '7d' }: Props) {
+  const periodLabel = PERIOD_LABELS[period];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Table title="Top Gainers" rows={gainers} type="up" />
-      <Table title="Top Losers" rows={losers} type="down" />
+      <Table title="Top Gainers" rows={gainers} type="up" periodLabel={periodLabel} />
+      <Table title="Top Losers" rows={losers} type="down" periodLabel={periodLabel} />
     </div>
   );
 }
 
-function Table({ title, rows, type }: { title: string; rows: CardRow[]; type: 'up' | 'down' }) {
+function Table({ title, rows, type, periodLabel }: { title: string; rows: CardRow[]; type: 'up' | 'down'; periodLabel: string }) {
   return (
     <div className="bg-surface rounded-2xl px-6 py-5 border border-border">
       <div className="flex items-center gap-2 mb-4">
@@ -40,7 +52,7 @@ function Table({ title, rows, type }: { title: string; rows: CardRow[]; type: 'u
         <h3 className="text-[13px] font-semibold tracking-wide uppercase text-text">
           {title}
         </h3>
-        <span className="text-[11px] text-text-muted ml-auto">vs prev</span>
+        <span className="text-[11px] text-text-muted ml-auto">vs {periodLabel}</span>
       </div>
 
       {rows.length === 0 ? (

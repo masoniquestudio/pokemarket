@@ -38,6 +38,13 @@ export default function Nav() {
         <div className="hidden md:flex items-center gap-6">
           <NavLink href="/" active={pathname === '/'}>Dashboard</NavLink>
           <NavLink href="/cards" active={pathname.startsWith('/cards')}>Cards</NavLink>
+          <NavLink href="/signals" active={pathname === '/signals'}>Signals</NavLink>
+          <Link
+            href="/premium"
+            className="text-[10px] tracking-[0.1em] uppercase font-bold no-underline px-2.5 py-1 bg-amber-500/20 text-amber-400 rounded hover:bg-amber-500/30 transition-colors"
+          >
+            Pro
+          </Link>
         </div>
 
         {/* Mobile hamburger button */}
@@ -60,6 +67,12 @@ export default function Nav() {
           </MobileNavLink>
           <MobileNavLink href="/cards" active={pathname.startsWith('/cards')} onClick={() => setMobileOpen(false)}>
             Cards
+          </MobileNavLink>
+          <MobileNavLink href="/signals" active={pathname === '/signals'} onClick={() => setMobileOpen(false)}>
+            Signals
+          </MobileNavLink>
+          <MobileNavLink href="/premium" active={pathname === '/premium'} onClick={() => setMobileOpen(false)}>
+            <span className="text-amber-400">Pro</span>
           </MobileNavLink>
         </div>
       )}

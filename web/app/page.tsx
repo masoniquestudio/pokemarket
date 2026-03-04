@@ -1,16 +1,23 @@
-import { getLatestIndex, getIndexHistory, getCardPriceChanges, getAllLatestIndices, getAllIndexHistories } from '../lib/db';
+import Link from 'next/link';
+import { getLatestIndex, getIndexHistory, getCardPriceChanges, getAllLatestIndices, getAllIndexHistories, getCardPriceChangesMultiPeriod, getCardMovingAverages } from '../lib/db';
 import { CARDS, INDEX_CONFIGS } from '../lib/cards';
+import { processMultiPeriodChanges, getMovers, calculateBuyLowSignals } from '../lib/premium';
+import { isPremiumUser } from '../lib/premium-gate';
 import Nav from '../components/Nav';
 import IndexChart from '../components/IndexChart';
 import IndexTiles from '../components/IndexTiles';
 import MarketStats from '../components/MarketStats';
 import MoversTable, { type CardRow } from '../components/MoversTable';
+import PremiumGate from '../components/PremiumGate';
+import PremiumBadge from '../components/PremiumBadge';
 
 export const revalidate = 21600;
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function HomePage() {
+  const premium = await isPremiumUser();
+
   // Fetch everything — graceful fallback if DB isn't ready yet
   let latestIndex = null;
   let indexHistory: { time: string; value: number }[] = [];
@@ -19,9 +26,13 @@ export default async function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let allLatestIndices: Record<string, any> = {};
   let allIndexHistories: Record<string, { time: string; value: number }[]> = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let multiPeriodPrices: any[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let movingAverages: any[] = [];
 
   try {
-    [latestIndex, indexHistory, priceChanges, allLatestIndices, allIndexHistories] =
+    [latestIndex, indexHistory, priceChanges, allLatestIndices, allIndexHistories, multiPeriodPrices, movingAverages] =
       await Promise.all([
         getLatestIndex('pmi'),
         getIndexHistory(90, 'pmi').then((rows) =>
@@ -33,6 +44,8 @@ export default async function HomePage() {
         getCardPriceChanges(),
         getAllLatestIndices(),
         getAllIndexHistories(30) as Promise<Record<string, { time: string; value: number }[]>>,
+        getCardPriceChangesMultiPeriod(),
+        getCardMovingAverages(),
       ]);
   } catch {
     // DB not configured yet — show empty state
@@ -99,6 +112,11 @@ export default async function HomePage() {
   const pmiValue = latestIndex ? parseFloat(String(latestIndex.value)) : 0;
   const pmiChange = latestIndex ? parseFloat(String(latestIndex.change_pct)) : 0;
 
+  // Premium data: multi-period changes and buy low signals
+  const multiPeriodCards = processMultiPeriodChanges(multiPeriodPrices, CARDS);
+  const dailyMovers = getMovers(multiPeriodCards, '1d', 5);
+  const buyLowSignals = calculateBuyLowSignals(multiPeriodCards, movingAverages).slice(0, 4);
+
   return (
     <div className="min-h-screen bg-bg">
       <Nav />
@@ -129,8 +147,82 @@ export default async function HomePage() {
           mostActive={mostActive ? { name: mostActive.name, volume: mostActive.volume ?? 0 } : null}
         />
 
-        {/* Gainers / Losers */}
-        <MoversTable gainers={gainers} losers={losers} />
+        {/* Gainers / Losers (7-day, free) */}
+        <MoversTable gainers={gainers} losers={losers} period="7d" />
+
+        {/* Daily Movers (24h, premium) */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <h2 className="text-[13px] font-semibold tracking-wide uppercase text-text">
+              Daily Movers
+            </h2>
+            <PremiumBadge />
+          </div>
+          <PremiumGate isPremium={premium} featureName="24-hour movers">
+            <MoversTable
+              gainers={dailyMovers.gainers.map(c => ({ ...c, changePct: c.change1d }))}
+              losers={dailyMovers.losers.map(c => ({ ...c, changePct: c.change1d }))}
+              period="1d"
+            />
+          </PremiumGate>
+        </div>
+
+        {/* Buy Low Signals Preview (premium) */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <h2 className="text-[13px] font-semibold tracking-wide uppercase text-text">
+                Buy Low Signals
+              </h2>
+              <PremiumBadge />
+            </div>
+            <Link href="/signals" className="text-[13px] font-semibold text-accent no-underline">
+              View all →
+            </Link>
+          </div>
+          <PremiumGate isPremium={premium} featureName="buy low signals">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {buyLowSignals.length > 0 ? (
+                buyLowSignals.map((card) => (
+                  <Link
+                    key={card.id}
+                    href={`/cards/${card.id}`}
+                    className="bg-surface border border-border rounded-xl p-4 hover:border-amber-500/50 transition-colors no-underline"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-text text-sm truncate">{card.name}</p>
+                        <p className="text-xs text-text-muted truncate">{card.set}</p>
+                      </div>
+                      <div className="flex gap-0.5 ml-2">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <div
+                            key={i}
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              i <= card.signalStrength ? 'bg-amber-400' : 'bg-white/10'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="num font-bold text-text">${card.currentPrice.toFixed(2)}</span>
+                      {card.discountPct && card.discountPct > 0 && (
+                        <span className="text-xs text-green-400">
+                          {card.discountPct.toFixed(1)}% below avg
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="col-span-full text-center py-8 text-text-muted text-sm">
+                  No buy signals at this time
+                </div>
+              )}
+            </div>
+          </PremiumGate>
+        </div>
 
         {/* Top cards summary */}
         <AllCardsTable cards={cardsWithPrices} />
