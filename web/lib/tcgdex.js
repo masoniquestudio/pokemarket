@@ -47,7 +47,8 @@ export async function fetchCardPrice(card) {
   });
 
   if (!res.ok) {
-    throw new Error(`PokéWallet API error (${res.status})`);
+    const body = await res.text();
+    throw new Error(`PokéWallet API error (${res.status}): ${body}`);
   }
 
   const json = await res.json();
