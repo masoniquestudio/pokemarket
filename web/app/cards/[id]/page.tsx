@@ -62,8 +62,8 @@ export default async function CardDetailPage({ params }: Props) {
   // Related cards: same tier, exclude current, pick up to 4
   const related = CARDS.filter((c) => c.tier === card.tier && c.id !== card.id).slice(0, 4);
 
-  // eBay search URL
-  const ebayUrl = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(card.ebayQuery)}&LH_Sold=1&LH_Complete=1`;
+  // TCGPlayer search URL
+  const tcgplayerUrl = `https://www.tcgplayer.com/search/pokemon/product?q=${encodeURIComponent(card.name)}`;
 
   // Snapshot table — most recent first, cap at 30
   const tableRows = [...history].reverse().slice(0, 30);
@@ -136,12 +136,12 @@ export default async function CardDetailPage({ params }: Props) {
               Price History
             </h3>
             <a
-              href={ebayUrl}
+              href={tcgplayerUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[13px] font-semibold text-accent no-underline px-3.5 py-1.5 rounded-full border-[1.5px] border-border"
             >
-              View on eBay →
+              View on TCGPlayer →
             </a>
           </div>
 

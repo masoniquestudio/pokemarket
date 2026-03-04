@@ -1,5 +1,5 @@
 import { CARDS } from '../../../lib/cards';
-import { fetchCardPriceStats } from '../../../lib/ebay';
+import { fetchCardPrice } from '../../../lib/tcgdex';
 import { insertPriceSnapshot } from '../../../lib/db';
 
 // Revalidate every 6 hours
@@ -11,10 +11,10 @@ export async function GET() {
 
   for (const card of CARDS) {
     try {
-      const stats = await fetchCardPriceStats(card.ebayQuery);
+      const stats = await fetchCardPrice(card.tcgdexId);
 
       if (!stats) {
-        errors.push({ cardId: card.id, reason: 'no usable price data returned' });
+        errors.push({ cardId: card.id, reason: 'no pricing data from TCGdex' });
         continue;
       }
 
