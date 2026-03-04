@@ -47,9 +47,11 @@ function IndexTile({ index }: { index: IndexData }) {
                 ? index.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                 : '—'}
             </span>
-            {hasData && index.changePct !== 0 && (
-              <span className={`num text-[13px] font-bold ${isUp ? 'text-up' : 'text-down'}`}>
-                {isUp ? '▲' : '▼'} {Math.abs(index.changePct).toFixed(2)}%
+            {hasData && (
+              <span className={`num text-[13px] font-bold ${
+                index.changePct === 0 ? 'text-text-muted' : isUp ? 'text-up' : 'text-down'
+              }`}>
+                {index.changePct === 0 ? '—' : isUp ? '▲' : '▼'} {Math.abs(index.changePct).toFixed(2)}%
               </span>
             )}
           </div>
