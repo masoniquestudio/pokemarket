@@ -1,43 +1,12 @@
-import { getLatestIndex, getIndexHistory, getCardPriceChanges, getAllPriceHistory, getAllLatestIndices, getAllIndexHistories } from '../lib/db';
+import { getLatestIndex, getIndexHistory, getCardPriceChanges, getAllLatestIndices, getAllIndexHistories } from '../lib/db';
 import { CARDS, INDEX_CONFIGS } from '../lib/cards';
 import Nav from '../components/Nav';
 import IndexChart from '../components/IndexChart';
 import IndexTiles from '../components/IndexTiles';
-import SectorTiles, { type SectorData } from '../components/SectorTiles';
+import MarketStats from '../components/MarketStats';
 import MoversTable, { type CardRow } from '../components/MoversTable';
 
 export const revalidate = 21600;
-
-// ─── Data helpers ────────────────────────────────────────────────────────────
-
-/** Aggregate daily average price for a set of card_ids from the raw history */
-function buildSectorHistory(
-  allHistory: { card_id: string; price_avg: string | number; recorded_at: Date }[],
-  cardIds: string[]
-): { value: number }[] {
-  const idSet = new Set(cardIds);
-
-  // Bucket by exact scrape timestamp (works even with multiple runs on same day)
-  const byTime: Record<string, number[]> = {};
-  for (const row of allHistory) {
-    if (!idSet.has(row.card_id)) continue;
-    const t = new Date(row.recorded_at).toISOString();
-    if (!byTime[t]) byTime[t] = [];
-    byTime[t].push(parseFloat(String(row.price_avg)));
-  }
-
-  const times = Object.keys(byTime).sort();
-  if (times.length < 2) return [];
-
-  // Normalise to % change from first snapshot so sparklines are comparable
-  const series = times.map((t) => {
-    const prices = byTime[t];
-    return prices.reduce((s, p) => s + p, 0) / prices.length;
-  });
-
-  const base = series[0];
-  return series.map((v) => ({ value: base > 0 ? ((v - base) / base) * 100 : 0 }));
-}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -48,13 +17,11 @@ export default async function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let priceChanges: any[] = [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let allHistory: any[] = [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let allLatestIndices: Record<string, any> = {};
   let allIndexHistories: Record<string, { time: string; value: number }[]> = {};
 
   try {
-    [latestIndex, indexHistory, priceChanges, allHistory, allLatestIndices, allIndexHistories] =
+    [latestIndex, indexHistory, priceChanges, allLatestIndices, allIndexHistories] =
       await Promise.all([
         getLatestIndex('pmi'),
         getIndexHistory(90, 'pmi').then((rows) =>
@@ -64,7 +31,6 @@ export default async function HomePage() {
           }))
         ),
         getCardPriceChanges(),
-        getAllPriceHistory(30),
         getAllLatestIndices(),
         getAllIndexHistories(30) as Promise<Record<string, { time: string; value: number }[]>>,
       ]);
@@ -108,32 +74,22 @@ export default async function HomePage() {
     .sort((a, b) => (a.changePct ?? 0) - (b.changePct ?? 0))
     .slice(0, 5);
 
-  // Sector tiles
-  const SECTORS: { tier: string; label: string }[] = [
-    { tier: 'vintage', label: 'Vintage' },
-    { tier: 'iconic', label: 'Iconic' },
-    { tier: 'modern-chase', label: 'Modern Chase' },
-  ];
-
-  const sectors: SectorData[] = SECTORS.map(({ tier, label }) => {
-    const cards = CARDS.filter((c) => c.tier === tier);
-    const cardIds = cards.map((c) => c.id);
-    const cardRows = cardsWithPrices.filter((c) => c.tier === tier && c.changePct !== null);
-    const avgChangePct =
-      cardRows.length > 0
-        ? Math.round(
-            (cardRows.reduce((s, c) => s + (c.changePct ?? 0), 0) / cardRows.length) * 100
-          ) / 100
-        : null;
-
-    return {
-      tier,
-      label,
-      cardCount: cards.length,
-      avgChangePct,
-      history: buildSectorHistory(allHistory, cardIds),
-    };
-  });
+  // Market stats
+  const pricedCards = cardsWithPrices.filter((c) => c.currentPrice > 0);
+  const totalMarketCap = pricedCards.reduce((sum, c) => sum + c.currentPrice, 0);
+  const totalVolume = pricedCards.reduce((sum, c) => sum + (c.volume ?? 0), 0);
+  const cardsWithChange = pricedCards.filter((c) => c.changePct !== null);
+  const avgChange = cardsWithChange.length > 0
+    ? cardsWithChange.reduce((sum, c) => sum + (c.changePct ?? 0), 0) / cardsWithChange.length
+    : 0;
+  const mostActive = pricedCards
+    .filter((c) => c.volume !== null)
+    .sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0))[0] ?? null;
+  const marketSentiment = {
+    up: cardsWithChange.filter((c) => (c.changePct ?? 0) > 0).length,
+    down: cardsWithChange.filter((c) => (c.changePct ?? 0) < 0).length,
+    neutral: cardsWithChange.filter((c) => (c.changePct ?? 0) === 0).length,
+  };
 
   // Build data for all 4 index tiles
   const indexTilesData = Object.entries(INDEX_CONFIGS).map(([id, config]) => {
@@ -174,8 +130,15 @@ export default async function HomePage() {
         {/* All 4 Index Tiles */}
         <IndexTiles indices={indexTilesData} />
 
-        {/* Sector tiles */}
-        <SectorTiles sectors={sectors} />
+        {/* Market Stats */}
+        <MarketStats
+          totalCards={pricedCards.length}
+          totalMarketCap={totalMarketCap}
+          totalVolume={totalVolume}
+          avgChange={avgChange}
+          mostActive={mostActive ? { name: mostActive.name, volume: mostActive.volume ?? 0 } : null}
+          marketSentiment={marketSentiment}
+        />
 
         {/* Gainers / Losers */}
         <MoversTable gainers={gainers} losers={losers} />

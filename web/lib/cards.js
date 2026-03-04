@@ -933,7 +933,7 @@ export const INDEX_CONFIGS = {
   pmi: {
     name: 'PokéMarket Index',
     shortName: 'PMI',
-    description: 'Top 20 most significant cards across all eras — the benchmark index',
+    description: 'The benchmark — 20 most valuable cards weighted by market significance',
     cards: [
       { id: 'base-charizard', weight: 0.10 },
       { id: 'pikachu-illustrator', weight: 0.08 },
@@ -961,7 +961,7 @@ export const INDEX_CONFIGS = {
   charizard: {
     name: 'Charizard Index',
     shortName: 'ZARD',
-    description: 'Every notable Charizard across all eras — tracks the Charizard premium',
+    description: 'Pure Charizard exposure — 10 cards from Base Set to modern alt arts',
     cards: [
       { id: 'base-charizard', weight: 0.20 },
       { id: 'shining-charizard', weight: 0.15 },
@@ -979,7 +979,7 @@ export const INDEX_CONFIGS = {
   vintage: {
     name: 'Vintage Index',
     shortName: 'VNTG',
-    description: 'Base Set through Neo era — the original Pokémon TCG market',
+    description: 'Nostalgia plays — Base Set through Neo era (1999-2002)',
     cards: [
       { id: 'base-charizard', weight: 0.18 },
       { id: 'shining-charizard', weight: 0.12 },
@@ -1003,7 +1003,7 @@ export const INDEX_CONFIGS = {
   modern: {
     name: 'Modern Index',
     shortName: 'MDRN',
-    description: 'Sword & Shield through current era — the premium alt art market',
+    description: 'Alt art momentum — Sword & Shield through Scarlet & Violet',
     cards: [
       { id: 'umbreon-vmax-alt', weight: 0.15 },
       { id: 'obsidian-charizard-alt', weight: 0.12 },

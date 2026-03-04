@@ -175,25 +175,29 @@ export async function getAllIndexHistories(days = 30) {
 }
 
 /**
- * Get latest price + previous price for every card.
- * Uses the snapshot immediately before the latest one, so changes show
- * up as soon as there are 2 scrape runs (no 7-day wait required).
+ * Get latest price + 7-day-ago price for every card.
+ * Compares current price to the closest snapshot from ~7 days ago.
  */
 export async function getCardPriceChanges() {
   const { rows } = await sql`
-    WITH ranked AS (
-      SELECT
-        card_id, price_avg, price_low, price_high, volume, recorded_at,
-        ROW_NUMBER() OVER (PARTITION BY card_id ORDER BY recorded_at DESC) AS rn
+    WITH latest AS (
+      SELECT DISTINCT ON (card_id)
+        card_id, price_avg, price_low, price_high, volume, recorded_at
       FROM price_snapshots
+      ORDER BY card_id, recorded_at DESC
     ),
-    latest AS (SELECT * FROM ranked WHERE rn = 1),
-    prev   AS (SELECT card_id, price_avg AS prev_price FROM ranked WHERE rn = 2)
+    seven_days_ago AS (
+      SELECT DISTINCT ON (card_id)
+        card_id, price_avg AS prev_price
+      FROM price_snapshots
+      WHERE recorded_at <= NOW() - INTERVAL '7 days'
+      ORDER BY card_id, recorded_at DESC
+    )
     SELECT
       l.card_id, l.price_avg, l.price_low, l.price_high, l.volume, l.recorded_at,
-      p.prev_price
+      s.prev_price
     FROM latest l
-    LEFT JOIN prev p ON l.card_id = p.card_id
+    LEFT JOIN seven_days_ago s ON l.card_id = s.card_id
   `;
   return rows;
 }
