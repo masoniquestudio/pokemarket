@@ -11,10 +11,10 @@ export async function GET() {
 
   for (const card of CARDS) {
     try {
-      const stats = await fetchCardPrice(card.tcgdexId);
+      const stats = await fetchCardPrice(card);
 
       if (!stats) {
-        errors.push({ cardId: card.id, reason: 'no pricing data from TCGdex' });
+        errors.push({ cardId: card.id, reason: 'no pricing data from pokemontcg.io' });
         continue;
       }
 

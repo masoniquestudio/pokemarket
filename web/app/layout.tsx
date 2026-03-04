@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "PokéMarket — Pokémon TCG Price Index",
   description:
-    "Real-time Pokémon TCG price tracking powered by live eBay data. Track the PokéMarket Index (PMI) and individual card prices.",
+    "Real-time Pokémon TCG price tracking powered by live TCGPlayer data. Track the PokéMarket Index (PMI) and individual card prices.",
 };
 
 export default function RootLayout({

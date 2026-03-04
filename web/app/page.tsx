@@ -125,7 +125,7 @@ export default async function HomePage() {
         {/* Page title */}
         <div className="mb-2">
           <p className="text-[11px] font-medium tracking-[0.15em] uppercase text-text-muted">
-            Live eBay Data · Updated Every 6 Hours
+            Live TCGPlayer Data · Updated Every 6 Hours
           </p>
         </div>
 
