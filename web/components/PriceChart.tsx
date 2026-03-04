@@ -11,8 +11,8 @@ import {
   CartesianGrid,
 } from 'recharts';
 
-// Chart colors — keep hex for Recharts props (Pokédex theme)
-const CHART_COLORS = { accent: '#30A7D7', textMuted: '#6B7280', border: '#E0E0DC' };
+// Chart colors — keep hex for Recharts props (dark theme)
+const CHART_COLORS = { accent: '#A3A3A3', textMuted: '#525252', border: '#262626' };
 
 type DataPoint = {
   time: string;
@@ -92,11 +92,11 @@ export default function PriceChart({ data }: Props) {
             />
             <Tooltip
               contentStyle={{
-                background: '#0D0D0D',
-                border: 'none',
+                background: '#1A1A1A',
+                border: '1px solid #262626',
                 borderRadius: 8,
                 fontSize: 13,
-                color: '#fff',
+                color: '#FAFAFA',
               }}
               labelStyle={{ color: CHART_COLORS.textMuted, marginBottom: 4 }}
               labelFormatter={(label) =>

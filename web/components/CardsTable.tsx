@@ -38,8 +38,8 @@ const INDEX_LABELS: Record<string, string> = {
 };
 
 const INDEX_CLASSES: Record<string, string> = {
-  pmi: 'bg-primary/10 text-primary',
-  charizard: 'bg-accent/10 text-accent',
+  pmi: 'bg-white/10 text-text',
+  charizard: 'bg-orange-500/15 text-orange-400',
   vintage: 'bg-tier-iconic-bg text-tier-iconic',
   modern: 'bg-tier-modern-bg text-tier-modern',
 };

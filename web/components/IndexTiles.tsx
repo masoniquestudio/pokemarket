@@ -2,8 +2,8 @@
 
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts';
 
-// Sparkline colors — keep hex for Recharts props (Pokédex theme)
-const CHART_COLORS = { up: '#22C55E', down: '#EF4444' };
+// Sparkline colors — keep hex for Recharts props (dark theme)
+const CHART_COLORS = { up: '#4ADE80', down: '#F87171' };
 
 type IndexData = {
   id: string;

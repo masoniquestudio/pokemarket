@@ -1,7 +1,7 @@
 import Sparkline from './Sparkline';
 
-// Sparkline colors — keep hex for Recharts (Pokédex theme)
-const CHART_COLORS = { up: '#22C55E', down: '#EF4444', neutral: '#E0E0DC' };
+// Sparkline colors — keep hex for Recharts (dark theme)
+const CHART_COLORS = { up: '#4ADE80', down: '#F87171', neutral: '#404040' };
 
 export type SectorData = {
   tier: string;

@@ -10,7 +10,7 @@ type Props = {
 
 export default function Sparkline({
   data,
-  color = '#30A7D7',
+  color = '#737373',
   height = 44,
 }: Props) {
   if (!data || data.length < 2) {
