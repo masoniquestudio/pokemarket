@@ -139,6 +139,21 @@ export async function getLatestIndex(indexId = 'pmi') {
 }
 
 /**
+ * Get the index value from ~7 days ago for change % calculation.
+ */
+export async function getIndex7DaysAgo(indexId = 'pmi') {
+  const { rows } = await sql`
+    SELECT value, recorded_at
+    FROM index_snapshots
+    WHERE index_id = ${indexId}
+      AND recorded_at <= NOW() - INTERVAL '7 days'
+    ORDER BY recorded_at DESC
+    LIMIT 1
+  `;
+  return rows[0] ?? null;
+}
+
+/**
  * Get the latest snapshot for ALL named indices in one query.
  * Returns an object keyed by index_id.
  */

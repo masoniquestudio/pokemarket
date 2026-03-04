@@ -1,5 +1,5 @@
 import { INDEX_CONFIGS } from '../../../lib/cards';
-import { getLatestPrices, getBaselinePrice, insertIndexSnapshot, getLatestIndex } from '../../../lib/db';
+import { getLatestPrices, getBaselinePrice, insertIndexSnapshot, getIndex7DaysAgo } from '../../../lib/db';
 import { computePMI, computeChangePct } from '../../../lib/index';
 
 export const revalidate = 21600;
@@ -35,8 +35,8 @@ export async function GET() {
       }
 
       const value = computePMI(inputs);
-      const previous = await getLatestIndex(indexId);
-      const changePct = previous ? computeChangePct(value, parseFloat(previous.value)) : 0;
+      const weekAgo = await getIndex7DaysAgo(indexId);
+      const changePct = weekAgo ? computeChangePct(value, parseFloat(weekAgo.value)) : 0;
 
       await insertIndexSnapshot({ indexId, value, changePct });
 
