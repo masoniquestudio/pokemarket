@@ -1,26 +1,22 @@
 /**
- * pokemontcg.io API wrapper for fetching Pokemon card prices.
- * Uses TCGPlayer pricing data via the pokemontcg.io v2 API.
- * No auth required for basic tier; set POKEMONTCG_API_KEY for higher rate limits.
+ * PokéWallet API wrapper for fetching Pokemon card prices.
+ * Uses TCGPlayer pricing data via the pokewallet.io v1 API.
+ * Requires POKEWALLET_API_KEY env var.
  */
 
-const POKEMONTCG_API_BASE = 'https://api.pokemontcg.io/v2';
+const POKEWALLET_API_BASE = 'https://api.pokewallet.io';
 
 /**
- * Fetch card pricing from pokemontcg.io API.
+ * Fetch card pricing from PokéWallet API.
  * Returns normalized price stats compatible with our DB schema.
  *
  * @param {{ name: string, set: string }} card
  * @returns {Promise<{ avg: number, low: number | null, high: number | null, volume: null } | null>}
  */
 export async function fetchCardPrice(card) {
-  const headers = { 'Content-Type': 'application/json' };
-  if (process.env.POKEMONTCG_API_KEY) {
-    headers['X-Api-Key'] = process.env.POKEMONTCG_API_KEY;
-  }
+  const headers = { 'X-API-Key': process.env.POKEWALLET_API_KEY };
 
-  const q = `name:"${card.name}" set.name:"${card.set}"`;
-  const url = `${POKEMONTCG_API_BASE}/cards?q=${encodeURIComponent(q)}`;
+  const url = `${POKEWALLET_API_BASE}/search?q=${encodeURIComponent(card.name)}&limit=100`;
 
   const res = await fetch(url, {
     headers,
@@ -28,30 +24,40 @@ export async function fetchCardPrice(card) {
   });
 
   if (!res.ok) {
-    throw new Error(`pokemontcg.io API error (${res.status})`);
+    throw new Error(`PokéWallet API error (${res.status})`);
   }
 
   const json = await res.json();
-  const cardData = json.data?.[0];
+  const results = json.results ?? [];
 
-  if (!cardData) return null;
+  // Match by set name
+  const match = results.find(
+    (r) => r.card_info?.set_name?.toLowerCase() === card.set.toLowerCase()
+  );
 
-  const prices = cardData.tcgplayer?.prices;
-  if (!prices) return null;
+  if (!match) return null;
 
-  const variant =
-    prices.holofoil ??
-    prices.normal ??
-    prices.reverseHolofoil ??
-    prices.firstEditionHolofoil ??
-    null;
+  const prices = match.tcgplayer?.prices;
+  if (!prices?.length) return null;
 
-  if (!variant || variant.market == null) return null;
+  // Fallback chain: Holofoil → Normal → Reverse Holofoil
+  const priority = ['Holofoil', 'Normal', 'Reverse Holofoil'];
+  let variant = null;
+  for (const name of priority) {
+    variant = prices.find((p) => p.sub_type_name === name);
+    if (variant?.market_price != null) break;
+  }
+  if (!variant?.market_price) {
+    // Last resort: first entry with a market price
+    variant = prices.find((p) => p.market_price != null);
+  }
+
+  if (!variant?.market_price) return null;
 
   return {
-    avg: Math.round(variant.market * 100) / 100,
-    low: variant.low != null ? Math.round(variant.low * 100) / 100 : null,
-    high: variant.high != null ? Math.round(variant.high * 100) / 100 : null,
+    avg: Math.round(variant.market_price * 100) / 100,
+    low: variant.low_price != null ? Math.round(variant.low_price * 100) / 100 : null,
+    high: variant.high_price != null ? Math.round(variant.high_price * 100) / 100 : null,
     volume: null,
   };
 }

@@ -14,7 +14,7 @@ export async function GET() {
       const stats = await fetchCardPrice(card);
 
       if (!stats) {
-        errors.push({ cardId: card.id, reason: 'no pricing data from pokemontcg.io' });
+        errors.push({ cardId: card.id, reason: 'no pricing data from PokéWallet' });
         continue;
       }
 
