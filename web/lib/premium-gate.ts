@@ -1,8 +1,13 @@
 import { cookies } from 'next/headers';
 
-const PREMIUM_KEYS = new Set(
-  (process.env.PREMIUM_KEYS ?? '').split(',').map((k) => k.trim()).filter(Boolean)
-);
+/**
+ * Get valid premium keys from env (read fresh each time).
+ */
+function getPremiumKeys(): Set<string> {
+  return new Set(
+    (process.env.PREMIUM_KEYS ?? '').split(',').map((k) => k.trim()).filter(Boolean)
+  );
+}
 
 /**
  * Check if the current user has premium access.
@@ -11,14 +16,14 @@ const PREMIUM_KEYS = new Set(
 export async function isPremiumUser(): Promise<boolean> {
   const cookieStore = await cookies();
   const key = cookieStore.get('premium_key')?.value;
-  return key ? PREMIUM_KEYS.has(key) : false;
+  return key ? getPremiumKeys().has(key) : false;
 }
 
 /**
  * Validate a premium key.
  */
 export function validatePremiumKey(key: string): boolean {
-  return PREMIUM_KEYS.has(key.trim());
+  return getPremiumKeys().has(key.trim());
 }
 
 /**
