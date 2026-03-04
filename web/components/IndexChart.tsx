@@ -11,8 +11,8 @@ import {
   CartesianGrid,
 } from 'recharts';
 
-// Chart colors — keep hex for Recharts props
-const CHART_COLORS = { accent: '#FF3D00', textMuted: '#888884', border: '#E0E0DC' };
+// Chart colors — keep hex for Recharts props (Pokédex theme)
+const CHART_COLORS = { accent: '#30A7D7', textMuted: '#6B7280', border: '#E0E0DC' };
 
 type DataPoint = { time: string; value: number };
 

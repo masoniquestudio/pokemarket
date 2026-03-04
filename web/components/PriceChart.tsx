@@ -11,8 +11,8 @@ import {
   CartesianGrid,
 } from 'recharts';
 
-// Chart colors — keep hex for Recharts props
-const CHART_COLORS = { accent: '#FF3D00', textMuted: '#888884' };
+// Chart colors — keep hex for Recharts props (Pokédex theme)
+const CHART_COLORS = { accent: '#30A7D7', textMuted: '#6B7280', border: '#E0E0DC' };
 
 type DataPoint = {
   time: string;
@@ -70,7 +70,7 @@ export default function PriceChart({ data }: Props) {
                 <stop offset="95%" stopColor={CHART_COLORS.accent} stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E0E0DC" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.border} vertical={false} />
             <XAxis
               dataKey="time"
               tick={{ fontSize: 11, fill: CHART_COLORS.textMuted, fontFamily: 'inherit' }}
