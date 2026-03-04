@@ -52,11 +52,11 @@ export default async function CardsPage() {
       <Nav />
       <main className="max-w-7xl mx-auto px-6 pt-8 pb-16">
         <div className="mb-5">
-          <h1 className="text-[22px] font-bold text-text mb-1">
+          <p className="text-[11px] font-medium tracking-[0.15em] uppercase text-text-muted mb-2">
             All Cards
-          </h1>
+          </p>
           <p className="text-[13px] text-text-muted">
-            {CARDS.length} cards tracked · prices refresh every 6 hours
+            {CARDS.length} graded cards tracked across vintage, iconic, and modern sets
           </p>
         </div>
         <CardsTable cards={cards} />

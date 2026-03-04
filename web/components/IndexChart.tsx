@@ -44,8 +44,11 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
       {/* Header row */}
       <div className="flex items-start justify-between mb-7 flex-wrap gap-4">
         <div>
-          <p className="text-[11px] font-bold tracking-widest uppercase text-text-muted mb-2">
+          <p className="text-[11px] font-medium tracking-[0.15em] uppercase text-text-muted mb-1">
             PokéMarket Index
+          </p>
+          <p className="text-[13px] text-text-muted mb-4 max-w-md">
+            Weighted composite of 50+ graded Pokémon cards tracking overall market health
           </p>
           <div className="flex items-baseline gap-4">
             <span
@@ -66,15 +69,15 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
         </div>
 
         {/* Range toggle */}
-        <div className="flex gap-1 bg-bg rounded-lg p-1 self-start border border-border">
+        <div className="flex gap-0.5 self-start">
           {RANGES.map((r) => (
             <button
               key={r.label}
               onClick={() => setRange(r.days)}
-              className={`px-4 py-1.5 rounded-md border-none cursor-pointer text-[13px] font-semibold transition-all duration-150 ${
+              className={`px-3 py-1 rounded border-none cursor-pointer text-[11px] tracking-wider font-medium transition-all duration-150 ${
                 range === r.days
-                  ? 'bg-surface-dark text-text-inverse'
-                  : 'bg-transparent text-text-muted'
+                  ? 'bg-white/10 text-text'
+                  : 'bg-transparent text-text-muted hover:text-text'
               }`}
             >
               {r.label}
@@ -137,7 +140,7 @@ export default function IndexChart({ data, currentValue, changePct }: Props) {
               strokeWidth={2}
               fill="url(#pmiGradient)"
               dot={false}
-              activeDot={{ r: 5, fill: CHART_COLORS.accent, stroke: '#fff', strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: CHART_COLORS.accent, stroke: '#1A1A1A', strokeWidth: 2 }}
             />
           </AreaChart>
         </ResponsiveContainer>

@@ -158,12 +158,9 @@ export default async function HomePage() {
 
       <main className="max-w-7xl mx-auto px-6 pt-8 pb-16 flex flex-col gap-5">
         {/* Page title */}
-        <div className="mb-1">
-          <h1 className="text-[22px] font-bold text-text mb-1">
-            Market Dashboard
-          </h1>
-          <p className="text-[13px] text-text-muted">
-            Pokémon TCG price tracking · refreshes every 6 hours
+        <div className="mb-2">
+          <p className="text-[11px] font-medium tracking-[0.15em] uppercase text-text-muted">
+            Live eBay Data · Updated Every 6 Hours
           </p>
         </div>
 

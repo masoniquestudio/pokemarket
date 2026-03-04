@@ -4,19 +4,17 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-function Pokeball({ size = 20 }: { size?: number }) {
+function Pokeball({ size = 18 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Top half - red */}
-      <path d="M50 5C25.2 5 5 25.2 5 50h90C95 25.2 74.8 5 50 5z" fill="#DC0A2D"/>
-      {/* Bottom half - white */}
-      <path d="M5 50c0 24.8 20.2 45 45 45s45-20.2 45-45H5z" fill="#FAFAFA"/>
-      {/* Center line */}
-      <rect x="5" y="46" width="90" height="8" fill="#1A1A1A"/>
       {/* Outer circle */}
-      <circle cx="50" cy="50" r="16" fill="#1A1A1A"/>
-      {/* Inner circle */}
-      <circle cx="50" cy="50" r="10" fill="#FAFAFA"/>
+      <circle cx="50" cy="50" r="46" stroke="#FAFAFA" strokeWidth="3" fill="none"/>
+      {/* Center line */}
+      <line x1="4" y1="50" x2="96" y2="50" stroke="#FAFAFA" strokeWidth="3"/>
+      {/* Center circle outer */}
+      <circle cx="50" cy="50" r="12" stroke="#FAFAFA" strokeWidth="3" fill="none"/>
+      {/* Center dot */}
+      <circle cx="50" cy="50" r="4" fill="#FAFAFA"/>
     </svg>
   );
 }
@@ -30,14 +28,14 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="no-underline flex items-center gap-2.5">
-          <Pokeball size={22} />
-          <span className="font-bold text-[15px] tracking-tight text-text">
+          <Pokeball size={18} />
+          <span className="font-medium text-[11px] tracking-[0.2em] uppercase text-text">
             PokéMarket
           </span>
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-6">
           <NavLink href="/" active={pathname === '/'}>Dashboard</NavLink>
           <NavLink href="/cards" active={pathname.startsWith('/cards')}>Cards</NavLink>
         </div>
@@ -73,9 +71,9 @@ function NavLink({ href, active, children }: { href: string; active: boolean; ch
   return (
     <Link
       href={href}
-      className={`px-3 py-1.5 rounded-md text-sm font-medium no-underline transition-colors ${
+      className={`text-[11px] tracking-[0.15em] uppercase font-medium no-underline transition-colors pb-0.5 ${
         active
-          ? 'text-text bg-white/5'
+          ? 'text-text border-b border-text'
           : 'text-text-muted hover:text-text'
       }`}
     >
@@ -99,7 +97,7 @@ function MobileNavLink({
     <Link
       href={href}
       onClick={onClick}
-      className={`px-4 py-3 rounded-lg text-base font-medium no-underline ${
+      className={`px-4 py-3 rounded-lg text-[11px] tracking-[0.15em] uppercase font-medium no-underline ${
         active
           ? 'text-text bg-white/5'
           : 'text-text-muted'

@@ -44,15 +44,15 @@ export default function PriceChart({ data }: Props) {
     <div className="bg-surface rounded-xl px-6 py-5 border border-border">
       {/* Range toggle */}
       <div className="flex justify-end mb-4">
-        <div className="flex gap-1 bg-bg rounded-lg p-1 border border-border">
+        <div className="flex gap-0.5">
           {RANGES.map((r) => (
             <button
               key={r.label}
               onClick={() => setRange(r.days)}
-              className={`px-3.5 py-1.5 rounded-md border-none cursor-pointer text-[13px] font-semibold transition-all duration-150 ${
+              className={`px-3 py-1 rounded border-none cursor-pointer text-[11px] tracking-wider font-medium transition-all duration-150 ${
                 range === r.days
-                  ? 'bg-surface-dark text-text-inverse'
-                  : 'bg-transparent text-text-muted'
+                  ? 'bg-white/10 text-text'
+                  : 'bg-transparent text-text-muted hover:text-text'
               }`}
             >
               {r.label}
