@@ -49,7 +49,7 @@ function IndexTile({ index }: { index: IndexData }) {
             </span>
             {hasData && (
               <span className={`num text-[13px] font-bold ${
-                index.changePct === 0 ? 'text-text-muted' : isUp ? 'text-up' : 'text-down'
+                index.changePct === 0 ? 'text-amber-400' : isUp ? 'text-up' : 'text-down'
               }`}>
                 {index.changePct === 0 ? '—' : isUp ? '▲' : '▼'} {Math.abs(index.changePct).toFixed(2)}%
               </span>
