@@ -35,7 +35,7 @@ function IndexTile({ index }: { index: IndexData }) {
       <div className="flex items-start justify-between mb-3">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-bold tracking-wide bg-surface-dark text-text-inverse px-2 py-0.5 rounded">
+            <span className="text-[10px] font-bold tracking-widest bg-white/10 text-text px-2 py-1 rounded-md">
               {index.shortName}
             </span>
             <span className="text-xs text-text-muted font-medium">{index.name}</span>
