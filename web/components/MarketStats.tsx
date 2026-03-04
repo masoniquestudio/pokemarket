@@ -2,25 +2,17 @@ type MarketStatsProps = {
   totalCards: number;
   totalMarketCap: number;
   totalVolume: number;
-  avgChange: number;
   mostActive: { name: string; volume: number } | null;
-  marketSentiment: { up: number; down: number; neutral: number };
 };
 
 export default function MarketStats({
   totalCards,
   totalMarketCap,
   totalVolume,
-  avgChange,
   mostActive,
-  marketSentiment,
 }: MarketStatsProps) {
-  const sentimentPct = totalCards > 0
-    ? Math.round((marketSentiment.up / totalCards) * 100)
-    : 0;
-
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       <StatTile
         label="Market Cap"
         value={`$${formatNumber(totalMarketCap)}`}
@@ -35,18 +27,6 @@ export default function MarketStats({
         label="Total Volume"
         value={formatNumber(totalVolume)}
         sublabel="listings found"
-      />
-      <StatTile
-        label="Avg Change"
-        value={`${avgChange >= 0 ? '+' : ''}${avgChange.toFixed(2)}%`}
-        sublabel="7 day"
-        valueColor={avgChange >= 0 ? 'text-up' : 'text-down'}
-      />
-      <StatTile
-        label="Sentiment"
-        value={`${sentimentPct}%`}
-        sublabel={`${marketSentiment.up} up · ${marketSentiment.down} down`}
-        valueColor={sentimentPct >= 50 ? 'text-up' : 'text-down'}
       />
       <StatTile
         label="Most Active"

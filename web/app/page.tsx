@@ -78,18 +78,9 @@ export default async function HomePage() {
   const pricedCards = cardsWithPrices.filter((c) => c.currentPrice > 0);
   const totalMarketCap = pricedCards.reduce((sum, c) => sum + c.currentPrice, 0);
   const totalVolume = pricedCards.reduce((sum, c) => sum + (c.volume ?? 0), 0);
-  const cardsWithChange = pricedCards.filter((c) => c.changePct !== null);
-  const avgChange = cardsWithChange.length > 0
-    ? cardsWithChange.reduce((sum, c) => sum + (c.changePct ?? 0), 0) / cardsWithChange.length
-    : 0;
   const mostActive = pricedCards
     .filter((c) => c.volume !== null)
     .sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0))[0] ?? null;
-  const marketSentiment = {
-    up: cardsWithChange.filter((c) => (c.changePct ?? 0) > 0).length,
-    down: cardsWithChange.filter((c) => (c.changePct ?? 0) < 0).length,
-    neutral: cardsWithChange.filter((c) => (c.changePct ?? 0) === 0).length,
-  };
 
   // Build data for all 4 index tiles
   const indexTilesData = Object.entries(INDEX_CONFIGS).map(([id, config]) => {
@@ -135,9 +126,7 @@ export default async function HomePage() {
           totalCards={pricedCards.length}
           totalMarketCap={totalMarketCap}
           totalVolume={totalVolume}
-          avgChange={avgChange}
           mostActive={mostActive ? { name: mostActive.name, volume: mostActive.volume ?? 0 } : null}
-          marketSentiment={marketSentiment}
         />
 
         {/* Gainers / Losers */}

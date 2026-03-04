@@ -46,14 +46,28 @@ export async function getEbayToken() {
   return _tokenCache.token;
 }
 
+// Keywords that indicate lots/bundles/bulk — filter these out before price calculation
+const EXCLUDE_KEYWORDS = [
+  'lot', 'bundle', 'set of', 'collection', 'bulk', 'random',
+  'mystery', 'grab bag', 'pick', 'choose', 'binder', 'complete set'
+];
+
+// Minimum price thresholds by tier to filter out damaged/fake cards
+const MIN_PRICE_BY_TIER = {
+  vintage: 5,
+  iconic: 50,
+  'modern-chase': 5,
+};
+
 /**
  * Search eBay completed/sold listings for a given query.
  * Returns an array of sale prices (numbers).
  *
  * @param {string} query  - the ebayQuery string from cards.js
  * @param {number} limit  - max results to fetch (default 40)
+ * @param {string} tier   - optional tier for minimum price filtering
  */
-export async function fetchSoldPrices(query, limit = 100) {
+export async function fetchSoldPrices(query, limit = 100, tier = null) {
   const token = await getEbayToken();
 
   const params = new URLSearchParams({
@@ -79,12 +93,20 @@ export async function fetchSoldPrices(query, limit = 100) {
   }
 
   const data = await res.json();
-  const items = data.itemSummaries ?? [];
 
-  // Extract numeric prices
+  // Filter out lots/bundles/sets before extracting prices
+  const items = (data.itemSummaries ?? []).filter((item) => {
+    const title = (item.title ?? '').toLowerCase();
+    return !EXCLUDE_KEYWORDS.some(kw => title.includes(kw));
+  });
+
+  // Get minimum price threshold for this tier
+  const minPrice = tier ? (MIN_PRICE_BY_TIER[tier] ?? 0) : 0;
+
+  // Extract numeric prices, applying minimum threshold
   const prices = items
     .map((item) => parseFloat(item.price?.value))
-    .filter((p) => Number.isFinite(p) && p > 0);
+    .filter((p) => Number.isFinite(p) && p > minPrice);
 
   return prices;
 }
