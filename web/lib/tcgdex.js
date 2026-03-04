@@ -35,12 +35,12 @@ export async function fetchCardPrice(tcgdexId) {
   // Try TCGPlayer pricing first (USD)
   const tcgplayer = pricing.tcgplayer;
   if (tcgplayer) {
-    // TCGdex provides pricing for different variants: normal, holofoil, reverseHolofoil, etc.
-    // Prioritize: holofoil > reverseHolofoil > normal > 1stEditionHolofoil > 1stEditionNormal
+    // TCGdex uses kebab-case keys for variants
+    // Prioritize: holofoil > normal > reverse-holofoil (reverse is usually more expensive/rarer)
     const variant =
       tcgplayer.holofoil ||
-      tcgplayer.reverseHolofoil ||
       tcgplayer.normal ||
+      tcgplayer['reverse-holofoil'] ||
       tcgplayer['1stEditionHolofoil'] ||
       tcgplayer['1stEditionNormal'] ||
       tcgplayer.unlimitedHolofoil ||
@@ -64,14 +64,20 @@ export async function fetchCardPrice(tcgdexId) {
 
   // Fallback to Cardmarket pricing (EUR -> USD conversion ~1.08)
   const cardmarket = pricing.cardmarket;
-  if (cardmarket && cardmarket.avg) {
+  if (cardmarket) {
     const eurToUsd = 1.08;
-    return {
-      avg: Math.round(cardmarket.avg * eurToUsd * 100) / 100,
-      low: cardmarket.low ? Math.round(cardmarket.low * eurToUsd * 100) / 100 : null,
-      high: null, // Cardmarket doesn't provide high price in the same format
-      volume: null,
-    };
+    // Prefer holo-specific pricing if available, otherwise use trend or avg
+    const avgPrice = cardmarket['trend-holo'] ?? cardmarket['avg-holo'] ?? cardmarket.trend ?? cardmarket.avg;
+    const lowPrice = cardmarket['low-holo'] ?? cardmarket.low;
+
+    if (avgPrice) {
+      return {
+        avg: Math.round(avgPrice * eurToUsd * 100) / 100,
+        low: lowPrice ? Math.round(lowPrice * eurToUsd * 100) / 100 : null,
+        high: null,
+        volume: null,
+      };
+    }
   }
 
   return null;

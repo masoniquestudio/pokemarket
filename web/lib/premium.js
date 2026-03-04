@@ -178,9 +178,18 @@ export function calculateBuyLowSignals(cards, movingAverages) {
         ? ((sma30d - currentPrice) / sma30d) * 100
         : null;
 
+      // Boost signal strength based on discount magnitude
+      // A 20%+ discount adds 1 point, 40%+ adds 2
+      let strengthBonus = 0;
+      if (discountPct && discountPct > 40) {
+        strengthBonus = 2;
+      } else if (discountPct && discountPct > 20) {
+        strengthBonus = 1;
+      }
+
       return {
         ...card,
-        signalStrength: criteria.length,
+        signalStrength: Math.min(criteria.length + strengthBonus, 5),
         criteria,
         discountPct: discountPct && discountPct > 0 ? discountPct : null,
         sma30d,

@@ -55,7 +55,7 @@ export default function BuyLowCard({ card }: Props) {
           <p className="font-bold text-text num">${card.currentPrice.toFixed(2)}</p>
           {card.discountPct && card.discountPct > 0 && (
             <p className="text-xs text-green-400">
-              {card.discountPct.toFixed(1)}% below avg
+              {Math.min(card.discountPct, 99).toFixed(1)}% below avg
             </p>
           )}
         </div>
